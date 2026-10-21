@@ -1,0 +1,2186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generative AI for Computer Vision | 120-Question Master CBT Exam Simulator</title>
+    <!-- KaTeX for Rich LaTeX Math Equations -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="if (window.triggerMathRendering) triggerMathRendering();"></script>
+    <style>
+        :root {
+            --bg-body: #080c14;
+            --bg-header: #0e1526;
+            --bg-card: #151e33;
+            --bg-card-hover: #1c2742;
+            --bg-option: #0d1322;
+            --bg-option-hover: #19233c;
+            --border-dim: #263554;
+            --border-bright: #3b4e76;
+            --border-focus: #06b6d4;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --text-muted: #64748b;
+            
+            --accent-purple: #8b5cf6;
+            --accent-purple-dark: #7c3aed;
+            --accent-indigo: #6366f1;
+            --accent-cyan: #06b6d4;
+            --accent-emerald: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
+            
+            --success-border: #10b981;
+            --success-bg: rgba(16, 185, 129, 0.14);
+            --danger-border: #ef4444;
+            --danger-bg: rgba(239, 68, 68, 0.14);
+            
+            --radius-xs: 5px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: var(--font-family);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Header Navigation */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(14, 21, 38, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-dim);
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 10px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .brand-section {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-badge {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-indigo));
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: var(--radius-xs);
+            box-shadow: 0 2px 8px rgba(6, 182, 212, 0.35);
+        }
+
+        .brand-info h1 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1.2;
+        }
+
+        .brand-info p {
+            font-size: 11px;
+            color: var(--text-sub);
+        }
+
+        .header-tools {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Mode & Order Capsules */
+        .mode-capsule, .order-capsule {
+            display: inline-flex;
+            background: #080c14;
+            border: 1px solid var(--border-dim);
+            border-radius: 20px;
+            padding: 2px;
+        }
+
+        .mode-btn, .order-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: transparent;
+            border: none;
+            color: var(--text-sub);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .mode-btn.active {
+            background: var(--accent-purple);
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(139, 92, 246, 0.3);
+        }
+
+        .order-btn.active {
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(6, 182, 212, 0.3);
+        }
+
+        .mode-btn:hover:not(.active), .order-btn:hover:not(.active) {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Timer Badge */
+        .timer-badge {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: #080c14;
+            border: 1px solid var(--border-dim);
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+        }
+
+        .timer-icon {
+            color: var(--accent-cyan);
+            display: flex;
+        }
+
+        .timer-digits {
+            font-family: "Courier New", Courier, monospace;
+            font-size: 14px;
+            font-weight: 700;
+            color: #38bdf8;
+            letter-spacing: 0.05em;
+        }
+
+        .timer-toggle-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-sub);
+            cursor: pointer;
+            font-size: 11px;
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        .timer-toggle-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Header Metrics */
+        .header-metrics {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .metric-pill {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: #080c14;
+            border: 1px solid var(--border-dim);
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            color: var(--text-sub);
+        }
+
+        .metric-pill strong {
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .metric-pill.score strong {
+            color: var(--accent-cyan);
+        }
+
+        .metric-pill.accuracy strong {
+            color: var(--accent-emerald);
+        }
+
+        .fullscreen-btn {
+            background: #080c14;
+            border: 1px solid var(--border-dim);
+            color: var(--text-sub);
+            padding: 6px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fullscreen-btn:hover {
+            color: var(--text-main);
+            border-color: var(--border-bright);
+        }
+
+        .global-progress-track {
+            width: 100%;
+            height: 3px;
+            background: #080c14;
+        }
+
+        .global-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple), var(--accent-emerald));
+            transition: width 0.25s ease;
+        }
+
+        /* Workspace Layout */
+        .workspace-layout {
+            max-width: 1600px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px 24px;
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 24px;
+            flex: 1;
+        }
+
+        .primary-column {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        #questionsContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Question Card */
+        .question-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-dim);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+            transition: transform 0.15s ease, border-color 0.15s ease;
+        }
+
+        .question-card.active-focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 6px 24px rgba(6, 182, 212, 0.15);
+        }
+
+        .card-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .badge-cluster {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .q-index-tag {
+            background: #0e1526;
+            color: var(--accent-cyan);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            font-weight: 800;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: var(--radius-xs);
+        }
+
+        .chip {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: var(--radius-xs);
+            background: #0d1322;
+            border: 1px solid var(--border-dim);
+            color: var(--text-sub);
+        }
+
+        .chip-assignment {
+            background: rgba(16, 185, 129, 0.1);
+            color: #34d399;
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .chip-week {
+            background: rgba(139, 92, 246, 0.1);
+            color: #c084fc;
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .chip-archetype {
+            background: rgba(245, 158, 11, 0.1);
+            color: #fbbf24;
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .bookmark-btn {
+            background: transparent;
+            border: 1px solid var(--border-dim);
+            color: var(--text-sub);
+            padding: 4px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.15s ease;
+        }
+
+        .bookmark-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+        }
+
+        .bookmark-btn.active {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border-color: #f59e0b;
+        }
+
+        .question-stem-text {
+            font-size: 15px;
+            font-weight: 500;
+            color: #f1f5f9;
+            line-height: 1.6;
+        }
+
+        /* Options */
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-box {
+            background: var(--bg-option);
+            border: 1px solid var(--border-dim);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.15s ease;
+        }
+
+        .option-box:hover:not(.locked) {
+            background: var(--bg-option-hover);
+            border-color: var(--border-bright);
+            transform: translateX(2px);
+        }
+
+        .option-circle {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #151e33;
+            border: 1px solid var(--border-dim);
+            color: var(--text-sub);
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.15s ease;
+        }
+
+        .option-label {
+            font-size: 13.5px;
+            color: #cbd5e1;
+            flex: 1;
+            line-height: 1.45;
+        }
+
+        .status-pill {
+            font-size: 10.5px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        /* Option States */
+        .option-box.correct-choice {
+            background: var(--success-bg) !important;
+            border-color: var(--success-border) !important;
+        }
+
+        .option-box.correct-choice .option-circle {
+            background: var(--accent-emerald) !important;
+            color: #ffffff !important;
+            border-color: var(--accent-emerald) !important;
+        }
+
+        .option-box.correct-choice .status-pill {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+        }
+
+        .option-box.wrong-choice {
+            background: var(--danger-bg) !important;
+            border-color: var(--danger-border) !important;
+        }
+
+        .option-box.wrong-choice .option-circle {
+            background: #ef4444 !important;
+            color: #ffffff !important;
+            border-color: #ef4444 !important;
+        }
+
+        .option-box.wrong-choice .status-pill {
+            display: inline-block;
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+
+        .option-box.revealed-answer {
+            border-color: #34d399 !important;
+            background: rgba(16, 185, 129, 0.08) !important;
+        }
+
+        .option-box.revealed-answer .option-circle {
+            background: #047857;
+            color: #ffffff;
+            border-color: #34d399;
+        }
+
+        .option-box.revealed-answer .status-pill {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+        }
+
+        .option-box.locked {
+            cursor: default;
+        }
+
+        /* Explanation Drawer */
+        .explanation-drawer {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            background: #0c1322;
+            border: 1px solid var(--border-bright);
+            border-left: 3px solid var(--accent-cyan);
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+            margin-top: 6px;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+
+        .explanation-drawer.open {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .exp-banner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 8px;
+        }
+
+        .exp-label {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-cyan);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .exp-correct-key {
+            font-size: 12px;
+            font-weight: 700;
+            color: #34d399;
+        }
+
+        .exp-text-rule {
+            font-size: 12px;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        .exp-trigger-banner {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: var(--radius-xs);
+            padding: 8px 12px;
+            font-size: 12px;
+            color: #fde68a;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .exp-methodology-banner {
+            background: rgba(14, 21, 38, 0.7);
+            border: 1px solid var(--border-dim);
+            border-radius: var(--radius-xs);
+            padding: 10px 12px;
+            font-size: 12px;
+            color: #94a3b8;
+            line-height: 1.55;
+        }
+
+        .exp-methodology-banner strong {
+            color: #e2e8f0;
+        }
+
+        /* Bottom Action Dock */
+        .bottom-action-dock {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-card);
+            border: 1px solid var(--border-dim);
+            border-radius: var(--radius-md);
+            padding: 12px 18px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .dock-btn {
+            background: #0d1322;
+            border: 1px solid var(--border-dim);
+            color: var(--text-main);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+        }
+
+        .dock-btn:hover:not(:disabled) {
+            background: var(--border-dim);
+            border-color: var(--border-bright);
+        }
+
+        .dock-btn.accent {
+            background: var(--accent-cyan);
+            color: #080c14;
+            font-weight: 700;
+            border-color: var(--accent-cyan);
+        }
+
+        .dock-btn.accent:hover:not(:disabled) {
+            background: #38bdf8;
+            border-color: #38bdf8;
+        }
+
+        .dock-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .key-hint {
+            font-size: 9.5px;
+            opacity: 0.7;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        /* Secondary Column: Palette Matrix */
+        .secondary-column {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .palette-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-dim);
+            border-radius: var(--radius-md);
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: sticky;
+            top: 70px;
+        }
+
+        .panel-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 8px;
+        }
+
+        .panel-heading h3 {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .attempted-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+
+        /* Filter Ribbons */
+        .filter-ribbon {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .filter-tab {
+            background: #0d1322;
+            border: 1px solid var(--border-dim);
+            color: var(--text-sub);
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: var(--radius-xs);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .filter-tab:hover {
+            background: #151e33;
+            color: var(--text-main);
+        }
+
+        .filter-tab.active {
+            background: var(--accent-cyan);
+            color: #080c14;
+            font-weight: 700;
+            border-color: var(--accent-cyan);
+        }
+
+        /* Week Filter Select Bar */
+        .week-filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            background: rgba(13, 19, 34, 0.8);
+            border: 1px solid var(--border-dim);
+            border-radius: var(--radius-sm);
+        }
+
+        .week-filter-label {
+            font-size: 10.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-sub);
+            white-space: nowrap;
+        }
+
+        .week-filter-select {
+            flex: 1;
+            background: #080c14;
+            color: #e2e8f0;
+            border: 1px solid #334155;
+            border-radius: 4px;
+            padding: 4px 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.15s ease;
+        }
+
+        .week-filter-select:focus {
+            border-color: var(--accent-cyan);
+        }
+
+        /* Matrix Grid (6 columns for 120 questions) */
+        .matrix-scroll-view {
+            max-height: 380px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .matrix-scroll-view::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .matrix-scroll-view::-webkit-scrollbar-thumb {
+            background: var(--border-bright);
+            border-radius: 2px;
+        }
+
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 6px;
+        }
+
+        .matrix-item {
+            aspect-ratio: 1;
+            background: #0d1322;
+            border: 1px solid var(--border-dim);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-sub);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.15s ease;
+        }
+
+        .matrix-item:hover {
+            background: #19233c;
+            border-color: var(--border-bright);
+            color: var(--text-main);
+            transform: scale(1.05);
+        }
+
+        .matrix-item.active-item {
+            border-color: var(--accent-cyan) !important;
+            box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.4) !important;
+            color: #ffffff !important;
+        }
+
+        .matrix-item.answered-correct {
+            background: rgba(16, 185, 129, 0.2) !important;
+            border-color: var(--accent-emerald) !important;
+            color: #34d399 !important;
+        }
+
+        .matrix-item.answered-wrong {
+            background: rgba(239, 68, 68, 0.2) !important;
+            border-color: #ef4444 !important;
+            color: #f87171 !important;
+        }
+
+        .matrix-item.is-flagged::after {
+            content: "★";
+            position: absolute;
+            top: 1px;
+            right: 2px;
+            font-size: 8px;
+            color: #fbbf24;
+        }
+
+        /* Legend */
+        .matrix-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding-top: 6px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 10px;
+            color: var(--text-sub);
+        }
+
+        .legend-spec {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .spec-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+        }
+
+        .spec-dot.gray { background: #0d1322; border: 1px solid var(--border-dim); }
+        .spec-dot.green { background: var(--accent-emerald); }
+        .spec-dot.red { background: #ef4444; }
+        .spec-dot.flag { background: #f59e0b; }
+
+        /* Action Tray */
+        .sidebar-action-tray {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .tray-btn {
+            background: #0d1322;
+            border: 1px solid var(--border-dim);
+            color: var(--text-main);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 8px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+        }
+
+        .tray-btn:hover {
+            background: #19233c;
+            border-color: var(--border-bright);
+        }
+
+        .tray-btn.submit-exam {
+            background: linear-gradient(135deg, var(--accent-emerald), #059669);
+            color: #ffffff;
+            font-weight: 700;
+            border: none;
+            box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
+        }
+
+        .tray-btn.submit-exam:hover {
+            filter: brightness(1.1);
+        }
+
+        /* Scorecard Modal Dialog */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-backdrop.open {
+            display: flex;
+        }
+
+        .modal-window {
+            background: var(--bg-card);
+            border: 1px solid var(--border-bright);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 680px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .close-modal-btn {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            background: transparent;
+            border: none;
+            color: var(--text-sub);
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .close-modal-btn:hover {
+            color: var(--text-main);
+        }
+
+        .modal-hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            text-align: center;
+        }
+
+        .score-orb {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #0e1a33 0%, #060b14 100%);
+            border: 3px solid var(--accent-cyan);
+            box-shadow: 0 0 24px rgba(6, 182, 212, 0.35);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .score-val {
+            font-size: 34px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1;
+        }
+
+        .score-denominator {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            letter-spacing: 0.05em;
+        }
+
+        .tier-tag {
+            font-size: 13px;
+            font-weight: 800;
+            padding: 4px 14px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .tier-tag.gold { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b; }
+        .tier-tag.silver { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; border: 1px solid #94a3b8; }
+        .tier-tag.bronze { background: rgba(217, 119, 6, 0.2); color: #f59e0b; border: 1px solid #d97706; }
+        .tier-tag.pass { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981; }
+        .tier-tag.fail { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; }
+
+        .tier-narrative {
+            font-size: 13px;
+            color: var(--text-sub);
+            max-width: 480px;
+        }
+
+        .summary-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .summary-box {
+            background: #0d1322;
+            border: 1px solid var(--border-dim);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            text-align: center;
+        }
+
+        .summary-val {
+            font-size: 20px;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .summary-lbl {
+            font-size: 10.5px;
+            color: var(--text-sub);
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        /* Domain Breakdown in Modal */
+        .domain-breakdown-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .domain-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-sub);
+            padding-bottom: 4px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .domain-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .domain-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11.5px;
+        }
+
+        .domain-name {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .domain-score-pill {
+            color: var(--accent-cyan);
+            font-weight: 700;
+        }
+
+        .domain-bar-bg {
+            height: 6px;
+            background: #080c14;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .domain-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .modal-action-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .dialog-btn {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            border: none;
+            transition: all 0.15s ease;
+        }
+
+        .dialog-btn.review-btn {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fbbf24;
+            border: 1px solid #f59e0b;
+        }
+
+        .dialog-btn.retake-btn {
+            background: var(--accent-cyan);
+            color: #080c14;
+        }
+
+        .dialog-btn.print-btn {
+            background: #0d1322;
+            color: var(--text-main);
+            border: 1px solid var(--border-bright);
+        }
+
+        /* Offline Math Fallback */
+        .math-tex {
+            font-family: "Times New Roman", Times, serif;
+            font-style: italic;
+        }
+        .math-frac {
+            display: inline-flex;
+            flex-direction: column;
+            vertical-align: middle;
+            text-align: center;
+            padding: 0 2px;
+            font-size: 0.85em;
+        }
+        .math-num {
+            border-bottom: 1px solid currentColor;
+            padding-bottom: 1px;
+        }
+        .math-den {
+            padding-top: 1px;
+        }
+        .math-sqrt {
+            display: inline-flex;
+            align-items: baseline;
+        }
+        .math-radicand {
+            border-top: 1px solid currentColor;
+            padding: 0 2px;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            .workspace-layout {
+                grid-template-columns: 1fr;
+            }
+            .secondary-column {
+                order: -1;
+            }
+            .palette-panel {
+                position: static;
+            }
+            .matrix-scroll-view {
+                max-height: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .header-tools {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            .question-card {
+                padding: 16px;
+            }
+            .summary-stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="header-content">
+            <div class="brand-section">
+                <span class="brand-badge">NPTEL CBT</span>
+                <div class="brand-info">
+                    <h1>Generative AI for Computer Vision Exam Simulator</h1>
+                    <p>IIT Guwahati · 100% Complete Assignment Question Bank (Weeks 1 to 12) · Shuffled & Randomized</p>
+                </div>
+            </div>
+
+            <div class="header-tools">
+                <!-- Mode Toggle -->
+                <div class="mode-capsule">
+                    <button id="btnFocusMode" class="mode-btn active" onclick="setMode('focus')">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
+                        Focus CBT
+                    </button>
+                    <button id="btnScrollMode" class="mode-btn" onclick="setMode('scroll')">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                        All 120 Paper
+                    </button>
+                </div>
+
+                <!-- Order Toggle -->
+                <div class="order-capsule">
+                    <button id="btnOrderShuffled" class="order-btn active" onclick="setOrderMode('shuffled')" title="Randomize Question Order">
+                        🔀 Shuffled
+                    </button>
+                    <button id="btnOrderSequential" class="order-btn" onclick="setOrderMode('sequential')" title="Sort Chronologically by Week">
+                        📅 Sequential
+                    </button>
+                </div>
+
+                <!-- Timer (180 mins) -->
+                <div class="timer-badge">
+                    <span class="timer-icon">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </span>
+                    <span id="timerDisplay" class="timer-digits">180:00</span>
+                    <button id="btnPauseTimer" class="timer-toggle-btn" onclick="toggleTimer()" title="Pause / Resume">⏸</button>
+                </div>
+
+                <!-- Live Metrics -->
+                <div class="header-metrics">
+                    <div class="metric-pill score">
+                        <span>Score:</span>
+                        <strong id="statScore">0 / 120</strong>
+                    </div>
+                    <div class="metric-pill accuracy">
+                        <span>Acc:</span>
+                        <strong id="statAcc">0%</strong>
+                    </div>
+                </div>
+
+                <button class="fullscreen-btn" onclick="toggleFullScreen()" title="Toggle Fullscreen">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="global-progress-track">
+            <div id="progressBar" class="global-progress-fill"></div>
+        </div>
+    </header>
+
+    <!-- Workspace Layout -->
+    <main class="workspace-layout">
+        <!-- Primary Left Column: Questions -->
+        <section class="primary-column">
+            <div id="questionsContainer">
+                <!-- Rendered dynamically -->
+            </div>
+
+            <!-- CBT Focus Mode Bottom Navigation -->
+            <div id="focusNavBar" class="bottom-action-dock">
+                <button id="btnPrev" class="dock-btn" onclick="prevQuestion()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                    Previous <span class="key-hint">P</span>
+                </button>
+                <div style="display: flex; gap: 10px;">
+                    <button id="btnFlagFocus" class="bookmark-btn" onclick="toggleCurrentFlag()">
+                        <span>⭐</span> Mark for Review <span class="key-hint">F</span>
+                    </button>
+                    <button class="dock-btn" onclick="clearCurrentAnswer()">
+                        ↺ Retry Question <span class="key-hint">R</span>
+                    </button>
+                </div>
+                <button id="btnNext" class="dock-btn accent" onclick="nextQuestion()">
+                    Next <span class="key-hint">N</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- Secondary Right Column: Question Palette Matrix -->
+        <aside class="secondary-column">
+            <div class="palette-panel">
+                <div class="panel-heading">
+                    <h3>Question Palette</h3>
+                    <span id="attemptedCounter" class="attempted-label">0/120 Answered</span>
+                </div>
+
+                <!-- Filters -->
+                <div class="filter-ribbon">
+                    <button id="tabFilterAll" class="filter-tab active" onclick="setPaletteFilter('all')">All (120)</button>
+                    <button id="tabFilterUnattempted" class="filter-tab" onclick="setPaletteFilter('unattempted')">Unattempted</button>
+                    <button id="tabFilterMistakes" class="filter-tab" onclick="setPaletteFilter('incorrect')">Mistakes</button>
+                    <button id="tabFilterFlagged" class="filter-tab" onclick="setPaletteFilter('flagged')">⭐ Flagged</button>
+                </div>
+
+                <!-- Week Isolator -->
+                <div class="week-filter-bar">
+                    <label for="weekSelect" class="week-filter-label">Week:</label>
+                    <select id="weekSelect" class="week-filter-select" onchange="handleWeekFilterChange(this.value)">
+                        <option value="all">All 12 Weeks (120 Questions)</option>
+                        <option value="1">Week 1: Foundations & Probability (10 Qs)</option>
+                        <option value="2">Week 2: Deep Learning & MLPs (10 Qs)</option>
+                        <option value="3">Week 3: CNNs & Receptive Fields (10 Qs)</option>
+                        <option value="4">Week 4: ResNets & Modern CNNs (10 Qs)</option>
+                        <option value="5">Week 5: RNNs, LSTMs & BPTT (10 Qs)</option>
+                        <option value="6">Week 6: Likelihood Models & VAEs (10 Qs)</option>
+                        <option value="7">Week 7: Attention Mechanisms & Transformers (10 Qs)</option>
+                        <option value="8">Week 8: ViT & DETR Architectures (10 Qs)</option>
+                        <option value="9">Week 9: GANs & Adversarial Synthesis (10 Qs)</option>
+                        <option value="10">Week 10: LLMs & Multimodal Foundations (10 Qs)</option>
+                        <option value="11">Week 11: CLIP & Zero-Shot Vision (10 Qs)</option>
+                        <option value="12">Week 12: Agentic AI & Autonomous Vision (10 Qs)</option>
+                    </select>
+                </div>
+
+                <!-- 120 Matrix Nodes (6 columns) -->
+                <div class="matrix-scroll-view">
+                    <div id="paletteGrid" class="matrix-grid">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Legend -->
+                <div class="matrix-legend">
+                    <div class="legend-spec"><span class="spec-dot gray"></span> Unattempted</div>
+                    <div class="legend-spec"><span class="spec-dot green"></span> Correct</div>
+                    <div class="legend-spec"><span class="spec-dot red"></span> Incorrect</div>
+                    <div class="legend-spec"><span class="spec-dot flag"></span> Flagged</div>
+                </div>
+
+                <!-- Actions -->
+                <div class="sidebar-action-tray">
+                    <button class="tray-btn" onclick="reshuffleQuiz()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+                        Reshuffle Exam Order
+                    </button>
+                    <button class="tray-btn" onclick="resetAllAnswers()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 2v6h6M21.5 22v-6h-6"/><path d="M22 11.5A10 10 0 0 0 3.2 7.2L2.5 8M2 12.5a10 10 0 0 0 18.8 4.2l.7-.7"/></svg>
+                        Reset All Answers
+                    </button>
+                    <button class="tray-btn submit-exam" onclick="showResultsModal()">
+                        🏁 Submit & View Scorecard
+                    </button>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Scorecard & Analytics Modal Dialog -->
+    <div id="resultsModal" class="modal-backdrop">
+        <div class="modal-window">
+            <button class="close-modal-btn" onclick="closeResultsModal()">✕</button>
+
+            <div class="modal-hero">
+                <div class="score-orb">
+                    <span id="modalScoreNum" class="score-val">0</span>
+                    <span class="score-denominator">OUT OF 120</span>
+                </div>
+                <div id="modalTierBadge" class="tier-tag gold">Elite + Gold Medalist</div>
+                <p id="modalTierNarrative" class="tier-narrative">Outstanding performance!</p>
+            </div>
+
+            <div class="summary-stats-grid">
+                <div class="summary-box">
+                    <div id="modalAccVal" class="summary-val" style="color: #34d399;">0%</div>
+                    <div class="summary-lbl">Accuracy Rate</div>
+                </div>
+                <div class="summary-box">
+                    <div id="modalTimeVal" class="summary-val" style="color: #60a5fa;">00:00</div>
+                    <div class="summary-lbl">Time Elapsed</div>
+                </div>
+                <div class="summary-box">
+                    <div id="modalMistakesVal" class="summary-val" style="color: #f87171;">0</div>
+                    <div class="summary-lbl">Incorrect Items</div>
+                </div>
+            </div>
+
+            <!-- Domain Mastery Breakdown (All 12 Weeks) -->
+            <div class="domain-breakdown-section">
+                <div class="domain-title">Week-by-Week Domain Breakdown (All 12 Weeks)</div>
+                <div id="catBreakdownList" style="display: flex; flex-direction: column; gap: 8px;">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Modal Action Buttons -->
+            <div class="modal-action-row">
+                <button id="btnReviewMistakes" class="dialog-btn review-btn" onclick="reviewMistakesOnly()">
+                    <span>⚠️</span> Review Mistakes Only (<span id="modalMistakeBtnCount">0</span>)
+                </button>
+                <button class="dialog-btn retake-btn" onclick="retakeExamFromModal()">
+                    <span>🔀</span> Retake Reshuffled Exam
+                </button>
+                <button class="dialog-btn print-btn" onclick="window.print()">
+                    <span>🖨️</span> Print Scorecard
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Script -->
+    <script>
+        // Raw questions bank: ALL 120 Assignment Questions
+        const RAW_QUESTIONS = [{"orig_id": "W1-Q1", "week": 1, "q_num": 1, "week_title": "Foundations of Generative Vision & Probability", "topic": "Generative Modeling Foundations", "q_type": "Theory & Architecture", "stem": "Which of the following is a generative model", "options": ["ResNet", "U-Net", "GAN", "AlexNet"], "correct_index": 2, "correct_letter": "C", "correct_text": "GAN", "rule": "See 'Generative model' -> Pick 'GAN' (ResNet/AlexNet classify; U-Net segments).", "shortcut": "See 'Generative model' -> Pick 'GAN' (ResNet/AlexNet classify; U-Net segments).", "methodology": "Generative Adversarial Networks (GANs) learn the underlying data distribution to synthesize entirely new samples, unlike discriminative or segmentation models like ResNet, AlexNet, or U-Net.", "is_assignment": true}, {"orig_id": "W1-Q2", "week": 1, "q_num": 2, "week_title": "Foundations of Generative Vision & Probability", "topic": "Generative Vision Purpose", "q_type": "Theory & Architecture", "stem": "The main purpose of a generative vision model is to:", "options": ["Classify images", "Detect objects", "Generate new images", "Compress images"], "correct_index": 2, "correct_letter": "C", "correct_text": "Generate new images", "rule": "See 'Generative vision model purpose' -> Pick 'Generate new images'.", "shortcut": "See 'Generative vision model purpose' -> Pick 'Generate new images'.", "methodology": "Generative vision models capture the true data distribution p(x) to synthesize novel, high-fidelity visual samples rather than merely classifying or detecting objects.", "is_assignment": true}, {"orig_id": "W1-Q3", "week": 1, "q_num": 3, "week_title": "Foundations of Generative Vision & Probability", "topic": "Generative CV Applications", "q_type": "Theory & Architecture", "stem": "Which of the following is an application of generative models in computer vision", "options": ["Image synthesis", "Image restoration", "Data augmentation", "All of the above"], "correct_index": 3, "correct_letter": "D", "correct_text": "All of the above", "rule": "See 'Application of generative models in CV' + 'All of the above' -> Pick 'All of the above'.", "shortcut": "See 'Application of generative models in CV' + 'All of the above' -> Pick 'All of the above'.", "methodology": "Generative models power creative image synthesis, inverse-problem restoration (super-resolution/inpainting), and realistic synthetic data augmentation.", "is_assignment": true}, {"orig_id": "W1-Q4", "week": 1, "q_num": 4, "week_title": "Foundations of Generative Vision & Probability", "topic": "Probability & Distributions", "q_type": "Theory & Architecture", "stem": "A joint probability distribution describes:", "options": ["The probability of a single random variable", "The probability of two or more random variables occurring together", "Only independent events", "Only continuous variables"], "correct_index": 1, "correct_letter": "B", "correct_text": "The probability of two or more random variables occurring together", "rule": "See 'Joint probability' -> Pick 'Two or more random variables occurring together' (Joint = together).", "shortcut": "See 'Joint probability' -> Pick 'Two or more random variables occurring together' (Joint = together).", "methodology": "A joint probability distribution P(X, Y) describes the probability of multiple random variables simultaneously taking specific values in a shared space.", "is_assignment": true}, {"orig_id": "W1-Q5", "week": 1, "q_num": 5, "week_title": "Foundations of Generative Vision & Probability", "topic": "Correlation", "q_type": "Theory & Architecture", "stem": "Correlation measures:", "options": ["The size of a dataset", "The strength and direction of the relationship between two variables", "The average value of a variable", "The maximum value in a dataset"], "correct_index": 1, "correct_letter": "B", "correct_text": "The strength and direction of the relationship between two variables", "rule": "See 'Correlation measures' -> Pick 'Strength and direction of the relationship between two variables'.", "shortcut": "See 'Correlation measures' -> Pick 'Strength and direction of the relationship between two variables'.", "methodology": "Correlation measures the standardized linear relationship between two variables, quantifying both its strength (magnitude) and direction (positive or negative).", "is_assignment": true}, {"orig_id": "W1-Q6", "week": 1, "q_num": 6, "week_title": "Foundations of Generative Vision & Probability", "topic": "Covariance", "q_type": "Theory & Architecture", "stem": "Covariance tells us:", "options": ["Whether two variables change together", "The average of a dataset", "The maximum likelihood", "The number of observations"], "correct_index": 0, "correct_letter": "A", "correct_text": "Whether two variables change together", "rule": "See 'Covariance tells us' -> Pick 'Whether two variables change together' (Co-vary = change together).", "shortcut": "See 'Covariance tells us' -> Pick 'Whether two variables change together' (Co-vary = change together).", "methodology": "Covariance evaluates whether two random variables change together in the same direction (positive) or opposite direction (negative).", "is_assignment": true}, {"orig_id": "W1-Q7", "week": 1, "q_num": 7, "week_title": "Foundations of Generative Vision & Probability", "topic": "Maximum Likelihood Estimation", "q_type": "Theory & Architecture", "stem": "The objective of Maximum Likelihood Estimation MLE is to:", "options": ["Minimize training time", "Find parameter values that make the observed data most likely", "Reduce the number of features", "Increase the dataset size"], "correct_index": 1, "correct_letter": "B", "correct_text": "Find parameter values that make the observed data most likely", "rule": "See 'Objective of MLE' -> Pick 'Find parameter values that make observed data most likely'.", "shortcut": "See 'Objective of MLE' -> Pick 'Find parameter values that make observed data most likely'.", "methodology": "Maximum Likelihood Estimation (MLE) seeks parameter values that maximize the probability density of generating the observed training dataset.", "is_assignment": true}, {"orig_id": "W1-Q8", "week": 1, "q_num": 8, "week_title": "Foundations of Generative Vision & Probability", "topic": "Bayesian Learning", "q_type": "Theory & Architecture", "stem": "Bayesian learning combines:", "options": ["Prior knowledge and observed data", "Only training data", "Only test data", "Random initialization"], "correct_index": 0, "correct_letter": "A", "correct_text": "Prior knowledge and observed data", "rule": "See 'Bayesian learning combines' -> Pick 'Prior knowledge and observed data'.", "shortcut": "See 'Bayesian learning combines' -> Pick 'Prior knowledge and observed data'.", "methodology": "Bayesian learning computes a posterior distribution by systematically updating prior knowledge with empirical evidence from observed training data.", "is_assignment": true}, {"orig_id": "W1-Q9", "week": 1, "q_num": 9, "week_title": "Foundations of Generative Vision & Probability", "topic": "Bayesian Learning Updates", "q_type": "True / False", "stem": "True/False Bayesian learning updates model parameters as new evidence becomes available.", "options": ["False", "True"], "correct_index": 1, "correct_letter": "B", "correct_text": "True", "rule": "See 'Bayesian updates as new evidence becomes available' -> Pick 'True'.", "shortcut": "See 'Bayesian updates as new evidence becomes available' -> Pick 'True'.", "methodology": "Bayesian inference provides a continuous sequential learning framework where current posterior distributions become priors for newly arrived evidence.", "is_assignment": true}, {"orig_id": "W1-Q10", "week": 1, "q_num": 10, "week_title": "Foundations of Generative Vision & Probability", "topic": "Generative AI Capabilities", "q_type": "True / False", "stem": "True/False Generative AI models can create new images that resemble the training data.", "options": ["True", "False"], "correct_index": 0, "correct_letter": "A", "correct_text": "True", "rule": "See 'Generative AI create new images resembling training data' -> Pick 'True'.", "shortcut": "See 'Generative AI create new images resembling training data' -> Pick 'True'.", "methodology": "By accurately modeling high-dimensional data distributions, generative AI architectures produce novel images that closely mimic training data semantics.", "is_assignment": true}, {"orig_id": "W2-Q1", "week": 2, "q_num": 1, "week_title": "Deep Learning, MLPs & Backpropagation", "topic": "Neural Network Basics", "q_type": "Theory & Architecture", "stem": "The basic computational unit of an artificial neural network is called:", "options": ["Kernel", "Neuron", "Compiler", "Database"], "correct_index": 1, "correct_letter": "B", "correct_text": "Neuron", "rule": "See 'Basic computational unit of ANN' -> Pick 'Neuron'.", "shortcut": "See 'Basic computational unit of ANN' -> Pick 'Neuron'.", "methodology": "An artificial neuron is the foundational computational unit that computes a weighted sum of inputs plus bias and applies an activation function.", "is_assignment": true}, {"orig_id": "W2-Q2", "week": 2, "q_num": 2, "week_title": "Deep Learning, MLPs & Backpropagation", "topic": "Neural Network Applications", "q_type": "Theory & Architecture", "stem": "Which of the following is an application of neural networks", "options": ["Image recognition", "Speech recognition", "Natural language processing", "All of the above"], "correct_index": 3, "correct_letter": "D", "correct_text": "All of the above", "rule": "See 'Application of neural networks' + 'All of the above' -> Pick 'All of the above'.", "shortcut": "See 'Application of neural networks' + 'All of the above' -> Pick 'All of the above'.", "methodology": "Neural networks serve as universal function approximators capable of handling grid visual data (CV), temporal audio (speech), and symbolic language (NLP).", "is_assignment": true}, {"orig_id": "W2-Q3", "week": 2, "q_num": 3, "week_title": "Deep Learning, MLPs & Backpropagation", "topic": "Single Layer Perceptron", "q_type": "Theory & Architecture", "stem": "A Single Layer Perceptron SLP can correctly solve:", "options": ["Linearly separable problems", "Only non-linearly separable problems", "All complex problems", "No classification problems"], "correct_index": 0, "correct_letter": "A", "correct_text": "Linearly separable problems", "rule": "See 'Single Layer Perceptron / SLP can solve' -> Pick 'Linearly separable problems'.", "shortcut": "See 'Single Layer Perceptron / SLP can solve' -> Pick 'Linearly separable problems'.", "methodology": "A Single Layer Perceptron defines a single linear hyperplane boundary, restricting its classification strictly to linearly separable patterns.", "is_assignment": true}, {"orig_id": "W2-Q4", "week": 2, "q_num": 4, "week_title": "Deep Learning, MLPs & Backpropagation", "topic": "Perceptron XOR Limitation", "q_type": "Theory & Architecture", "stem": "Which of the following is a major limitation of a Single Layer Perceptron", "options": ["It cannot solve linearly separable problems", "It cannot solve non-linearly separable problems such as XOR", "It cannot accept numerical inputs", "It always requires multiple hidden layers"], "correct_index": 1, "correct_letter": "B", "correct_text": "It cannot solve non-linearly separable problems such as XOR", "rule": "See 'Major limitation of Single Layer Perceptron' -> Pick 'Cannot solve non-linearly separable problems such as XOR'.", "shortcut": "See 'Major limitation of Single Layer Perceptron' -> Pick 'Cannot solve non-linearly separable problems such as XOR'.", "methodology": "Minsky and Papert proved that a single linear threshold gate cannot separate non-linear functions like XOR without at least one hidden layer.", "is_assignment": true}, {"orig_id": "W2-Q5", "week": 2, "q_num": 5, "week_title": "Deep Learning, MLPs & Backpropagation", "topic": "Activation Functions", "q_type": "Theory & Architecture", "stem": "What is the main purpose of an activation function in a neural network", "options": ["To remove all network weights", "To store the training data", "To increase the number of input features", "To introduce non-linearity into the network"], "correct_index": 3, "correct_letter": "D", "correct_text": "To introduce non-linearity into the network", "rule": "See 'Purpose of activation function' -> Pick 'Introduce non-linearity into the network'.", "shortcut": "See 'Purpose of activation function' -> Pick 'Introduce non-linearity into the network'.", "methodology": "Without non-linear activation functions, composing multiple dense layers collapses mathematically into a single trivial linear transformation.", "is_assignment": true}, {"orig_id": "W2-Q6", "week": 2, "q_num": 6, "week_title": "Deep Learning, MLPs & Backpropagation", "topic": "Softmax Activation", "q_type": "Theory & Architecture", "stem": "The Softmax activation function is commonly used in the output layer for:", "options": ["Data storage", "Image resizing", "Multi-class classification", "Feature normalization only"], "correct_index": 2, "correct_letter": "C", "correct_text": "Multi-class classification", "rule": "See 'Softmax commonly used for' -> Pick 'Multi-class classification'.", "shortcut": "See 'Softmax commonly used for' -> Pick 'Multi-class classification'.", "methodology": "Softmax exponentiates and normalizes raw output logits into a valid categorical probability distribution summing to 1 across multiple classes.", "is_assignment": true}, {"orig_id": "W2-Q7", "week": 2, "q_num": 7, "week_title": "Deep Learning, MLPs & Backpropagation", "topic": "Forward Propagation", "q_type": "Theory & Architecture", "stem": "During the forward pass of a neural network:", "options": ["Data moves from the input layer toward the output layer", "Data moves only from the output layer to the input layer", "Weights are always set to zero", "The training data is deleted"], "correct_index": 0, "correct_letter": "A", "correct_text": "Data moves from the input layer toward the output layer", "rule": "See 'Forward pass' -> Pick 'Data moves from input layer toward output layer'.", "shortcut": "See 'Forward pass' -> Pick 'Data moves from input layer toward output layer'.", "methodology": "In the forward pass, input data propagates sequentially through network layers to calculate activations and generate the final prediction.", "is_assignment": true}, {"orig_id": "W2-Q8", "week": 2, "q_num": 8, "week_title": "Deep Learning, MLPs & Backpropagation", "topic": "Backpropagation", "q_type": "Theory & Architecture", "stem": "What is the main purpose of backpropagation during neural network training", "options": ["To remove the output layer", "To add more training samples", "To calculate gradients and help update the network weights", "To increase the number of classes"], "correct_index": 2, "correct_letter": "C", "correct_text": "To calculate gradients and help update the network weights", "rule": "See 'Purpose of backpropagation' -> Pick 'Calculate gradients and help update the network weights'.", "shortcut": "See 'Purpose of backpropagation' -> Pick 'Calculate gradients and help update the network weights'.", "methodology": "Backpropagation calculates partial derivatives of the loss with respect to all parameters using the chain rule to guide gradient descent updates.", "is_assignment": true}, {"orig_id": "W2-Q9", "week": 2, "q_num": 9, "week_title": "Deep Learning, MLPs & Backpropagation", "topic": "Overfitting", "q_type": "Theory & Architecture", "stem": "Overfitting occurs when:", "options": ["A model performs well on training data but poorly on unseen data", "A model performs equally well on all datasets", "A model has no trainable parameters", "Training data is never used"], "correct_index": 0, "correct_letter": "A", "correct_text": "A model performs well on training data but poorly on unseen data", "rule": "See 'Overfitting occurs when' -> Pick 'Performs well on training data but poorly on unseen data'.", "shortcut": "See 'Overfitting occurs when' -> Pick 'Performs well on training data but poorly on unseen data'.", "methodology": "Overfitting occurs when a high-capacity model memorizes training noise, resulting in stellar training performance but poor generalization on unseen data.", "is_assignment": true}, {"orig_id": "W2-Q10", "week": 2, "q_num": 10, "week_title": "Deep Learning, MLPs & Backpropagation", "topic": "Overfitting Mitigation", "q_type": "Theory & Architecture", "stem": "Which of the following techniques can help reduce overfitting", "options": ["Regularization", "Early stopping", "Cross-validation", "All of the above"], "correct_index": 3, "correct_letter": "D", "correct_text": "All of the above", "rule": "See 'Reduce overfitting' + 'Regularization, Early stopping, Cross-validation' -> Pick 'All of the above'.", "shortcut": "See 'Reduce overfitting' + 'Regularization, Early stopping, Cross-validation' -> Pick 'All of the above'.", "methodology": "Regularization penalizes weight complexity, early stopping halts training before noise memorization, and cross-validation tunes generalization.", "is_assignment": true}, {"orig_id": "W3-Q1", "week": 3, "q_num": 1, "week_title": "Convolutional Neural Networks & Receptive Fields", "topic": "CNN Definition", "q_type": "Theory & Architecture", "stem": "CNN stands for:", "options": ["Computer Neural Network", "Convolutional Neural Network", "Connected Neural Network", "Complex Neural Network"], "correct_index": 1, "correct_letter": "B", "correct_text": "Convolutional Neural Network", "rule": "See 'CNN stands for' -> Pick 'Convolutional Neural Network'.", "shortcut": "See 'CNN stands for' -> Pick 'Convolutional Neural Network'.", "methodology": "CNN stands for Convolutional Neural Network, a deep learning architecture utilizing parameter sharing and spatial kernels for image tasks.", "is_assignment": true}, {"orig_id": "W3-Q2", "week": 3, "q_num": 2, "week_title": "Convolutional Neural Networks & Receptive Fields", "topic": "Local Receptive Fields", "q_type": "Theory & Architecture", "stem": "Each neuron in a convolutional layer is connected only to", "options": ["a whole input image", "a group of input images", "a small local region patch of the input image", "None of the above"], "correct_index": 2, "correct_letter": "C", "correct_text": "a small local region patch of the input image", "rule": "See 'Neuron in convolutional layer connected to' -> Pick 'Small local region patch of the input image'.", "shortcut": "See 'Neuron in convolutional layer connected to' -> Pick 'Small local region patch of the input image'.", "methodology": "Convolutional neurons enforce sparse connectivity by connecting only to a small local receptive field patch of the input rather than the whole image.", "is_assignment": true}, {"orig_id": "W3-Q3", "week": 3, "q_num": 3, "week_title": "Convolutional Neural Networks & Receptive Fields", "topic": "Convolution Purpose", "q_type": "Theory & Architecture", "stem": "What is the primary purpose of the convolution layer in a CNN", "options": ["Reduce image size", "Extract features from the input image", "Store training data", "Calculate loss"], "correct_index": 1, "correct_letter": "B", "correct_text": "Extract features from the input image", "rule": "See 'Primary purpose of convolution layer' -> Pick 'Extract features from the input image'.", "shortcut": "See 'Primary purpose of convolution layer' -> Pick 'Extract features from the input image'.", "methodology": "Convolution layers slide learnable spatial filters across input feature maps to extract hierarchical patterns like edges, textures, and object parts.", "is_assignment": true}, {"orig_id": "W3-Q4", "week": 3, "q_num": 4, "week_title": "Convolutional Neural Networks & Receptive Fields", "topic": "Pooling Operation", "q_type": "Theory & Architecture", "stem": "Pooling is mainly used to:", "options": ["Increase the image size", "Reduce the spatial dimensions of feature maps", "Add more neurons", "Increase the number of filters"], "correct_index": 1, "correct_letter": "B", "correct_text": "Reduce the spatial dimensions of feature maps", "rule": "See 'Pooling is mainly used to' -> Pick 'Reduce the spatial dimensions of feature maps'.", "shortcut": "See 'Pooling is mainly used to' -> Pick 'Reduce the spatial dimensions of feature maps'.", "methodology": "Pooling progressively reduces the spatial dimensions (height and width) of feature maps, lowering computation while providing translation invariance.", "is_assignment": true}, {"orig_id": "W3-Q5", "week": 3, "q_num": 5, "week_title": "Convolutional Neural Networks & Receptive Fields", "topic": "AlexNet", "q_type": "Theory & Architecture", "stem": "Which of the following is a famous CNN architecture", "options": ["AlexNet", "Decision Tree", "K-Means", "Naïve Bayes"], "correct_index": 0, "correct_letter": "A", "correct_text": "AlexNet", "rule": "See 'Famous CNN architecture' -> Pick 'AlexNet' (Decision Tree/K-Means/Naïve Bayes are not CNNs).", "shortcut": "See 'Famous CNN architecture' -> Pick 'AlexNet' (Decision Tree/K-Means/Naïve Bayes are not CNNs).", "methodology": "AlexNet (Krizhevsky et al., 2012) was the breakthrough deep CNN that won the ImageNet challenge using GPU-accelerated convolutions and ReLU.", "is_assignment": true}, {"orig_id": "W3-Q6", "week": 3, "q_num": 6, "week_title": "Convolutional Neural Networks & Receptive Fields", "topic": "Inception Architecture", "q_type": "Theory & Architecture", "stem": "Which CNN architecture introduced the Inception module", "options": ["LeNet", "AlexNet", "GoogLeNet", "VGGNet"], "correct_index": 2, "correct_letter": "C", "correct_text": "GoogLeNet", "rule": "See 'Introduced Inception module' -> Pick 'GoogLeNet'.", "shortcut": "See 'Introduced Inception module' -> Pick 'GoogLeNet'.", "methodology": "GoogLeNet introduced the Inception module, running multi-scale convolutions (1x1, 3x3, 5x5) and pooling in parallel within the same structural block.", "is_assignment": true}, {"orig_id": "W3-Q7", "week": 3, "q_num": 7, "week_title": "Convolutional Neural Networks & Receptive Fields", "topic": "GoogLeNet Features", "q_type": "Theory & Architecture", "stem": "Google Net is known for using:", "options": ["Inception Module", "Only 1 × 1 filters", "No convolution layers", "Only pooling layers"], "correct_index": 0, "correct_letter": "A", "correct_text": "Inception Module", "rule": "See 'GoogLeNet known for using' -> Pick 'Inception Module'.", "shortcut": "See 'GoogLeNet known for using' -> Pick 'Inception Module'.", "methodology": "GoogLeNet is celebrated for its Inception architecture, using 1x1 convolutions for dimensionality reduction before expensive wider convolutions.", "is_assignment": true}, {"orig_id": "W3-Q8", "week": 3, "q_num": 8, "week_title": "Convolutional Neural Networks & Receptive Fields", "topic": "Vanishing Gradients in Deep Nets", "q_type": "Theory & Architecture", "stem": "Which problem commonly occurs when very deep neural networks are trained", "options": ["Vanishing gradient problem", "Database corruption", "Data duplication", "Image compression"], "correct_index": 0, "correct_letter": "A", "correct_text": "Vanishing gradient problem", "rule": "See 'Problem when very deep neural networks are trained' -> Pick 'Vanishing gradient problem'.", "shortcut": "See 'Problem when very deep neural networks are trained' -> Pick 'Vanishing gradient problem'.", "methodology": "During backpropagation through very deep networks, repeated chain rule multiplications of small gradients cause them to decay exponentially toward zero.", "is_assignment": true}, {"orig_id": "W3-Q9", "week": 3, "q_num": 9, "week_title": "Convolutional Neural Networks & Receptive Fields", "topic": "ReLU Gradient Flow", "q_type": "Numerical & Formulation", "stem": "Which activation function helps reduce the vanishing gradient problem", "options": ["ReLU", "Linear", "Step Function", "Identity Function"], "correct_index": 0, "correct_letter": "A", "correct_text": "ReLU", "rule": "See 'Activation function reduces vanishing gradient' -> Pick 'ReLU' (Derivative = 1 for positive values).", "shortcut": "See 'Activation function reduces vanishing gradient' -> Pick 'ReLU' (Derivative = 1 for positive values).", "methodology": "The ReLU activation function has a constant derivative of 1 for all positive inputs, preventing gradients from saturating and vanishing during backpropagation.", "is_assignment": true}, {"orig_id": "W3-Q10", "week": 3, "q_num": 10, "week_title": "Convolutional Neural Networks & Receptive Fields", "topic": "Depth vs Performance", "q_type": "True / False", "stem": "True/False Increasing the number of layers always improves the performance of a neural network.", "options": ["True", "False"], "correct_index": 1, "correct_letter": "B", "correct_text": "False", "rule": "See 'Increasing layers ALWAYS improves performance' -> Pick 'False' (Extreme word 'always' is false).", "shortcut": "See 'Increasing layers ALWAYS improves performance' -> Pick 'False' (Extreme word 'always' is false).", "methodology": "Simply stacking more layers without architectural remedies causes optimization degradation, vanishing gradients, and severe overfitting.", "is_assignment": true}, {"orig_id": "W4-Q1", "week": 4, "q_num": 1, "week_title": "ResNets, Skip Connections & Modern CNNs", "topic": "ResNet & Residual Learning", "q_type": "Theory & Architecture", "stem": "What is the main idea behind ResNet", "options": ["To reduce image size", "To use residual skip connections", "To remove convolution layers", "To replace activation functions"], "correct_index": 1, "correct_letter": "B", "correct_text": "To use residual skip connections", "rule": "See 'Main idea behind ResNet' -> Pick 'To use residual skip connections'.", "shortcut": "See 'Main idea behind ResNet' -> Pick 'To use residual skip connections'.", "methodology": "ResNet solves the degradation problem in ultra-deep networks by learning residual mappings via identity skip connections: H(x) = F(x) + x.", "is_assignment": true}, {"orig_id": "W4-Q2", "week": 4, "q_num": 2, "week_title": "ResNets, Skip Connections & Modern CNNs", "topic": "Skip Connections Mechanism", "q_type": "Theory & Architecture", "stem": "A skip residual connection allows information to:", "options": ["Skip one or more layers", "Skip the input image", "Skip the output layer", "Skip the loss function"], "correct_index": 0, "correct_letter": "A", "correct_text": "Skip one or more layers", "rule": "See 'Skip residual connection allows' -> Pick 'Skip one or more layers'.", "shortcut": "See 'Skip residual connection allows' -> Pick 'Skip one or more layers'.", "methodology": "Residual skip connections bypass one or more intermediate transformation layers, passing the identity input directly to subsequent additions.", "is_assignment": true}, {"orig_id": "W4-Q3", "week": 4, "q_num": 3, "week_title": "ResNets, Skip Connections & Modern CNNs", "topic": "Advantage of Skip Connections", "q_type": "Theory & Architecture", "stem": "What is the main advantage of skip connections", "options": ["They increase image resolution.", "They reduce the number of classes.", "They remove pooling layers.", "They help reduce the vanishing gradient problem."], "correct_index": 3, "correct_letter": "D", "correct_text": "They help reduce the vanishing gradient problem.", "rule": "See 'Main advantage of skip connections' -> Pick 'Reduce the vanishing gradient problem'.", "shortcut": "See 'Main advantage of skip connections' -> Pick 'Reduce the vanishing gradient problem'.", "methodology": "Skip connections create an unimpeded gradient highway where dL/dx = dL/dH * (1 + dF/dx), ensuring robust gradient flow even if dF/dx vanishes.", "is_assignment": true}, {"orig_id": "W4-Q4", "week": 4, "q_num": 4, "week_title": "ResNets, Skip Connections & Modern CNNs", "topic": "DenseNet vs ResNet", "q_type": "Theory & Architecture", "stem": "DenseNet differs from ResNet because:", "options": ["Each layer is connected to every previous layer.", "It has no convolution layers.", "It uses only fully connected layers.", "It cannot perform image classification."], "correct_index": 0, "correct_letter": "A", "correct_text": "Each layer is connected to every previous layer.", "rule": "See 'DenseNet differs from ResNet because' -> Pick 'Each layer is connected to every previous layer' (Dense = all connected).", "shortcut": "See 'DenseNet differs from ResNet because' -> Pick 'Each layer is connected to every previous layer' (Dense = all connected).", "methodology": "While ResNet combines features via element-wise addition, DenseNet concatenates all preceding feature maps directly to every subsequent layer.", "is_assignment": true}, {"orig_id": "W4-Q5", "week": 4, "q_num": 5, "week_title": "ResNets, Skip Connections & Modern CNNs", "topic": "MobileNet & Edge CV", "q_type": "Theory & Architecture", "stem": "Which CNN architecture is specifically designed for handhold and embedded devices", "options": ["AlexNet", "VGGNet", "MobileNet", "LeNet"], "correct_index": 2, "correct_letter": "C", "correct_text": "MobileNet", "rule": "See 'Designed for handheld and embedded devices' -> Pick 'MobileNet'.", "shortcut": "See 'Designed for handheld and embedded devices' -> Pick 'MobileNet'.", "methodology": "MobileNet employs lightweight depthwise separable convolutions to dramatically cut computation and parameters for mobile and embedded devices.", "is_assignment": true}, {"orig_id": "W4-Q6", "week": 4, "q_num": 6, "week_title": "ResNets, Skip Connections & Modern CNNs", "topic": "EfficientNet Compound Scaling", "q_type": "Theory & Architecture", "stem": "EfficientNet mainly improves performance by:", "options": ["Removing convolution layers", "Scaling network depth, width, and resolution synchronously", "Using only larger filters", "Eliminating activation functions"], "correct_index": 1, "correct_letter": "B", "correct_text": "Scaling network depth, width, and resolution synchronously", "rule": "See 'EfficientNet improves performance by' -> Pick 'Scaling network depth, width, and resolution synchronously'.", "shortcut": "See 'EfficientNet improves performance by' -> Pick 'Scaling network depth, width, and resolution synchronously'.", "methodology": "EfficientNet uses a principled compound scaling method to synchronously scale network depth, width, and image resolution using a fixed ratio.", "is_assignment": true}, {"orig_id": "W4-Q7", "week": 4, "q_num": 7, "week_title": "ResNets, Skip Connections & Modern CNNs", "topic": "Sequence Modeling", "q_type": "Theory & Architecture", "stem": "Sequence modeling is mainly used for:", "options": ["Processing sequential data", "Image compression", "Database management", "Network security"], "correct_index": 0, "correct_letter": "A", "correct_text": "Processing sequential data", "rule": "See 'Sequence modeling is used for' -> Pick 'Processing sequential data'.", "shortcut": "See 'Sequence modeling is used for' -> Pick 'Processing sequential data'.", "methodology": "Sequence modeling architectures are specifically designed to capture autoregressive context and temporal dependencies in ordered sequential data.", "is_assignment": true}, {"orig_id": "W4-Q8", "week": 4, "q_num": 8, "week_title": "ResNets, Skip Connections & Modern CNNs", "topic": "RNN Definition", "q_type": "Theory & Architecture", "stem": "RNN stands for:", "options": ["Repeated Neural Network", "Residual Neural Network", "Recurrent Neural Network", "Random Neural Network"], "correct_index": 2, "correct_letter": "C", "correct_text": "Recurrent Neural Network", "rule": "See 'RNN stands for' -> Pick 'Recurrent Neural Network'.", "shortcut": "See 'RNN stands for' -> Pick 'Recurrent Neural Network'.", "methodology": "RNN stands for Recurrent Neural Network, which processes sequential items using shared recurring hidden state transitions across time.", "is_assignment": true}, {"orig_id": "W4-Q9", "week": 4, "q_num": 9, "week_title": "ResNets, Skip Connections & Modern CNNs", "topic": "RNN Applications", "q_type": "Theory & Architecture", "stem": "Which of the following is a common application of RNN", "options": ["Sorting numbers", "Image resizing", "Data compression", "Language translation"], "correct_index": 3, "correct_letter": "D", "correct_text": "Language translation", "rule": "See 'Common application of RNN' -> Pick 'Language translation'.", "shortcut": "See 'Common application of RNN' -> Pick 'Language translation'.", "methodology": "RNNs map input sequences to target sequences across time, making them a natural choice for language translation and text generation.", "is_assignment": true}, {"orig_id": "W4-Q10", "week": 4, "q_num": 10, "week_title": "ResNets, Skip Connections & Modern CNNs", "topic": "RNN Temporal Context", "q_type": "Theory & Architecture", "stem": "The main feature of an RNN is that it:", "options": ["Has no hidden layers", "Uses only convolution operations", "Uses temporal context while processing sequences", "Can process only images"], "correct_index": 2, "correct_letter": "C", "correct_text": "Uses temporal context while processing sequences", "rule": "See 'Main feature of RNN' -> Pick 'Uses temporal context while processing sequences'.", "shortcut": "See 'Main feature of RNN' -> Pick 'Uses temporal context while processing sequences'.", "methodology": "An RNN maintains a recurring internal hidden state vector that aggregates and carries temporal context across successive time steps.", "is_assignment": true}, {"orig_id": "W5-Q1", "week": 5, "q_num": 1, "week_title": "Recurrent Neural Networks (RNNs) & Sequence Modeling", "topic": "BPTT in RNNs", "q_type": "Theory & Architecture", "stem": "What is the main purpose of Backpropagation Through Time BPTT in an RNN", "options": ["To generate images", "To train the RNN by computing gradients over time", "To increase image resolution", "To remove the hidden state"], "correct_index": 1, "correct_letter": "B", "correct_text": "To train the RNN by computing gradients over time", "rule": "See 'BPTT purpose in RNN' -> Pick 'Train the RNN by computing gradients over time'.", "shortcut": "See 'BPTT purpose in RNN' -> Pick 'Train the RNN by computing gradients over time'.", "methodology": "Backpropagation Through Time (BPTT) unrolls the recurrent network across all time steps to compute and accumulate parameter gradients over time.", "is_assignment": true}, {"orig_id": "W5-Q2", "week": 5, "q_num": 2, "week_title": "Recurrent Neural Networks (RNNs) & Sequence Modeling", "topic": "Character-level RNN", "q_type": "Theory & Architecture", "stem": "In a character-level RNN, the model processes:", "options": ["Only numerical tables", "Only complete images", "Individual characters in a sequence", "Only audio signals"], "correct_index": 2, "correct_letter": "C", "correct_text": "Individual characters in a sequence", "rule": "See 'Character-level RNN processes' -> Pick 'Individual characters in a sequence'.", "shortcut": "See 'Character-level RNN processes' -> Pick 'Individual characters in a sequence'.", "methodology": "A character-level RNN processes text one individual character at a time, predicting the probability distribution over the vocabulary for the next character.", "is_assignment": true}, {"orig_id": "W5-Q3", "week": 5, "q_num": 3, "week_title": "Recurrent Neural Networks (RNNs) & Sequence Modeling", "topic": "RNN Vanishing Gradients", "q_type": "Theory & Architecture", "stem": "Which problem is commonly associated with traditional RNNs", "options": ["Vanishing gradient problem", "Image resizing problem", "Object detection problem", "Image compression problem"], "correct_index": 0, "correct_letter": "A", "correct_text": "Vanishing gradient problem", "rule": "See 'Problem commonly associated with traditional RNNs' -> Pick 'Vanishing gradient problem'.", "shortcut": "See 'Problem commonly associated with traditional RNNs' -> Pick 'Vanishing gradient problem'.", "methodology": "Traditional RNNs suffer from vanishing gradients because repeated temporal weight matrix multiplications exponentially attenuate backpropagated signals.", "is_assignment": true}, {"orig_id": "W5-Q4", "week": 5, "q_num": 4, "week_title": "Recurrent Neural Networks (RNNs) & Sequence Modeling", "topic": "LSTM Architecture", "q_type": "Theory & Architecture", "stem": "Which neural network architecture is specifically designed to handle long-term dependencies in sequential data", "options": ["CNN", "LSTM", "SVM", "K-Means"], "correct_index": 1, "correct_letter": "B", "correct_text": "LSTM", "rule": "See 'Designed to handle long-term dependencies in sequential data' -> Pick 'LSTM'.", "shortcut": "See 'Designed to handle long-term dependencies in sequential data' -> Pick 'LSTM'.", "methodology": "LSTM networks introduce an additive cell state governed by forget, input, and output gates to preserve long-term dependencies across time.", "is_assignment": true}, {"orig_id": "W5-Q5", "week": 5, "q_num": 5, "week_title": "Recurrent Neural Networks (RNNs) & Sequence Modeling", "topic": "Seq2Seq Attention", "q_type": "Theory & Architecture", "stem": "What is the main purpose of the attention mechanism in sequence-to-sequence models", "options": ["To resize images", "To remove all input information", "To reduce the number of classes", "To focus on the most relevant parts of the input sequence"], "correct_index": 3, "correct_letter": "D", "correct_text": "To focus on the most relevant parts of the input sequence", "rule": "See 'Attention mechanism in seq2seq purpose' -> Pick 'Focus on the most relevant parts of the input sequence'.", "shortcut": "See 'Attention mechanism in seq2seq purpose' -> Pick 'Focus on the most relevant parts of the input sequence'.", "methodology": "The attention mechanism computes dynamic alignment scores to allow the decoder to focus selectively on the most relevant parts of the input sequence.", "is_assignment": true}, {"orig_id": "W5-Q6", "week": 5, "q_num": 6, "week_title": "Recurrent Neural Networks (RNNs) & Sequence Modeling", "topic": "Computer Vision Definition", "q_type": "Theory & Architecture", "stem": "Computer vision mainly deals with:", "options": ["Understanding and analyzing images and videos", "Managing computer networks", "Designing databases", "Writing operating systems"], "correct_index": 0, "correct_letter": "A", "correct_text": "Understanding and analyzing images and videos", "rule": "See 'Computer vision mainly deals with' -> Pick 'Understanding and analyzing images and videos'.", "shortcut": "See 'Computer vision mainly deals with' -> Pick 'Understanding and analyzing images and videos'.", "methodology": "Computer vision develops algorithmic systems that perceive, extract, process, analyze, and understand visual data from images and video feeds.", "is_assignment": true}, {"orig_id": "W5-Q7", "week": 5, "q_num": 7, "week_title": "Recurrent Neural Networks (RNNs) & Sequence Modeling", "topic": "Computer Vision Tasks", "q_type": "Theory & Architecture", "stem": "Which of the following is a common computer vision task", "options": ["Image classification", "Object detection", "Semantic segmentation", "All of the above"], "correct_index": 3, "correct_letter": "D", "correct_text": "All of the above", "rule": "See 'Common computer vision task' + 'All of the above' -> Pick 'All of the above'.", "shortcut": "See 'Common computer vision task' + 'All of the above' -> Pick 'All of the above'.", "methodology": "Computer vision encompasses holistic image classification, spatial object detection, and dense pixel-level semantic segmentation.", "is_assignment": true}, {"orig_id": "W5-Q8", "week": 5, "q_num": 8, "week_title": "Recurrent Neural Networks (RNNs) & Sequence Modeling", "topic": "Image Super-Resolution", "q_type": "Theory & Architecture", "stem": "What is image super-resolution used for", "options": ["Increasing the resolution or quality of an image", "Detecting passwords", "Removing the image completely", "Classifying text documents"], "correct_index": 0, "correct_letter": "A", "correct_text": "Increasing the resolution or quality of an image", "rule": "See 'Image super-resolution used for' -> Pick 'Increasing the resolution or quality of an image'.", "shortcut": "See 'Image super-resolution used for' -> Pick 'Increasing the resolution or quality of an image'.", "methodology": "Image super-resolution synthesizes high-frequency details to reconstruct high-resolution images from lower-resolution degraded inputs.", "is_assignment": true}, {"orig_id": "W5-Q9", "week": 5, "q_num": 9, "week_title": "Recurrent Neural Networks (RNNs) & Sequence Modeling", "topic": "GenAI in Computer Vision", "q_type": "Theory & Architecture", "stem": "Which of the following is an application of Generative AI in computer vision", "options": ["Image-to-image translation", "Medical image synthesis", "Face synthesis", "All of the above"], "correct_index": 3, "correct_letter": "D", "correct_text": "All of the above", "rule": "See 'Application of GenAI in computer vision' + 'All of the above' -> Pick 'All of the above'.", "shortcut": "See 'Application of GenAI in computer vision' + 'All of the above' -> Pick 'All of the above'.", "methodology": "Generative AI drives diverse computer vision workflows including image-to-image translation, synthetic medical imaging, and face synthesis.", "is_assignment": true}, {"orig_id": "W5-Q10", "week": 5, "q_num": 10, "week_title": "Recurrent Neural Networks (RNNs) & Sequence Modeling", "topic": "Image In-painting", "q_type": "Theory & Architecture", "stem": "What is image in-painting", "options": ["Converting an image into a table", "Reducing the number of image classes", "Filling or reconstructing missing regions of an image", "Removing all colors from an image"], "correct_index": 2, "correct_letter": "C", "correct_text": "Filling or reconstructing missing regions of an image", "rule": "See 'Image in-painting' -> Pick 'Filling or reconstructing missing regions of an image'.", "shortcut": "See 'Image in-painting' -> Pick 'Filling or reconstructing missing regions of an image'.", "methodology": "Image in-painting synthesizes contextually plausible visual structures to fill in missing, damaged, or masked regions of an image.", "is_assignment": true}, {"orig_id": "W6-Q1", "week": 6, "q_num": 1, "week_title": "Likelihood-Based Generative Models & VAEs", "topic": "Generative Modeling Objective", "q_type": "Theory & Architecture", "stem": "What is the main goal of a generative model", "options": ["To generate new data similar to the training data", "To delete the training data", "To sort the input data", "To reduce the number of classes"], "correct_index": 0, "correct_letter": "A", "correct_text": "To generate new data similar to the training data", "rule": "See 'Main goal of generative model' -> Pick 'Generate new data similar to training data'.", "shortcut": "See 'Main goal of generative model' -> Pick 'Generate new data similar to training data'.", "methodology": "Generative models learn the true underlying data distribution to synthesize novel, previously unseen data samples that match the training data.", "is_assignment": true}, {"orig_id": "W6-Q2", "week": 6, "q_num": 2, "week_title": "Likelihood-Based Generative Models & VAEs", "topic": "MLE Parameter Estimation", "q_type": "Theory & Architecture", "stem": "What does Maximum Likelihood Estimation MLE try to find", "options": ["The largest image", "The smallest dataset", "Parameters that make the observed data most likely", "The number of classes"], "correct_index": 2, "correct_letter": "C", "correct_text": "Parameters that make the observed data most likely", "rule": "See 'MLE tries to find' -> Pick 'Parameters that make the observed data most likely'.", "shortcut": "See 'MLE tries to find' -> Pick 'Parameters that make the observed data most likely'.", "methodology": "Maximum Likelihood Estimation estimates model parameters by maximizing the likelihood of observing the empirical training data under the model.", "is_assignment": true}, {"orig_id": "W6-Q3", "week": 6, "q_num": 3, "week_title": "Likelihood-Based Generative Models & VAEs", "topic": "Density Estimation", "q_type": "Theory & Architecture", "stem": "What is density estimation used for", "options": ["Increasing image resolution", "Estimating the probability distribution of data", "Removing image noise only", "Detecting computer viruses"], "correct_index": 1, "correct_letter": "B", "correct_text": "Estimating the probability distribution of data", "rule": "See 'Density estimation used for' -> Pick 'Estimating the probability distribution of data'.", "shortcut": "See 'Density estimation used for' -> Pick 'Estimating the probability distribution of data'.", "methodology": "Density estimation constructs an explicit or implicit mathematical model of the probability density function that generated observed samples.", "is_assignment": true}, {"orig_id": "W6-Q4", "week": 6, "q_num": 4, "week_title": "Likelihood-Based Generative Models & VAEs", "topic": "Autoregressive Models", "q_type": "Theory & Architecture", "stem": "What is an autoregressive model", "options": ["A model that predicts the current value using previous values", "A model that only processes images", "A model that does not use previous information", "A model used only for data compression"], "correct_index": 0, "correct_letter": "A", "correct_text": "A model that predicts the current value using previous values", "rule": "See 'Autoregressive model' -> Pick 'Predicts current value using previous values'.", "shortcut": "See 'Autoregressive model' -> Pick 'Predicts current value using previous values'.", "methodology": "Autoregressive models factorize the joint probability distribution into conditional probabilities, predicting each current token given previous tokens.", "is_assignment": true}, {"orig_id": "W6-Q5", "week": 6, "q_num": 5, "week_title": "Likelihood-Based Generative Models & VAEs", "topic": "PixelCNN", "q_type": "Theory & Architecture", "stem": "PixelCNN is mainly used for:", "options": ["Compressing text documents", "Detecting computer hardware problems", "Sorting image files", "Generating images pixel by pixel"], "correct_index": 3, "correct_letter": "D", "correct_text": "Generating images pixel by pixel", "rule": "See 'PixelCNN is mainly used for' -> Pick 'Generating images pixel by pixel'.", "shortcut": "See 'PixelCNN is mainly used for' -> Pick 'Generating images pixel by pixel'.", "methodology": "PixelCNN generates images pixel-by-pixel in raster-scan order using causal masked convolutions to model conditional pixel probabilities.", "is_assignment": true}, {"orig_id": "W6-Q6", "week": 6, "q_num": 6, "week_title": "Likelihood-Based Generative Models & VAEs", "topic": "PixelRNN Architecture", "q_type": "Theory & Architecture", "stem": "In PixelRNN, the name \"RNN\" refers to:", "options": ["Recurrent Neural Network", "Residual Neural Network", "Random Neural Network", "Recursive Normal Network"], "correct_index": 0, "correct_letter": "A", "correct_text": "Recurrent Neural Network", "rule": "See 'RNN in PixelRNN refers to' -> Pick 'Recurrent Neural Network'.", "shortcut": "See 'RNN in PixelRNN refers to' -> Pick 'Recurrent Neural Network'.", "methodology": "PixelRNN models pixel dependencies across rows and columns using 2D Recurrent Neural Networks (such as Diagonal BiLSTMs).", "is_assignment": true}, {"orig_id": "W6-Q7", "week": 6, "q_num": 7, "week_title": "Likelihood-Based Generative Models & VAEs", "topic": "Spatial Context", "q_type": "Theory & Architecture", "stem": "What does spatial context in an image refer to", "options": ["Only the image file size", "Information about the relationships between nearby or different regions in an image", "The number of image classes", "The image file name"], "correct_index": 1, "correct_letter": "B", "correct_text": "Information about the relationships between nearby or different regions in an image", "rule": "See 'Spatial context in an image refers to' -> Pick 'Relationships between nearby or different regions in an image'.", "shortcut": "See 'Spatial context in an image refers to' -> Pick 'Relationships between nearby or different regions in an image'.", "methodology": "Spatial context captures geometrical, topological, and semantic relationships between neighboring regions across the 2D image plane.", "is_assignment": true}, {"orig_id": "W6-Q8", "week": 6, "q_num": 8, "week_title": "Likelihood-Based Generative Models & VAEs", "topic": "Image Captioning", "q_type": "Theory & Architecture", "stem": "Image captioning aims to:", "options": ["Change the image file format", "Increase image resolution", "Remove objects from an image", "Generate a textual description of an image"], "correct_index": 3, "correct_letter": "D", "correct_text": "Generate a textual description of an image", "rule": "See 'Image captioning aims to' -> Pick 'Generate a textual description of an image'.", "shortcut": "See 'Image captioning aims to' -> Pick 'Generate a textual description of an image'.", "methodology": "Image captioning bridges computer vision and natural language processing by generating a descriptive textual sentence summarizing an input image.", "is_assignment": true}, {"orig_id": "W6-Q9", "week": 6, "q_num": 9, "week_title": "Likelihood-Based Generative Models & VAEs", "topic": "Attention in Captioning", "q_type": "Theory & Architecture", "stem": "What is the main purpose of attention in image captioning", "options": ["To remove all image features", "To reduce the image file size", "To focus on relevant parts of an image while generating a caption", "To change the image color"], "correct_index": 2, "correct_letter": "C", "correct_text": "To focus on relevant parts of an image while generating a caption", "rule": "See 'Attention in image captioning purpose' -> Pick 'Focus on relevant parts of an image while generating a caption'.", "shortcut": "See 'Attention in image captioning purpose' -> Pick 'Focus on relevant parts of an image while generating a caption'.", "methodology": "Spatial attention dynamically weights visual feature regions so the language decoder focuses on relevant image patches when generating each word.", "is_assignment": true}, {"orig_id": "W6-Q10", "week": 6, "q_num": 10, "week_title": "Likelihood-Based Generative Models & VAEs", "topic": "Fully Visible Belief Network", "q_type": "Theory & Architecture", "stem": "A Fully Visible Belief Network FVBN is a type of:", "options": ["Operating system", "Image editing software", "Database system", "Generative model"], "correct_index": 3, "correct_letter": "D", "correct_text": "Generative model", "rule": "See 'Fully Visible Belief Network (FVBN)' -> Pick 'Generative model'.", "shortcut": "See 'Fully Visible Belief Network (FVBN)' -> Pick 'Generative model'.", "methodology": "A Fully Visible Belief Network (FVBN) is a generative model that factorizes joint data probability using the exact chain rule without latent variables.", "is_assignment": true}, {"orig_id": "W7-Q1", "week": 7, "q_num": 1, "week_title": "Attention Mechanisms & Vision Transformers", "topic": "Attention Mechanism Core", "q_type": "Theory & Architecture", "stem": "What is the main purpose of the attention mechanism", "options": ["To focus on the most relevant parts of the input", "To remove all input information", "To reduce the number of classes", "To increase image size"], "correct_index": 0, "correct_letter": "A", "correct_text": "To focus on the most relevant parts of the input", "rule": "See 'Main purpose of attention mechanism' -> Pick 'Focus on the most relevant parts of the input'.", "shortcut": "See 'Main purpose of attention mechanism' -> Pick 'Focus on the most relevant parts of the input'.", "methodology": "The attention mechanism assigns dynamic importance weights to different inputs, focusing computational resources on the most relevant features.", "is_assignment": true}, {"orig_id": "W7-Q2", "week": 7, "q_num": 2, "week_title": "Attention Mechanisms & Vision Transformers", "topic": "Self-Attention", "q_type": "Theory & Architecture", "stem": "In self-attention, the model mainly relates:", "options": ["Only the first and last elements", "Only the input and output images", "Different training datasets", "Different parts of the same input sequence"], "correct_index": 3, "correct_letter": "D", "correct_text": "Different parts of the same input sequence", "rule": "See 'In self-attention, model relates' -> Pick 'Different parts of the same input sequence' (Self = same sequence).", "shortcut": "See 'In self-attention, model relates' -> Pick 'Different parts of the same input sequence' (Self = same sequence).", "methodology": "Self-attention computes pairwise interaction scores between all positions within the same sequence to capture rich contextual dependencies.", "is_assignment": true}, {"orig_id": "W7-Q3", "week": 7, "q_num": 3, "week_title": "Attention Mechanisms & Vision Transformers", "topic": "Masked Self-Attention", "q_type": "Theory & Architecture", "stem": "What is the purpose of masked self-attention", "options": ["To prevent a position from attending to future positions", "To remove all attention scores", "To increase the image resolution", "To remove the input sequence"], "correct_index": 0, "correct_letter": "A", "correct_text": "To prevent a position from attending to future positions", "rule": "See 'Purpose of masked self-attention' -> Pick 'Prevent a position from attending to future positions'.", "shortcut": "See 'Purpose of masked self-attention' -> Pick 'Prevent a position from attending to future positions'.", "methodology": "Masked self-attention sets attention logits of future positions to -infinity, preserving causality during autoregressive sequence decoding.", "is_assignment": true}, {"orig_id": "W7-Q4", "week": 7, "q_num": 4, "week_title": "Attention Mechanisms & Vision Transformers", "topic": "Multi-Head Attention", "q_type": "Theory & Architecture", "stem": "Multi-head self-attention uses:", "options": ["Multiple input images only", "Only one attention score", "Multiple attention heads to capture different relationships", "No attention mechanism"], "correct_index": 2, "correct_letter": "C", "correct_text": "Multiple attention heads to capture different relationships", "rule": "See 'Multi-head self-attention uses' -> Pick 'Multiple attention heads to capture different relationships'.", "shortcut": "See 'Multi-head self-attention uses' -> Pick 'Multiple attention heads to capture different relationships'.", "methodology": "Multi-head attention projects queries, keys, and values into multiple subspace heads to capture diverse linguistic and visual relationships simultaneously.", "is_assignment": true}, {"orig_id": "W7-Q5", "week": 7, "q_num": 5, "week_title": "Attention Mechanisms & Vision Transformers", "topic": "Transformer Foundations", "q_type": "Theory & Architecture", "stem": "A Transformer is mainly based on:", "options": ["Pooling only", "Attention mechanisms", "Decision trees", "K-means clustering"], "correct_index": 1, "correct_letter": "B", "correct_text": "Attention mechanisms", "rule": "See 'Transformer is mainly based on' -> Pick 'Attention mechanisms' (Attention is All You Need).", "shortcut": "See 'Transformer is mainly based on' -> Pick 'Attention mechanisms' (Attention is All You Need).", "methodology": "Transformers dispense entirely with recurrence and convolutions, relying solely on self-attention and cross-attention mechanisms.", "is_assignment": true}, {"orig_id": "W7-Q6", "week": 7, "q_num": 6, "week_title": "Attention Mechanisms & Vision Transformers", "topic": "Vision Transformer Tokenization", "q_type": "Theory & Architecture", "stem": "How does a Vision Transformer ViT process an image", "options": ["It uses only pooling layers", "It converts the image directly into audio", "It removes all image information", "It divides the image into patches and processes them as tokens"], "correct_index": 3, "correct_letter": "D", "correct_text": "It divides the image into patches and processes them as tokens", "rule": "See 'How Vision Transformer (ViT) processes image' -> Pick 'Divides image into patches and processes them as tokens'.", "shortcut": "See 'How Vision Transformer (ViT) processes image' -> Pick 'Divides image into patches and processes them as tokens'.", "methodology": "Vision Transformers divide 2D images into regular non-overlapping grid patches, linearly projecting them into 1D visual tokens.", "is_assignment": true}, {"orig_id": "W7-Q7", "week": 7, "q_num": 7, "week_title": "Attention Mechanisms & Vision Transformers", "topic": "Transformer vs CNN", "q_type": "Theory & Architecture", "stem": "One major difference between a Transformer and a CNN is that:", "options": ["Transformers use attention to model relationships between input elements", "Transformers cannot process images", "CNNs do not have trainable parameters", "CNNs can only process text"], "correct_index": 0, "correct_letter": "A", "correct_text": "Transformers use attention to model relationships between input elements", "rule": "See 'Difference between Transformer and CNN' -> Pick 'Transformers use attention to model relationships between input elements'.", "shortcut": "See 'Difference between Transformer and CNN' -> Pick 'Transformers use attention to model relationships between input elements'.", "methodology": "CNNs rely on local sliding filters, whereas Transformers use global attention mechanisms to model relationships across all input positions from layer 1.", "is_assignment": true}, {"orig_id": "W7-Q8", "week": 7, "q_num": 8, "week_title": "Attention Mechanisms & Vision Transformers", "topic": "Transformer Encoder Role", "q_type": "Theory & Architecture", "stem": "What is the main role of the Transformer encoder", "options": ["To increase image resolution", "To delete the input sequence", "To transform the input into useful contextual representations", "To store training data"], "correct_index": 2, "correct_letter": "C", "correct_text": "To transform the input into useful contextual representations", "rule": "See 'Role of Transformer encoder' -> Pick 'Transform input into useful contextual representations'.", "shortcut": "See 'Role of Transformer encoder' -> Pick 'Transform input into useful contextual representations'.", "methodology": "The Transformer encoder processes raw input token embeddings through self-attention layers to produce deep contextualized representations.", "is_assignment": true}, {"orig_id": "W7-Q9", "week": 7, "q_num": 9, "week_title": "Attention Mechanisms & Vision Transformers", "topic": "Input Embedding Purpose", "q_type": "Theory & Architecture", "stem": "What is the purpose of input embedding", "options": ["To convert input tokens into numerical vector representations", "To remove the input tokens", "To increase the number of images", "To calculate the final accuracy"], "correct_index": 0, "correct_letter": "A", "correct_text": "To convert input tokens into numerical vector representations", "rule": "See 'Purpose of input embedding' -> Pick 'Convert input tokens into numerical vector representations'.", "shortcut": "See 'Purpose of input embedding' -> Pick 'Convert input tokens into numerical vector representations'.", "methodology": "Input embedding maps discrete input tokens or raw visual patches into continuous numerical vector representations suitable for deep learning operations.", "is_assignment": true}, {"orig_id": "W7-Q10", "week": 7, "q_num": 10, "week_title": "Attention Mechanisms & Vision Transformers", "topic": "Positional Encoding", "q_type": "Theory & Architecture", "stem": "Why is positional encoding used in a Transformer", "options": ["To remove the input sequence", "To provide information about the position or order of input elements", "To reduce the number of attention heads", "To increase the image resolution"], "correct_index": 1, "correct_letter": "B", "correct_text": "To provide information about the position or order of input elements", "rule": "See 'Why positional encoding used in Transformer' -> Pick 'Provide information about position or order of input elements'.", "shortcut": "See 'Why positional encoding used in Transformer' -> Pick 'Provide information about position or order of input elements'.", "methodology": "Because self-attention is strictly permutation-invariant, positional encodings must be injected to provide spatial and temporal sequence order.", "is_assignment": true}, {"orig_id": "W8-Q1", "week": 8, "q_num": 1, "week_title": "Vision Transformers (ViT) & Detection Transformers (DETR)", "topic": "ViT Core Idea", "q_type": "Theory & Architecture", "stem": "What is the main idea of a Vision Transformer ViT", "options": ["To process images using image patches as tokens", "To process only audio signals", "To remove all image features", "To replace images with text"], "correct_index": 0, "correct_letter": "A", "correct_text": "To process images using image patches as tokens", "rule": "See 'Main idea of ViT' -> Pick 'Process images using image patches as tokens'.", "shortcut": "See 'Main idea of ViT' -> Pick 'Process images using image patches as tokens'.", "methodology": "Vision Transformer applies standard Transformer encoders directly to vision by reshaping 2D images into sequences of flattened patch tokens.", "is_assignment": true}, {"orig_id": "W8-Q2", "week": 8, "q_num": 2, "week_title": "Vision Transformers (ViT) & Detection Transformers (DETR)", "topic": "DETR Architecture", "q_type": "Theory & Architecture", "stem": "DETR stands for:", "options": ["Deep Efficient Transformer Recognition", "Detection Transformer", "Deep Encoder Transformer Representation", "Detection Training Recognition"], "correct_index": 1, "correct_letter": "B", "correct_text": "Detection Transformer", "rule": "See 'DETR stands for' -> Pick 'Detection Transformer'.", "shortcut": "See 'DETR stands for' -> Pick 'Detection Transformer'.", "methodology": "DETR stands for DEtection TRansformer, framing end-to-end object detection as direct set prediction using a Transformer encoder-decoder.", "is_assignment": true}, {"orig_id": "W8-Q3", "week": 8, "q_num": 3, "week_title": "Vision Transformers (ViT) & Detection Transformers (DETR)", "topic": "Swin Transformer", "q_type": "Theory & Architecture", "stem": "What is a key feature of the Swin Transformer", "options": ["It uses shifted windows for self-attention", "It uses only fully connected layers", "It does not use attention", "It processes only text"], "correct_index": 0, "correct_letter": "A", "correct_text": "It uses shifted windows for self-attention", "rule": "See 'Key feature of Swin Transformer' -> Pick 'Shifted windows for self-attention' (Swin = Shifted Window).", "shortcut": "See 'Key feature of Swin Transformer' -> Pick 'Shifted windows for self-attention' (Swin = Shifted Window).", "methodology": "Swin Transformer limits self-attention to local non-overlapping windows and shifts window boundaries between consecutive layers to enable cross-window connections.", "is_assignment": true}, {"orig_id": "W8-Q4", "week": 8, "q_num": 4, "week_title": "Vision Transformers (ViT) & Detection Transformers (DETR)", "topic": "Auto-Encoder Purpose", "q_type": "Theory & Architecture", "stem": "What is the main purpose of an Auto-Encoder", "options": ["To increase the number of input features", "To classify only images", "To learn a compact representation of the input data", "To remove the decoder"], "correct_index": 2, "correct_letter": "C", "correct_text": "To learn a compact representation of the input data", "rule": "See 'Main purpose of Auto-Encoder' -> Pick 'Learn a compact representation of input data'.", "shortcut": "See 'Main purpose of Auto-Encoder' -> Pick 'Learn a compact representation of input data'.", "methodology": "An Auto-Encoder compresses input data through a bottleneck latent space to discover compact, low-dimensional data representations.", "is_assignment": true}, {"orig_id": "W8-Q5", "week": 8, "q_num": 5, "week_title": "Vision Transformers (ViT) & Detection Transformers (DETR)", "topic": "Auto-Encoder Components", "q_type": "Theory & Architecture", "stem": "An Auto-Encoder mainly consists of:", "options": ["Only an Encoder", "Encoder and Decoder", "Only a Decoder", "Classifier and Pooling layer"], "correct_index": 1, "correct_letter": "B", "correct_text": "Encoder and Decoder", "rule": "See 'Auto-Encoder mainly consists of' -> Pick 'Encoder and Decoder'.", "shortcut": "See 'Auto-Encoder mainly consists of' -> Pick 'Encoder and Decoder'.", "methodology": "An Auto-Encoder consists of an Encoder (mapping input to latent space) and a Decoder (reconstructing the input from latent space).", "is_assignment": true}, {"orig_id": "W8-Q6", "week": 8, "q_num": 6, "week_title": "Vision Transformers (ViT) & Detection Transformers (DETR)", "topic": "VAE vs Standard AE", "q_type": "Theory & Architecture", "stem": "Which of the following is a difference between a Variational Auto-Encoder VAE and a traditional Auto-Encoder", "options": ["VAE cannot generate data", "VAE does not have an encoder", "VAE does not have a decoder", "VAE learns a probability distribution for the latent representation"], "correct_index": 3, "correct_letter": "D", "correct_text": "VAE learns a probability distribution for the latent representation", "rule": "See 'Difference between VAE and traditional Auto-Encoder' -> Pick 'VAE learns a probability distribution for the latent representation'.", "shortcut": "See 'Difference between VAE and traditional Auto-Encoder' -> Pick 'VAE learns a probability distribution for the latent representation'.", "methodology": "While traditional autoencoders map inputs to deterministic points, VAEs learn continuous probability distributions over the latent space.", "is_assignment": true}, {"orig_id": "W8-Q7", "week": 8, "q_num": 7, "week_title": "Vision Transformers (ViT) & Detection Transformers (DETR)", "topic": "VAE Operational Flow", "q_type": "Theory & Architecture", "stem": "In a VAE, the typical sequence of operations is:", "options": ["Decoding → Encoding → Sampling", "Sampling → Decoding → Encoding", "Encoding → Sampling → Decoding", "Decoding → Sampling → Encoding"], "correct_index": 2, "correct_letter": "C", "correct_text": "Encoding → Sampling → Decoding", "rule": "See 'Sequence of operations in VAE' -> Pick 'Encoding -> Sampling -> Decoding'.", "shortcut": "See 'Sequence of operations in VAE' -> Pick 'Encoding -> Sampling -> Decoding'.", "methodology": "In a VAE, the encoder predicts distribution parameters, a latent vector is sampled via reparameterization, and the decoder reconstructs the data.", "is_assignment": true}, {"orig_id": "W8-Q8", "week": 8, "q_num": 8, "week_title": "Vision Transformers (ViT) & Detection Transformers (DETR)", "topic": "VAE Latent Variable", "q_type": "Theory & Architecture", "stem": "In a VAE, the latent variable is generally:", "options": ["A sampled representation of the input", "The original input image", "The final output label", "The training dataset"], "correct_index": 0, "correct_letter": "A", "correct_text": "A sampled representation of the input", "rule": "See 'Latent variable in VAE is generally' -> Pick 'A sampled representation of the input'.", "shortcut": "See 'Latent variable in VAE is generally' -> Pick 'A sampled representation of the input'.", "methodology": "The latent variable z in a VAE is a stochastic vector sampled from the posterior distribution predicted by the encoder network.", "is_assignment": true}, {"orig_id": "W8-Q9", "week": 8, "q_num": 9, "week_title": "Vision Transformers (ViT) & Detection Transformers (DETR)", "topic": "Latent Space Sampling", "q_type": "Theory & Architecture", "stem": "In a VAE, why is sampling performed in the latent space", "options": ["To enable generation of different possible outputs", "To remove the encoder", "To reduce the image resolution", "To calculate classification accuracy"], "correct_index": 0, "correct_letter": "A", "correct_text": "To enable generation of different possible outputs", "rule": "See 'Why sampling performed in VAE latent space' -> Pick 'Enable generation of different possible outputs'.", "shortcut": "See 'Why sampling performed in VAE latent space' -> Pick 'Enable generation of different possible outputs'.", "methodology": "Sampling from a continuous latent distribution allows the VAE decoder to generate diverse, novel outputs by exploring the learned latent manifold.", "is_assignment": true}, {"orig_id": "W8-Q10", "week": 8, "q_num": 10, "week_title": "Vision Transformers (ViT) & Detection Transformers (DETR)", "topic": "VAE Problem Formulation", "q_type": "Numerical & Formulation", "stem": "What is the main purpose of the problem formulation in a VAE", "options": ["To remove the latent space", "To increase the number of images", "To define how the input data and its underlying probability distribution are modelled", "To replace the decoder with a CNN"], "correct_index": 2, "correct_letter": "C", "correct_text": "To define how the input data and its underlying probability distribution are modelled", "rule": "See 'Purpose of problem formulation in VAE' -> Pick 'Define how input data and underlying probability distribution are modelled'.", "shortcut": "See 'Purpose of problem formulation in VAE' -> Pick 'Define how input data and underlying probability distribution are modelled'.", "methodology": "The VAE problem formulation defines how observed data and latent variables interact probabilistically to enable tractable generative learning via the ELBO.", "is_assignment": true}, {"orig_id": "W9-Q1", "week": 9, "q_num": 1, "week_title": "Generative Adversarial Networks (GANs) & Image Synthesis", "topic": "GAN Main Purpose", "q_type": "Theory & Architecture", "stem": "What is the main purpose of a Generative Adversarial Network (GAN)?", "options": ["To generate new data similar to the training data", "To only classify images", "To remove all training data", "To perform only object detection"], "correct_index": 0, "correct_letter": "A", "correct_text": "To generate new data similar to the training data", "rule": "See 'Main purpose of GAN' -> Pick 'Generate new data similar to training data'.", "shortcut": "See 'Main purpose of GAN' -> Pick 'Generate new data similar to training data'.", "methodology": "GANs learn the underlying training data distribution through a two-player game to synthesize novel, indistinguishable samples.", "is_assignment": true}, {"orig_id": "W9-Q2", "week": 9, "q_num": 2, "week_title": "Generative Adversarial Networks (GANs) & Image Synthesis", "topic": "GAN Architecture Components", "q_type": "Theory & Architecture", "stem": "A GAN mainly consists of which two networks?", "options": ["Encoder and Decoder", "Generator and Discriminator", "Classifier and Regressor", "Transformer and CNN"], "correct_index": 1, "correct_letter": "B", "correct_text": "Generator and Discriminator", "rule": "See 'Two networks in GAN' -> Pick 'Generator and Discriminator'.", "shortcut": "See 'Two networks in GAN' -> Pick 'Generator and Discriminator'.", "methodology": "The adversarial framework pits a Generator (synthesizing fake data) directly against a Discriminator (evaluating real vs fake).", "is_assignment": true}, {"orig_id": "W9-Q3", "week": 9, "q_num": 3, "week_title": "Generative Adversarial Networks (GANs) & Image Synthesis", "topic": "Generator Network Role", "q_type": "Theory & Architecture", "stem": "What is the main role of the Generator in a GAN?", "options": ["To distinguish real and fake data", "To generate fake data samples", "To calculate image resolution", "To remove noise from the dataset"], "correct_index": 1, "correct_letter": "B", "correct_text": "To generate fake data samples", "rule": "See 'Role of Generator' -> Pick 'Generate fake data samples' (Discriminator distinguishes).", "shortcut": "See 'Role of Generator' -> Pick 'Generate fake data samples' (Discriminator distinguishes).", "methodology": "The Generator maps random noise vectors to synthetic data samples that attempt to mimic the genuine data distribution.", "is_assignment": true}, {"orig_id": "W9-Q4", "week": 9, "q_num": 4, "week_title": "Generative Adversarial Networks (GANs) & Image Synthesis", "topic": "GAN Mode Collapse", "q_type": "Theory & Architecture", "stem": "What is a common problem when training GANs?", "options": ["Always producing different classes", "Too many input labels", "No training data required", "Mode collapse"], "correct_index": 3, "correct_letter": "D", "correct_text": "Mode collapse", "rule": "See 'Common problem training GANs' -> Pick 'Mode collapse'.", "shortcut": "See 'Common problem training GANs' -> Pick 'Mode collapse'.", "methodology": "Mode collapse occurs when the generator collapses to producing only a tiny subset or single type of output that fools the discriminator.", "is_assignment": true}, {"orig_id": "W9-Q5", "week": 9, "q_num": 5, "week_title": "Generative Adversarial Networks (GANs) & Image Synthesis", "topic": "Conditional GAN (cGAN)", "q_type": "Theory & Architecture", "stem": "What is the main idea of a Conditional GAN (cGAN)?", "options": ["It generates data based on additional information such as class labels", "It removes the Generator", "It does not use a Discriminator", "It can only generate random noise"], "correct_index": 0, "correct_letter": "A", "correct_text": "It generates data based on additional information such as class labels", "rule": "See 'Conditional GAN / cGAN' -> Pick 'Additional information such as class labels'.", "shortcut": "See 'Conditional GAN / cGAN' -> Pick 'Additional information such as class labels'.", "methodology": "Conditional GAN conditions both the generator and discriminator on auxiliary information (e.g., class labels) for controlled generation.", "is_assignment": true}, {"orig_id": "W9-Q6", "week": 9, "q_num": 6, "week_title": "Generative Adversarial Networks (GANs) & Image Synthesis", "topic": "Wasserstein GAN (WGAN)", "q_type": "Theory & Architecture", "stem": "What is the main purpose of Wasserstein GAN (WGAN)?", "options": ["To classify only text data", "To remove the Generator", "To improve the stability of GAN training", "To increase image size only"], "correct_index": 2, "correct_letter": "C", "correct_text": "To improve the stability of GAN training", "rule": "See 'Wasserstein GAN (WGAN)' -> Pick 'Improve the stability of GAN training'.", "shortcut": "See 'Wasserstein GAN (WGAN)' -> Pick 'Improve the stability of GAN training'.", "methodology": "WGAN uses the Earth Mover's (Wasserstein-1) Distance with continuous smooth gradients to eliminate vanishing gradients and stabilize training.", "is_assignment": true}, {"orig_id": "W9-Q7", "week": 9, "q_num": 7, "week_title": "Generative Adversarial Networks (GANs) & Image Synthesis", "topic": "Forward Diffusion Process", "q_type": "Theory & Architecture", "stem": "What happens during the forward diffusion process in a diffusion model?", "options": ["The model directly generates the final image", "Noise is completely removed from the data", "Images are converted into labels", "Noise is gradually added to the data"], "correct_index": 3, "correct_letter": "D", "correct_text": "Noise is gradually added to the data", "rule": "See 'Forward diffusion process' -> Pick 'Noise is gradually added to the data'.", "shortcut": "See 'Forward diffusion process' -> Pick 'Noise is gradually added to the data'.", "methodology": "The forward diffusion process progressively adds small amounts of Gaussian noise over T steps until the image becomes pure noise.", "is_assignment": true}, {"orig_id": "W9-Q8", "week": 9, "q_num": 8, "week_title": "Generative Adversarial Networks (GANs) & Image Synthesis", "topic": "Reverse Diffusion Process", "q_type": "Theory & Architecture", "stem": "What happens during the reverse diffusion process?", "options": ["Noise is gradually removed to generate data", "More noise is continuously added", "The training dataset is deleted", "The model only performs classification"], "correct_index": 0, "correct_letter": "A", "correct_text": "Noise is gradually removed to generate data", "rule": "See 'Reverse diffusion process' -> Pick 'Noise is gradually removed to generate data'.", "shortcut": "See 'Reverse diffusion process' -> Pick 'Noise is gradually removed to generate data'.", "methodology": "In the reverse process, a trained neural network predicts and subtracts noise step-by-step to recover a clean realistic image.", "is_assignment": true}, {"orig_id": "W9-Q9", "week": 9, "q_num": 9, "week_title": "Generative Adversarial Networks (GANs) & Image Synthesis", "topic": "DDPM Architecture Definition", "q_type": "Theory & Architecture", "stem": "What is the full form of DDPM?", "options": ["Designated Diffusion Prior Model", "Digital Driven Diffusion Model", "Denoising Diffusion Probabilistic Model", "Deterministic Diffusion for Priority Management"], "correct_index": 2, "correct_letter": "C", "correct_text": "Denoising Diffusion Probabilistic Model", "rule": "See 'DDPM full form' -> Pick 'Denoising Diffusion Probabilistic Model'.", "shortcut": "See 'DDPM full form' -> Pick 'Denoising Diffusion Probabilistic Model'.", "methodology": "DDPM stands for Denoising Diffusion Probabilistic Models, introduced by Ho et al. in 2020.", "is_assignment": true}, {"orig_id": "W9-Q10", "week": 9, "q_num": 10, "week_title": "Generative Adversarial Networks (GANs) & Image Synthesis", "topic": "ELBO in Generative Models", "q_type": "Numerical & Formulation", "stem": "What is the main purpose of the ELBO in a VAE or diffusion-model formulation?", "options": ["To replace the training dataset", "To remove the latent variables", "To increase image resolution only", "To provide an objective for learning the generative model"], "correct_index": 3, "correct_letter": "D", "correct_text": "To provide an objective for learning the generative model", "rule": "See 'Main purpose of ELBO' -> Pick 'Provide an objective for learning the generative model'.", "shortcut": "See 'Main purpose of ELBO' -> Pick 'Provide an objective for learning the generative model'.", "methodology": "The Evidence Lower Bound (ELBO) provides a mathematically tractable surrogate objective to maximize the otherwise intractable data log-likelihood.", "is_assignment": true}, {"orig_id": "W10-Q1", "week": 10, "q_num": 1, "week_title": "Large Language Models (LLMs) & Multimodal Foundations", "topic": "LLM Main Purpose", "q_type": "Theory & Architecture", "stem": "What is the main purpose of a Large Language Model LLM", "options": ["To understand and generate human-like text", "To only process images", "To remove all text from a dataset", "To perform only image classification"], "correct_index": 0, "correct_letter": "A", "correct_text": "To understand and generate human-like text", "rule": "See 'Main purpose of LLM' -> Pick 'Understand and generate human-like text'.", "shortcut": "See 'Main purpose of LLM' -> Pick 'Understand and generate human-like text'.", "methodology": "Large Language Models (LLMs) are trained on massive text corpora to model language syntax and semantics for natural language understanding and generation.", "is_assignment": true}, {"orig_id": "W10-Q2", "week": 10, "q_num": 2, "week_title": "Large Language Models (LLMs) & Multimodal Foundations", "topic": "LLM Architecture", "q_type": "Theory & Architecture", "stem": "Which architecture is commonly used to build modern Large Language Models", "options": ["K-Means", "Decision Tree", "Transformer", "Support Vector Machine"], "correct_index": 2, "correct_letter": "C", "correct_text": "Transformer", "rule": "See 'Architecture used for modern LLMs' -> Pick 'Transformer'.", "shortcut": "See 'Architecture used for modern LLMs' -> Pick 'Transformer'.", "methodology": "Modern LLMs universally employ the Transformer architecture due to its superior parallelizability and long-range self-attention modeling.", "is_assignment": true}, {"orig_id": "W10-Q3", "week": 10, "q_num": 3, "week_title": "Large Language Models (LLMs) & Multimodal Foundations", "topic": "Tokenization in LLMs", "q_type": "Theory & Architecture", "stem": "What is the purpose of tokenization in an LLM", "options": ["To convert text into smaller units that the model can process", "To convert text directly into images", "To remove the language model", "To increase image resolution"], "correct_index": 0, "correct_letter": "A", "correct_text": "To convert text into smaller units that the model can process", "rule": "See 'Purpose of tokenization' -> Pick 'Convert text into smaller units that model can process'.", "shortcut": "See 'Purpose of tokenization' -> Pick 'Convert text into smaller units that model can process'.", "methodology": "Tokenization segments raw text strings into discrete subword or character tokens that map into numerical indices for model processing.", "is_assignment": true}, {"orig_id": "W10-Q4", "week": 10, "q_num": 4, "week_title": "Large Language Models (LLMs) & Multimodal Foundations", "topic": "LLM Pre-training", "q_type": "Theory & Architecture", "stem": "What is the main purpose of pre-training an LLM", "options": ["To perform only object detection", "To train only on one image", "To remove all model parameters", "To learn general patterns from a large amount of text data"], "correct_index": 3, "correct_letter": "D", "correct_text": "To learn general patterns from a large amount of text data", "rule": "See 'Main purpose of pre-training LLM' -> Pick 'Learn general patterns from a large amount of text data'.", "shortcut": "See 'Main purpose of pre-training LLM' -> Pick 'Learn general patterns from a large amount of text data'.", "methodology": "Pre-training exposes LLMs to vast web-scale text using self-supervised objectives (e.g. next-token prediction) to absorb broad world knowledge.", "is_assignment": true}, {"orig_id": "W10-Q5", "week": 10, "q_num": 5, "week_title": "Large Language Models (LLMs) & Multimodal Foundations", "topic": "LLM Fine-Tuning", "q_type": "Theory & Architecture", "stem": "What is fine-tuning in an LLM", "options": ["Deleting the pre-trained model", "Further training a pre-trained model for a specific task or domain", "Training without any data", "Converting text into images"], "correct_index": 1, "correct_letter": "B", "correct_text": "Further training a pre-trained model for a specific task or domain", "rule": "See 'What is fine-tuning in LLM' -> Pick 'Further training a pre-trained model for a specific task or domain'.", "shortcut": "See 'What is fine-tuning in LLM' -> Pick 'Further training a pre-trained model for a specific task or domain'.", "methodology": "Fine-tuning continues training a pre-trained base model on curated task-specific or domain-specific datasets to optimize target task performance.", "is_assignment": true}, {"orig_id": "W10-Q6", "week": 10, "q_num": 6, "week_title": "Large Language Models (LLMs) & Multimodal Foundations", "topic": "Vision-Language Models", "q_type": "Theory & Architecture", "stem": "What is the main purpose of a Vision-Language Model VLM", "options": ["To process only numerical data", "To understand information from both images and language", "To process only audio signals", "To remove visual information"], "correct_index": 1, "correct_letter": "B", "correct_text": "To understand information from both images and language", "rule": "See 'Main purpose of Vision-Language Model (VLM)' -> Pick 'Understand information from both images and language'.", "shortcut": "See 'Main purpose of Vision-Language Model (VLM)' -> Pick 'Understand information from both images and language'.", "methodology": "Vision-Language Models (VLMs) integrate visual feature encoders with language models to perform multimodal reasoning over images and text.", "is_assignment": true}, {"orig_id": "W10-Q7", "week": 10, "q_num": 7, "week_title": "Large Language Models (LLMs) & Multimodal Foundations", "topic": "Vision Encoder in VLM", "q_type": "Theory & Architecture", "stem": "What is the role of the Vision Encoder in a VLM", "options": ["To remove the language encoder", "To generate only text labels", "To extract useful features from images", "To calculate training accuracy only"], "correct_index": 2, "correct_letter": "C", "correct_text": "To extract useful features from images", "rule": "See 'Role of Vision Encoder in VLM' -> Pick 'Extract useful features from images'.", "shortcut": "See 'Role of Vision Encoder in VLM' -> Pick 'Extract useful features from images'.", "methodology": "The Vision Encoder (such as a ViT or CNN) extracts rich visual spatial representations from raw input images for cross-modal fusion.", "is_assignment": true}, {"orig_id": "W10-Q8", "week": 10, "q_num": 8, "week_title": "Large Language Models (LLMs) & Multimodal Foundations", "topic": "Vision-Language Alignment", "q_type": "Theory & Architecture", "stem": "What is the purpose of Vision-Language Alignment", "options": ["To align visual and textual representations in a common representation space", "To remove image information", "To train only the language encoder", "To convert all images into audio"], "correct_index": 0, "correct_letter": "A", "correct_text": "To align visual and textual representations in a common representation space", "rule": "See 'Purpose of Vision-Language Alignment' -> Pick 'Align visual and textual representations in a common representation space'.", "shortcut": "See 'Purpose of Vision-Language Alignment' -> Pick 'Align visual and textual representations in a common representation space'.", "methodology": "Vision-Language alignment projects visual and textual embeddings into a unified shared representation space to establish semantic correspondence.", "is_assignment": true}, {"orig_id": "W10-Q9", "week": 10, "q_num": 9, "week_title": "Large Language Models (LLMs) & Multimodal Foundations", "topic": "Cross-Modal Attention", "q_type": "Theory & Architecture", "stem": "What is the main purpose of Cross-Modal Attention in a VLM", "options": ["To allow information from one modality to interact with another modality", "To remove both modalities", "To process only images", "To process only text"], "correct_index": 0, "correct_letter": "A", "correct_text": "To allow information from one modality to interact with another modality", "rule": "See 'Main purpose of Cross-Modal Attention' -> Pick 'Allow information from one modality to interact with another modality'.", "shortcut": "See 'Main purpose of Cross-Modal Attention' -> Pick 'Allow information from one modality to interact with another modality'.", "methodology": "Cross-modal attention allows queries from one modality (e.g. text) to attend over keys and values from another modality (e.g. vision).", "is_assignment": true}, {"orig_id": "W10-Q10", "week": 10, "q_num": 10, "week_title": "Large Language Models (LLMs) & Multimodal Foundations", "topic": "Contrastive Learning in VLMs", "q_type": "Theory & Architecture", "stem": "What is Contrastive Learning used for in Vision-Language Models", "options": ["To remove all image-text pairs", "To learn similar representations for matching image-text pairs", "To train only an image classifier", "To increase image resolution"], "correct_index": 1, "correct_letter": "B", "correct_text": "To learn similar representations for matching image-text pairs", "rule": "See 'Contrastive learning in VLMs' -> Pick 'Learn similar representations for matching image-text pairs' (Trap Alert: In the assignment PDF, checkmark is on (b) despite text typo 'Answer: a').", "shortcut": "See 'Contrastive learning in VLMs' -> Pick 'Learn similar representations for matching image-text pairs' (Trap Alert: In the assignment PDF, checkmark is on (b) despite text typo 'Answer: a').", "methodology": "Contrastive learning pulls matching image-text pair embeddings closer together while pushing non-matching pairs apart in a shared embedding space.", "is_assignment": true}, {"orig_id": "W11-Q1", "week": 11, "q_num": 1, "week_title": "Contrastive Language-Image Pretraining (CLIP) & Zero-Shot Vision", "topic": "CLIP Main Purpose", "q_type": "Theory & Architecture", "stem": "What is the main purpose of the CLIP model?", "options": ["To remove noise from images", "To compress images", "To learn the relationship between images and text", "To detect edges in images"], "correct_index": 2, "correct_letter": "C", "correct_text": "To learn the relationship between images and text", "rule": "See 'Main purpose of CLIP' -> Pick 'Learn relationship between images and text'.", "shortcut": "See 'Main purpose of CLIP' -> Pick 'Learn relationship between images and text'.", "methodology": "OpenAI's CLIP jointly trains vision and language encoders to project corresponding images and text descriptions into a shared embedding space.", "is_assignment": true}, {"orig_id": "W11-Q2", "week": 11, "q_num": 2, "week_title": "Contrastive Language-Image Pretraining (CLIP) & Zero-Shot Vision", "topic": "CLIP Dual Encoders", "q_type": "Theory & Architecture", "stem": "What are the two main encoders used in CLIP?", "options": ["Image Encoder and Text Encoder", "Encoder and Decoder", "Generator and Discriminator", "CNN and RNN"], "correct_index": 0, "correct_letter": "A", "correct_text": "Image Encoder and Text Encoder", "rule": "See 'Two main encoders in CLIP' -> Pick 'Image Encoder and Text Encoder'.", "shortcut": "See 'Two main encoders in CLIP' -> Pick 'Image Encoder and Text Encoder'.", "methodology": "CLIP utilizes a dual-encoder architecture consisting of an Image Encoder (ViT/ResNet) and a Text Encoder (Transformer).", "is_assignment": true}, {"orig_id": "W11-Q3", "week": 11, "q_num": 3, "week_title": "Contrastive Language-Image Pretraining (CLIP) & Zero-Shot Vision", "topic": "CLIP Contrastive Learning", "q_type": "Theory & Architecture", "stem": "What type of learning is used in CLIP to match images with their text?", "options": ["Reinforcement learning", "Contrastive learning", "Supervised regression", "Clustering"], "correct_index": 1, "correct_letter": "B", "correct_text": "Contrastive learning", "rule": "See 'Type of learning in CLIP' -> Pick 'Contrastive learning'.", "shortcut": "See 'Type of learning in CLIP' -> Pick 'Contrastive learning'.", "methodology": "Contrastive learning pulls paired image-text embeddings close together while pushing non-matching pairs apart in embedding space.", "is_assignment": true}, {"orig_id": "W11-Q4", "week": 11, "q_num": 4, "week_title": "Contrastive Language-Image Pretraining (CLIP) & Zero-Shot Vision", "topic": "CLIP Zero-Shot Classification", "q_type": "Theory & Architecture", "stem": "One of CLIP's important capabilities is:", "options": ["Image compression", "Zero-shot classification", "Image restoration", "Image segmentation only"], "correct_index": 1, "correct_letter": "B", "correct_text": "Zero-shot classification", "rule": "See 'Important capability of CLIP' -> Pick 'Zero-shot classification'.", "shortcut": "See 'Important capability of CLIP' -> Pick 'Zero-shot classification'.", "methodology": "CLIP can classify unseen categories without fine-tuning by matching image embeddings against text prompt embeddings of class names.", "is_assignment": true}, {"orig_id": "W11-Q5", "week": 11, "q_num": 5, "week_title": "Contrastive Language-Image Pretraining (CLIP) & Zero-Shot Vision", "topic": "CLIP Prompt Engineering", "q_type": "Theory & Architecture", "stem": "What is the purpose of prompt engineering in CLIP?", "options": ["Designing suitable text prompts", "Increasing image resolution", "Removing the image encoder", "Adding convolutional layers"], "correct_index": 0, "correct_letter": "A", "correct_text": "Designing suitable text prompts", "rule": "See 'Purpose of prompt engineering in CLIP' -> Pick 'Designing suitable text prompts'.", "shortcut": "See 'Purpose of prompt engineering in CLIP' -> Pick 'Designing suitable text prompts'.", "methodology": "Prompt engineering (e.g. 'a photo of a {label}') provides crucial context that improves semantic matching with natural image features.", "is_assignment": true}, {"orig_id": "W11-Q6", "week": 11, "q_num": 6, "week_title": "Contrastive Language-Image Pretraining (CLIP) & Zero-Shot Vision", "topic": "CLIP Pre-training Data", "q_type": "Theory & Architecture", "stem": "What type of data is mainly used to train CLIP?", "options": ["Only numerical data", "Only images", "Only audio files", "Image-text pairs"], "correct_index": 3, "correct_letter": "D", "correct_text": "Image-text pairs", "rule": "See 'Data used to train CLIP' -> Pick 'Image-text pairs'.", "shortcut": "See 'Data used to train CLIP' -> Pick 'Image-text pairs'.", "methodology": "CLIP was pre-trained on 400 million diverse (image, text) pairs crawled from the internet.", "is_assignment": true}, {"orig_id": "W11-Q7", "week": 11, "q_num": 7, "week_title": "Contrastive Language-Image Pretraining (CLIP) & Zero-Shot Vision", "topic": "Multimodal Fusion Concept", "q_type": "Theory & Architecture", "stem": "What is multimodal fusion?", "options": ["Combining information from different modalities", "Removing one modality", "Using only image information", "Converting images into labels"], "correct_index": 0, "correct_letter": "A", "correct_text": "Combining information from different modalities", "rule": "See 'Multimodal fusion' -> Pick 'Combining information from different modalities'.", "shortcut": "See 'Multimodal fusion' -> Pick 'Combining information from different modalities'.", "methodology": "Multimodal fusion integrates distinct data modalities (text, vision, audio) into a unified representation for joint reasoning.", "is_assignment": true}, {"orig_id": "W11-Q8", "week": 11, "q_num": 8, "week_title": "Contrastive Language-Image Pretraining (CLIP) & Zero-Shot Vision", "topic": "Multimodal LLM (MLLM)", "q_type": "Theory & Architecture", "stem": "What is a Multimodal Large Language Model (MLLM) designed to process?", "options": ["Only numerical data", "Multiple types of information such as text and images", "Only images", "Only audio"], "correct_index": 1, "correct_letter": "B", "correct_text": "Multiple types of information such as text and images", "rule": "See 'MLLM designed to process' -> Pick 'Multiple types of information such as text and images'.", "shortcut": "See 'MLLM designed to process' -> Pick 'Multiple types of information such as text and images'.", "methodology": "MLLMs extend LLMs with cross-modal projection to comprehend, reason, and generate responses over both visual and textual inputs.", "is_assignment": true}, {"orig_id": "W11-Q9", "week": 11, "q_num": 9, "week_title": "Contrastive Language-Image Pretraining (CLIP) & Zero-Shot Vision", "topic": "Text-to-Image Generation", "q_type": "Theory & Architecture", "stem": "What is the goal of Text-to-Image Generation?", "options": ["Generate an image from a text description", "Convert an image into a text file", "Compress a text document", "Classify text into categories"], "correct_index": 0, "correct_letter": "A", "correct_text": "Generate an image from a text description", "rule": "See 'Goal of Text-to-Image' -> Pick 'Generate an image from a text description'.", "shortcut": "See 'Goal of Text-to-Image' -> Pick 'Generate an image from a text description'.", "methodology": "Text-to-image synthesis models (e.g. DALL-E, Stable Diffusion) generate high-fidelity images conditioned on descriptive natural language prompts.", "is_assignment": true}, {"orig_id": "W11-Q10", "week": 11, "q_num": 10, "week_title": "Contrastive Language-Image Pretraining (CLIP) & Zero-Shot Vision", "topic": "Multimodal Generative Challenges", "q_type": "Theory & Architecture", "stem": "What is a major challenge in multimodal generative models?", "options": ["Removing all text information", "Increasing keyboard speed", "Reducing the number of image pixels only", "Understanding and aligning information from different modalities"], "correct_index": 3, "correct_letter": "D", "correct_text": "Understanding and aligning information from different modalities", "rule": "See 'Major challenge in multimodal generative models' -> Pick 'Understanding and aligning information from different modalities'.", "shortcut": "See 'Major challenge in multimodal generative models' -> Pick 'Understanding and aligning information from different modalities'.", "methodology": "Bridging the modality gap and maintaining fine-grained semantic alignment between visual elements and descriptive text is inherently difficult.", "is_assignment": true}, {"orig_id": "W12-Q1", "week": 12, "q_num": 1, "week_title": "Agentic AI, Autonomous Decision-Making & Embodied Vision", "topic": "Agentic AI Definition", "q_type": "Theory & Architecture", "stem": "What is the main idea of Agentic AI?", "options": ["AI systems that only classify images", "AI systems that only store data", "AI systems that can autonomously perform tasks and take actions", "AI systems that only generate text"], "correct_index": 2, "correct_letter": "C", "correct_text": "AI systems that can autonomously perform tasks and take actions", "rule": "See 'Main idea of Agentic AI' -> Pick 'Autonomously perform tasks and take actions'.", "shortcut": "See 'Main idea of Agentic AI' -> Pick 'Autonomously perform tasks and take actions'.", "methodology": "Agentic AI shifts models from passive question-answering to active, autonomous agents that reason, plan, and execute workflows to fulfill goals.", "is_assignment": true}, {"orig_id": "W12-Q2", "week": 12, "q_num": 2, "week_title": "Agentic AI, Autonomous Decision-Making & Embodied Vision", "topic": "Agent-Environment Interaction", "q_type": "Theory & Architecture", "stem": "In Agentic AI, what does the agent interact with to take actions?", "options": ["The environment", "Only the training dataset", "The model weights", "Only the system prompt"], "correct_index": 0, "correct_letter": "A", "correct_text": "The environment", "rule": "See 'Agent interacts with to take actions' -> Pick 'The environment'.", "shortcut": "See 'Agent interacts with to take actions' -> Pick 'The environment'.", "methodology": "Agents perceive environmental state, execute actions via tools/APIs, and receive feedback/observations from the environment.", "is_assignment": true}, {"orig_id": "W12-Q3", "week": 12, "q_num": 3, "week_title": "Agentic AI, Autonomous Decision-Making & Embodied Vision", "topic": "Planning in Agentic AI", "q_type": "Theory & Architecture", "stem": "What is the main purpose of planning in Agentic AI?", "options": ["To increase the size of the model", "To remove the agent's memory", "To generate random actions", "To decide the steps needed to achieve a goal"], "correct_index": 3, "correct_letter": "D", "correct_text": "To decide the steps needed to achieve a goal", "rule": "See 'Purpose of planning in Agentic AI' -> Pick 'Decide the steps needed to achieve a goal'.", "shortcut": "See 'Purpose of planning in Agentic AI' -> Pick 'Decide the steps needed to achieve a goal'.", "methodology": "Planning allows an agent to formulate a structured sequence of actions, anticipate outcomes, and adjust paths before execution.", "is_assignment": true}, {"orig_id": "W12-Q4", "week": 12, "q_num": 4, "week_title": "Agentic AI, Autonomous Decision-Making & Embodied Vision", "topic": "Task Decomposition", "q_type": "Theory & Architecture", "stem": "What is task decomposition in Agentic AI?", "options": ["Combining unrelated tasks into one task", "Breaking a complex task into smaller subtasks", "Removing all tasks from an agent", "Converting text into images"], "correct_index": 1, "correct_letter": "B", "correct_text": "Breaking a complex task into smaller subtasks", "rule": "See 'Task decomposition' -> Pick 'Breaking a complex task into smaller subtasks'.", "shortcut": "See 'Task decomposition' -> Pick 'Breaking a complex task into smaller subtasks'.", "methodology": "Decomposition reduces high-level ambiguous goals into manageable, solvable intermediate sub-goals (e.g. via Chain of Thought or Plan-and-Solve).", "is_assignment": true}, {"orig_id": "W12-Q5", "week": 12, "q_num": 5, "week_title": "Agentic AI, Autonomous Decision-Making & Embodied Vision", "topic": "LLM as Central Brain", "q_type": "Theory & Architecture", "stem": "What is the role of an LLM in many Agentic AI systems?", "options": ["It only stores images", "It replaces all external tools", "It acts as the agent's reasoning or decision-making brain", "It only database backups"], "correct_index": 2, "correct_letter": "C", "correct_text": "It acts as the agent's reasoning or decision-making brain", "rule": "See 'Role of LLM in Agentic AI' -> Pick 'Acts as the agent's reasoning or decision-making brain'.", "shortcut": "See 'Role of LLM in Agentic AI' -> Pick 'Acts as the agent's reasoning or decision-making brain'.", "methodology": "The LLM serves as the central controller, interpreting observations, managing memory, and deciding which actions/tools to trigger next.", "is_assignment": true}, {"orig_id": "W12-Q6", "week": 12, "q_num": 6, "week_title": "Agentic AI, Autonomous Decision-Making & Embodied Vision", "topic": "External Tool Use", "q_type": "Theory & Architecture", "stem": "What is tool use in Agentic AI?", "options": ["Using external tools to perform specific actions", "Removing the agent's planning ability", "Increasing the number of model parameters", "Training only on images"], "correct_index": 0, "correct_letter": "A", "correct_text": "Using external tools to perform specific actions", "rule": "See 'Tool use in Agentic AI' -> Pick 'Using external tools to perform specific actions'.", "shortcut": "See 'Tool use in Agentic AI' -> Pick 'Using external tools to perform specific actions'.", "methodology": "Tool use enables LLMs to overcome parametric limits by invoking calculators, web search APIs, python interpreters, or databases.", "is_assignment": true}, {"orig_id": "W12-Q7", "week": 12, "q_num": 7, "week_title": "Agentic AI, Autonomous Decision-Making & Embodied Vision", "topic": "Agent Memory Systems", "q_type": "Theory & Architecture", "stem": "What is the purpose of memory in Agentic AI?", "options": ["To remove the system prompt", "To generate random responses", "To increase image resolution", "To store and use relevant information from previous interactions"], "correct_index": 3, "correct_letter": "D", "correct_text": "To store and use relevant information from previous interactions", "rule": "See 'Purpose of memory in Agentic AI' -> Pick 'Store and use relevant information from previous interactions'.", "shortcut": "See 'Purpose of memory in Agentic AI' -> Pick 'Store and use relevant information from previous interactions'.", "methodology": "Memory systems (short-term context + long-term vector stores) maintain conversational history and task trajectory across multiple steps.", "is_assignment": true}, {"orig_id": "W12-Q8", "week": 12, "q_num": 8, "week_title": "Agentic AI, Autonomous Decision-Making & Embodied Vision", "topic": "RAG in Autonomous Agents", "q_type": "Theory & Architecture", "stem": "What is Retrieval-Augmented Generation (RAG) used for?", "options": ["Generating random information", "Compressing the language model", "Retrieving relevant information to help generate an answer", "Removing all external knowledge"], "correct_index": 2, "correct_letter": "C", "correct_text": "Retrieving relevant information to help generate an answer", "rule": "See 'RAG used for' -> Pick 'Retrieving relevant information to help generate an answer'.", "shortcut": "See 'RAG used for' -> Pick 'Retrieving relevant information to help generate an answer'.", "methodology": "RAG fetches external, verified document chunks from a vector database to ground LLM generations in factual truth and avoid hallucinations.", "is_assignment": true}, {"orig_id": "W12-Q9", "week": 12, "q_num": 9, "week_title": "Agentic AI, Autonomous Decision-Making & Embodied Vision", "topic": "Multi-Agent Collaboration", "q_type": "Theory & Architecture", "stem": "What is a multi-agent system?", "options": ["A system with multiple GPUs only", "A system where multiple agents work together to solve tasks", "A system without any planning", "A system that uses only one agent"], "correct_index": 1, "correct_letter": "B", "correct_text": "A system where multiple agents work together to solve tasks", "rule": "See 'Multi-agent system' -> Pick 'Multiple agents work together to solve tasks'.", "shortcut": "See 'Multi-agent system' -> Pick 'Multiple agents work together to solve tasks'.", "methodology": "Multi-agent systems divide complex workflows among specialized autonomous agents (e.g. researcher, coder, reviewer) collaborating via communication.", "is_assignment": true}, {"orig_id": "W12-Q10", "week": 12, "q_num": 10, "week_title": "Agentic AI, Autonomous Decision-Making & Embodied Vision", "topic": "Agentic AI Safety Challenges", "q_type": "Theory & Architecture", "stem": "What is a major challenge of Agentic AI?", "options": ["Safety and reliability of autonomous actions", "Reducing the number of text characters", "Increasing keyboard speed", "Removing all user interaction"], "correct_index": 0, "correct_letter": "A", "correct_text": "Safety and reliability of autonomous actions", "rule": "See 'Major challenge of Agentic AI' -> Pick 'Safety and reliability of autonomous actions'.", "shortcut": "See 'Major challenge of Agentic AI' -> Pick 'Safety and reliability of autonomous actions'.", "methodology": "Ensuring autonomous agents do not hallucinate actions, loop indefinitely, or cause destructive real-world side effects is a premier safety challenge.", "is_assignment": true}];
+
+        // Fisher-Yates array shuffling
+        function shuffleArray(arr) {
+            const a = JSON.parse(JSON.stringify(arr));
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                const temp = a[i];
+                a[i] = a[j];
+                a[j] = temp;
+            }
+            return a;
+        }
+
+        // State variables
+        let orderMode = 'shuffled'; // 'shuffled' by default as requested!
+        let questions = shuffleArray(RAW_QUESTIONS);
+        let currentIndex = 0;
+        let viewMode = 'focus'; // 'focus' or 'scroll'
+        let paletteFilter = 'all'; // 'all', 'unattempted', 'incorrect', 'flagged'
+        let selectedWeekFilter = 'all'; // 'all' or 1..12
+
+        // User answers state: index -> { selected: int|null, isCorrect: bool|null, flagged: bool }
+        let userState = {};
+
+        // Timer State: 180 minutes
+        const TOTAL_SECONDS = 180 * 60;
+        let timeRemaining = TOTAL_SECONDS;
+        let timerInterval = null;
+        let isTimerPaused = false;
+
+        const WEEK_NAMES = {
+            1: "Week 1: Foundations & Probability",
+            2: "Week 2: Deep Learning & MLPs",
+            3: "Week 3: CNNs & Receptive Fields",
+            4: "Week 4: ResNets & Modern CNNs",
+            5: "Week 5: RNNs, LSTMs & BPTT",
+            6: "Week 6: Likelihood Models & VAEs",
+            7: "Week 7: Attention & Transformers",
+            8: "Week 8: ViT & DETR Architectures",
+            9: "Week 9: GANs & Adversarial Synthesis",
+            10: "Week 10: LLMs & Multimodal Foundations",
+            11: "Week 11: CLIP & Zero-Shot Vision",
+            12: "Week 12: Agentic AI & Autonomous Vision"
+        };
+
+        // Initialize Application
+        window.addEventListener('DOMContentLoaded', () => {
+            buildQuiz();
+            startTimer();
+            setupKeyboardShortcuts();
+        });
+
+        function buildQuiz() {
+            userState = {};
+            for (let i = 0; i < questions.length; i++) {
+                userState[i] = {
+                    selected: null,
+                    isCorrect: null,
+                    flagged: false
+                };
+            }
+            renderCardsOnce();
+            renderPalette();
+            updateStats();
+            updateFocusView();
+        }
+
+        // Render all question cards into DOM
+        function renderCardsOnce() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+
+            questions.forEach((q, idx) => {
+                const card = document.createElement('div');
+                card.id = `qCard_${idx}`;
+                card.className = 'question-card';
+                card.style.display = (viewMode === 'scroll' || idx === currentIndex) ? 'flex' : 'none';
+
+                let optionsHtml = '';
+                q.options.forEach((optText, optIdx) => {
+                    const letter = String.fromCharCode(65 + optIdx);
+                    optionsHtml += `
+                        <div id="q_${idx}_opt_${optIdx}" class="option-box" onclick="handleOptionSelect(${idx}, ${optIdx})">
+                            <div class="option-circle">${letter}</div>
+                            <div class="option-label">${escapeHtml(optText)}</div>
+                            <div class="status-pill"></div>
+                        </div>
+                    `;
+                });
+
+                const expCardHtml = `
+                    <div id="qExp_${idx}" class="explanation-drawer">
+                        <div class="exp-banner">
+                            <span class="exp-label">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                                Solution Analysis & Governing Formulation
+                            </span>
+                            <span class="exp-correct-key">Official Key: Option ${q.correct_letter} (${escapeHtml(q.correct_text)})</span>
+                        </div>
+                        ${q.shortcut ? `
+                        <div class="exp-trigger-banner">
+                            <span>⚡</span>
+                            <span><strong>5-Second Exam Shortcut:</strong> ${escapeHtml(q.shortcut)}</span>
+                        </div>
+                        ` : ''}
+                        ${q.methodology ? `
+                        <div class="exp-methodology-banner">
+                            <strong>Step-by-Step Methodology & Proof:</strong><br>${escapeHtml(q.methodology)}
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+
+                card.innerHTML = `
+                    <div class="card-topbar">
+                        <div class="badge-cluster">
+                            <span class="q-index-tag">Q${idx + 1} of ${questions.length}</span>
+                            <span class="chip chip-assignment">📘 Week ${q.week} · Q${q.q_num}</span>
+                            <span class="chip chip-week">${escapeHtml(q.topic)}</span>
+                            <span class="chip chip-archetype">${escapeHtml(q.q_type)}</span>
+                        </div>
+                        <button id="flagBtn_${idx}" class="bookmark-btn" onclick="toggleFlag(${idx})">
+                            <span>⭐</span> Mark for Review
+                        </button>
+                    </div>
+
+                    <div class="question-stem-text">${escapeHtml(q.stem)}</div>
+
+                    <div class="options-list">
+                        ${optionsHtml}
+                    </div>
+
+                    ${expCardHtml}
+                `;
+
+                container.appendChild(card);
+            });
+
+            triggerMathRendering(container);
+        }
+
+        // Render question palette matrix
+        function renderPalette() {
+            const grid = document.getElementById('paletteGrid');
+            grid.innerHTML = '';
+
+            questions.forEach((q, idx) => {
+                const qState = userState[idx];
+
+                if (selectedWeekFilter !== 'all' && q.week != selectedWeekFilter) return;
+                if (paletteFilter === 'unattempted' && qState.selected !== null) return;
+                if (paletteFilter === 'incorrect' && qState.isCorrect !== false) return;
+                if (paletteFilter === 'flagged' && !qState.flagged) return;
+
+                const node = document.createElement('div');
+                node.id = `paletteNode_${idx}`;
+                let nodeClass = 'matrix-item';
+                if (idx === currentIndex && viewMode === 'focus') nodeClass += ' active-item';
+                if (qState.isCorrect === true) nodeClass += ' answered-correct';
+                if (qState.isCorrect === false) nodeClass += ' answered-wrong';
+                if (qState.flagged) nodeClass += ' is-flagged';
+
+                node.className = nodeClass;
+                node.innerText = idx + 1;
+                node.title = `Q${idx + 1}: [Week ${q.week} Q${q.q_num}] ${q.topic}`;
+                node.onclick = () => jumpToQuestion(idx);
+
+                grid.appendChild(node);
+            });
+
+            const attemptedCount = Object.values(userState).filter(s => s.selected !== null).length;
+            document.getElementById('attemptedCounter').innerText = `${attemptedCount}/${questions.length} Answered`;
+        }
+
+        // Handle option selection
+        function handleOptionSelect(qIdx, optIdx) {
+            const qState = userState[qIdx];
+            if (qState.selected !== null) return; // Locked once answered
+
+            const q = questions[qIdx];
+            const isCorrect = (optIdx === q.correct_index);
+
+            qState.selected = optIdx;
+            qState.isCorrect = isCorrect;
+
+            // Update specific card options
+            const card = document.getElementById(`qCard_${qIdx}`);
+            if (card) {
+                q.options.forEach((_, i) => {
+                    const optEl = document.getElementById(`q_${qIdx}_opt_${i}`);
+                    const pillEl = optEl.querySelector('.status-pill');
+                    optEl.classList.add('locked');
+
+                    if (i === q.correct_index) {
+                        if (optIdx === i) {
+                            optEl.classList.add('correct-choice');
+                            pillEl.innerText = '✓ Correct!';
+                        } else {
+                            optEl.classList.add('revealed-answer');
+                            pillEl.innerText = '✓ Correct Answer';
+                        }
+                    } else if (i === optIdx) {
+                        optEl.classList.add('wrong-choice');
+                        pillEl.innerText = '✗ Your Choice';
+                    }
+                });
+
+                // Show explanation drawer
+                const expDrawer = document.getElementById(`qExp_${qIdx}`);
+                if (expDrawer) {
+                    expDrawer.classList.add('open');
+                    triggerMathRendering(expDrawer);
+                }
+            }
+
+            // Update palette node
+            const paletteNode = document.getElementById(`paletteNode_${qIdx}`);
+            if (paletteNode) {
+                paletteNode.classList.remove('answered-correct', 'answered-wrong');
+                paletteNode.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
+            }
+
+            updateStats();
+        }
+
+        // Clear current question answer for retry
+        function clearCurrentAnswer() {
+            const qIdx = currentIndex;
+            const qState = userState[qIdx];
+            const q = questions[qIdx];
+
+            qState.selected = null;
+            qState.isCorrect = null;
+
+            const card = document.getElementById(`qCard_${qIdx}`);
+            if (card) {
+                q.options.forEach((_, i) => {
+                    const optEl = document.getElementById(`q_${qIdx}_opt_${i}`);
+                    const pillEl = optEl.querySelector('.status-pill');
+                    optEl.className = 'option-box';
+                    pillEl.innerText = '';
+                });
+
+                const expDrawer = document.getElementById(`qExp_${qIdx}`);
+                if (expDrawer) expDrawer.classList.remove('open');
+            }
+
+            const paletteNode = document.getElementById(`paletteNode_${qIdx}`);
+            if (paletteNode) {
+                paletteNode.classList.remove('answered-correct', 'answered-wrong');
+            }
+
+            updateStats();
+        }
+
+        // Flag toggle
+        function toggleFlag(idx) {
+            const qState = userState[idx];
+            qState.flagged = !qState.flagged;
+
+            const cardFlagBtn = document.getElementById(`flagBtn_${idx}`);
+            if (cardFlagBtn) {
+                cardFlagBtn.classList.toggle('active', qState.flagged);
+                cardFlagBtn.innerHTML = qState.flagged ? `<span>⭐</span> Flagged` : `<span>⭐</span> Mark for Review`;
+            }
+
+            const paletteNode = document.getElementById(`paletteNode_${idx}`);
+            if (paletteNode) {
+                paletteNode.classList.toggle('is-flagged', qState.flagged);
+            }
+
+            if (idx === currentIndex) {
+                updateFocusNavButtons();
+            }
+        }
+
+        function toggleCurrentFlag() {
+            toggleFlag(currentIndex);
+        }
+
+        // Navigation
+        function jumpToQuestion(idx) {
+            const prevIndex = currentIndex;
+            currentIndex = idx;
+
+            if (viewMode === 'focus') {
+                const prevCard = document.getElementById(`qCard_${prevIndex}`);
+                if (prevCard) {
+                    prevCard.style.display = 'none';
+                    prevCard.classList.remove('active-focus');
+                }
+
+                const curCard = document.getElementById(`qCard_${currentIndex}`);
+                if (curCard) {
+                    curCard.style.display = 'flex';
+                    curCard.classList.add('active-focus');
+                }
+
+                updatePaletteActiveHighlight(prevIndex, currentIndex);
+                updateFocusNavButtons();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                const targetCard = document.getElementById(`qCard_${idx}`);
+                if (targetCard) {
+                    targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                updatePaletteActiveHighlight(prevIndex, currentIndex);
+            }
+        }
+
+        function nextQuestion() {
+            if (currentIndex < questions.length - 1) {
+                jumpToQuestion(currentIndex + 1);
+            } else {
+                showResultsModal();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                jumpToQuestion(currentIndex - 1);
+            }
+        }
+
+        function updateFocusView() {
+            questions.forEach((_, idx) => {
+                const card = document.getElementById(`qCard_${idx}`);
+                if (!card) return;
+                if (viewMode === 'focus') {
+                    card.style.display = (idx === currentIndex) ? 'flex' : 'none';
+                    card.classList.toggle('active-focus', idx === currentIndex);
+                } else {
+                    let visible = true;
+                    if (selectedWeekFilter !== 'all' && questions[idx].week != selectedWeekFilter) visible = false;
+                    if (paletteFilter === 'unattempted' && userState[idx].selected !== null) visible = false;
+                    if (paletteFilter === 'incorrect' && userState[idx].isCorrect !== false) visible = false;
+                    if (paletteFilter === 'flagged' && !userState[idx].flagged) visible = false;
+                    card.style.display = visible ? 'flex' : 'none';
+                }
+            });
+            updateFocusNavButtons();
+        }
+
+        function updatePaletteActiveHighlight(prevIdx, newIdx) {
+            const prevNode = document.getElementById(`paletteNode_${prevIdx}`);
+            if (prevNode) prevNode.classList.remove('active-item');
+
+            const newNode = document.getElementById(`paletteNode_${newIdx}`);
+            if (newNode && viewMode === 'focus') newNode.classList.add('active-item');
+        }
+
+        function updateFocusNavButtons() {
+            const btnPrev = document.getElementById('btnPrev');
+            const btnNext = document.getElementById('btnNext');
+            const btnFlagFocus = document.getElementById('btnFlagFocus');
+
+            if (btnPrev) btnPrev.disabled = (currentIndex === 0);
+            if (btnNext) {
+                if (currentIndex === questions.length - 1) {
+                    btnNext.innerHTML = 'Finish Exam 🏁';
+                    btnNext.className = 'dock-btn accent';
+                } else {
+                    btnNext.innerHTML = `Next <span class="key-hint">N</span> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>`;
+                }
+            }
+
+            if (btnFlagFocus) {
+                const isFlagged = userState[currentIndex] && userState[currentIndex].flagged;
+                btnFlagFocus.classList.toggle('active', !!isFlagged);
+                btnFlagFocus.innerHTML = isFlagged ? `<span>⭐</span> Flagged <span class="key-hint">F</span>` : `<span>⭐</span> Mark for Review <span class="key-hint">F</span>`;
+            }
+        }
+
+        // Mode Switching
+        function setMode(mode) {
+            viewMode = mode;
+            document.getElementById('btnFocusMode').classList.toggle('active', mode === 'focus');
+            document.getElementById('btnScrollMode').classList.toggle('active', mode === 'scroll');
+
+            const focusNavBar = document.getElementById('focusNavBar');
+            if (focusNavBar) focusNavBar.style.display = (mode === 'focus') ? 'flex' : 'none';
+
+            updateFocusView();
+            renderPalette();
+        }
+
+        // Order Switching: Shuffled vs Sequential
+        function setOrderMode(mode) {
+            if (orderMode === mode) return;
+            orderMode = mode;
+            document.getElementById('btnOrderShuffled').classList.toggle('active', mode === 'shuffled');
+            document.getElementById('btnOrderSequential').classList.toggle('active', mode === 'sequential');
+
+            if (mode === 'shuffled') {
+                questions = shuffleArray(RAW_QUESTIONS);
+            } else {
+                questions = JSON.parse(JSON.stringify(RAW_QUESTIONS)).sort((a, b) => {
+                    if (a.week !== b.week) return a.week - b.week;
+                    return a.q_num - b.q_num;
+                });
+            }
+            currentIndex = 0;
+            buildQuiz();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Palette Filter (All, Unattempted, Incorrect, Flagged)
+        function setPaletteFilter(filter) {
+            paletteFilter = filter;
+            document.getElementById('tabFilterAll').classList.toggle('active', filter === 'all');
+            document.getElementById('tabFilterUnattempted').classList.toggle('active', filter === 'unattempted');
+            document.getElementById('tabFilterMistakes').classList.toggle('active', filter === 'incorrect');
+            document.getElementById('tabFilterFlagged').classList.toggle('active', filter === 'flagged');
+
+            renderPalette();
+            if (viewMode === 'scroll') updateFocusView();
+        }
+
+        // Week Filter
+        function handleWeekFilterChange(val) {
+            selectedWeekFilter = val;
+            renderPalette();
+            if (viewMode === 'scroll') updateFocusView();
+        }
+
+        // Reshuffle Exam Order
+        function reshuffleQuiz() {
+            if (confirm("Reshuffle all 120 questions? This will generate a new randomized exam sequence.")) {
+                orderMode = 'shuffled';
+                document.getElementById('btnOrderShuffled').classList.add('active');
+                document.getElementById('btnOrderSequential').classList.remove('active');
+                questions = shuffleArray(RAW_QUESTIONS);
+                currentIndex = 0;
+                buildQuiz();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Reset All Answers
+        function resetAllAnswers() {
+            if (confirm("Reset all your responses and clear your score?")) {
+                currentIndex = 0;
+                buildQuiz();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Update live stats
+        function updateStats() {
+            let correct = 0;
+            let attempted = 0;
+
+            Object.values(userState).forEach(s => {
+                if (s.selected !== null) {
+                    attempted++;
+                    if (s.isCorrect) correct++;
+                }
+            });
+
+            document.getElementById('statScore').innerText = `${correct} / ${questions.length}`;
+            const acc = attempted > 0 ? Math.round((correct / attempted) * 100) : 0;
+            document.getElementById('statAcc').innerText = `${acc}%`;
+
+            const progPct = Math.round((attempted / questions.length) * 100);
+            document.getElementById('progressBar').style.width = `${progPct}%`;
+
+            document.getElementById('attemptedCounter').innerText = `${attempted}/${questions.length} Answered`;
+        }
+
+        // Timer Functions
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if (!isTimerPaused && timeRemaining > 0) {
+                    timeRemaining--;
+                    updateTimerDisplay();
+                }
+            }, 1000);
+        }
+
+        function toggleTimer() {
+            isTimerPaused = !isTimerPaused;
+            document.getElementById('btnPauseTimer').innerText = isTimerPaused ? '▶' : '⏸';
+        }
+
+        function updateTimerDisplay() {
+            const hours = Math.floor(timeRemaining / 3600);
+            const minutes = Math.floor((timeRemaining % 3600) / 60);
+            const seconds = timeRemaining % 60;
+            const str = hours > 0 
+                ? `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
+                : `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            document.getElementById('timerDisplay').innerText = str;
+        }
+
+        // Modal Scorecard Dialog
+        function showResultsModal() {
+            let correct = 0;
+            let incorrect = 0;
+            let attempted = 0;
+
+            const weekStats = {};
+            for (let w = 1; w <= 12; w++) {
+                weekStats[w] = { total: 0, correct: 0 };
+            }
+
+            questions.forEach((q, idx) => {
+                const s = userState[idx];
+                weekStats[q.week].total++;
+
+                if (s.selected !== null) {
+                    attempted++;
+                    if (s.isCorrect) {
+                        correct++;
+                        weekStats[q.week].correct++;
+                    } else {
+                        incorrect++;
+                    }
+                }
+            });
+
+            const pct = Math.round((correct / questions.length) * 100);
+            document.getElementById('modalScoreNum').innerText = correct;
+
+            const badge = document.getElementById('modalTierBadge');
+            const narrative = document.getElementById('modalTierNarrative');
+
+            if (pct >= 90) {
+                badge.className = 'tier-tag gold';
+                badge.innerText = '🏆 Elite + Gold Medalist (>=90%)';
+                narrative.innerText = 'Exceptional Mastery! You are in the top 1% topper tier of NPTEL candidates.';
+            } else if (pct >= 75) {
+                badge.className = 'tier-tag silver';
+                badge.innerText = '🥈 Elite + Silver Medalist (75-89%)';
+                narrative.innerText = 'Brilliant Performance! You have securely cleared the high-distinction threshold.';
+            } else if (pct >= 60) {
+                badge.className = 'tier-tag bronze';
+                badge.innerText = '🥉 Elite Certified (60-74%)';
+                narrative.innerText = 'Solid Passing Score! Review the weak weeks below to achieve Gold distinction.';
+            } else if (pct >= 40) {
+                badge.className = 'tier-tag pass';
+                badge.innerText = '✅ Qualified / Passed (40-59%)';
+                narrative.innerText = 'Exam Passed! We strongly recommend doing a focused revision of the incorrect questions.';
+            } else {
+                badge.className = 'tier-tag fail';
+                badge.innerText = '⚠️ Needs Comprehensive Revision (<40%)';
+                narrative.innerText = 'Keep practicing! Review the 5-second exam shortcuts and re-attempt the simulation.';
+            }
+
+            const acc = attempted > 0 ? Math.round((correct / attempted) * 100) : 0;
+            document.getElementById('modalAccVal').innerText = `${acc}%`;
+
+            const elapsedSec = TOTAL_SECONDS - timeRemaining;
+            const elMin = Math.floor(elapsedSec / 60);
+            const elSec = elapsedSec % 60;
+            document.getElementById('modalTimeVal').innerText = `${String(elMin).padStart(2, '0')}:${String(elSec).padStart(2, '0')}`;
+
+            document.getElementById('modalMistakesVal').innerText = incorrect;
+            document.getElementById('modalMistakeBtnCount').innerText = incorrect;
+
+            // Render 12-week breakdown
+            let breakdownHtml = '';
+            for (let w = 1; w <= 12; w++) {
+                const st = weekStats[w];
+                const wPct = st.total > 0 ? Math.round((st.correct / st.total) * 100) : 0;
+                let barColor = '#ef4444';
+                if (wPct >= 80) barColor = '#10b981';
+                else if (wPct >= 60) barColor = '#06b6d4';
+                else if (wPct >= 40) barColor = '#f59e0b';
+
+                breakdownHtml += `
+                    <div class="domain-item">
+                        <div class="domain-info-row">
+                            <span class="domain-name">${WEEK_NAMES[w]}</span>
+                            <span class="domain-score-pill">${st.correct}/${st.total} (${wPct}%)</span>
+                        </div>
+                        <div class="domain-bar-bg">
+                            <div class="domain-bar-fill" style="width: ${wPct}%; background: ${barColor};"></div>
+                        </div>
+                    </div>
+                `;
+            }
+            document.getElementById('catBreakdownList').innerHTML = breakdownHtml;
+
+            document.getElementById('resultsModal').classList.add('open');
+        }
+
+        function closeResultsModal() {
+            document.getElementById('resultsModal').classList.remove('open');
+        }
+
+        function reviewMistakesOnly() {
+            closeResultsModal();
+            setPaletteFilter('incorrect');
+            const firstMistake = questions.findIndex((q, i) => userState[i].isCorrect === false);
+            if (firstMistake !== -1) {
+                jumpToQuestion(firstMistake);
+            }
+        }
+
+        function retakeExamFromModal() {
+            closeResultsModal();
+            reshuffleQuiz();
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        }
+
+        // Keyboard Shortcuts
+        function setupKeyboardShortcuts() {
+            window.addEventListener('keydown', (e) => {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+
+                if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'n') {
+                    nextQuestion();
+                } else if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'p') {
+                    prevQuestion();
+                } else if (e.key.toLowerCase() === 'f') {
+                    toggleCurrentFlag();
+                } else if (e.key.toLowerCase() === 'r') {
+                    clearCurrentAnswer();
+                } else if (['1', '2', '3', '4'].includes(e.key)) {
+                    const optIdx = parseInt(e.key) - 1;
+                    handleOptionSelect(currentIndex, optIdx);
+                } else if (['a', 'b', 'c', 'd'].includes(e.key.toLowerCase())) {
+                    const optIdx = e.key.toLowerCase().charCodeAt(0) - 97;
+                    handleOptionSelect(currentIndex, optIdx);
+                } else if (e.key === 'Escape') {
+                    closeResultsModal();
+                }
+            });
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        let mathRenderedWithKaTeX = false;
+
+        function triggerMathRendering(root) {
+            const target = root || document.getElementById('questionsContainer') || document.body;
+            if (window.renderMathInElement && window.katex) {
+                try {
+                    renderMathInElement(target, {
+                        delimiters: [
+                            {left: '$$', right: '$$', display: true},
+                            {left: '$', right: '$', display: false}
+                        ],
+                        ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+                        throwOnError: false
+                    });
+                    mathRenderedWithKaTeX = true;
+                    return;
+                } catch (e) {
+                    console.warn("KaTeX render error, using offline typesetter:", e);
+                }
+            }
+
+            if (!mathRenderedWithKaTeX && navigator.onLine && !window.katex) {
+                setTimeout(() => {
+                    if (!mathRenderedWithKaTeX) {
+                        if (window.renderMathInElement) {
+                            triggerMathRendering(target);
+                        } else {
+                            applyOfflineMath(target);
+                        }
+                    }
+                }, 400);
+                return;
+            }
+
+            applyOfflineMath(target);
+        }
+
+        function findMatchingBrace(str, startIdx) {
+            let depth = 0;
+            for (let i = startIdx; i < str.length; i++) {
+                if (str[i] === '{') depth++;
+                else if (str[i] === '}') {
+                    depth--;
+                    if (depth === 0) return i;
+                }
+            }
+            return -1;
+        }
+
+        function replaceFractionsRecursive(s) {
+            let idx = s.indexOf('\\frac');
+            let maxIter = 10;
+            while (idx !== -1 && maxIter > 0) {
+                maxIter--;
+                let numStart = s.indexOf('{', idx);
+                if (numStart === -1) break;
+                let numEnd = findMatchingBrace(s, numStart);
+                if (numEnd === -1) break;
+                let denStart = s.indexOf('{', numEnd);
+                if (denStart === -1 || denStart > numEnd + 2) break;
+                let denEnd = findMatchingBrace(s, denStart);
+                if (denEnd === -1) break;
+
+                let num = replaceFractionsRecursive(s.substring(numStart + 1, numEnd));
+                let den = replaceFractionsRecursive(s.substring(denStart + 1, denEnd));
+                let fracHtml = '<span class="math-frac"><span class="math-num">' + num + '</span><span class="math-den">' + den + '</span></span>';
+                s = s.substring(0, idx) + fracHtml + s.substring(denEnd + 1);
+                idx = s.indexOf('\\frac');
+            }
+            return s;
+        }
+
+        function offlineFormatTex(tex) {
+            let s = tex.trim().replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+            s = s.replace(/\\left\s*/g, '').replace(/\\right\s*/g, '');
+            s = s.replace(/\\|/g, '||');
+            
+            s = s.replace(/\\text\{([^{}]+)\}/g, '<span class="math-text">$1</span>');
+            s = s.replace(/\\mathrm\{([^{}]+)\}/g, '<span class="math-text">$1</span>');
+            s = s.replace(/\\mathbf\{([^{}]+)\}/g, '<b>$1</b>');
+            s = s.replace(/\\mathbb\{([^{}]+)\}/g, '<b>$1</b>');
+            s = s.replace(/\\mathcal\{([^{}]+)\}/g, '<i>$1</i>');
+            s = s.replace(/\\hat\{([^{}]+)\}/g, '$1&#770;');
+
+            s = replaceFractionsRecursive(s);
+            s = s.replace(/\\sqrt\{([^{}]+)\}/g, '<span class="math-sqrt">&radic;<span class="math-radicand">$1</span></span>');
+
+            s = s.replace(/\^\{([^{}]+)\}/g, '<sup>$1</sup>');
+            s = s.replace(/_\{([^{}]+)\}/g, '<sub>$1</sub>');
+            s = s.replace(/\^([a-zA-Z0-9]+)/g, '<sup>$1</sup>');
+            s = s.replace(/_([a-zA-Z0-9]+)/g, '<sub>$1</sub>');
+
+            const syms = [
+                [/\\alpha/g, '&alpha;'], [/\\beta/g, '&beta;'], [/\\sigma/g, '&sigma;'],
+                [/\\mu/g, '&mu;'], [/\\epsilon/g, '&epsilon;'], [/\\theta/g, '&theta;'],
+                [/\\phi/g, '&phi;'], [/\\tau/g, '&tau;'], [/\\lambda/g, '&lambda;'],
+                [/\\pi/g, '&pi;'], [/\\gamma/g, '&gamma;'], [/\\eta/g, '&eta;'],
+                [/\\nabla/g, '&nabla;'], [/\\sum/g, '&sum;'], [/\\prod/g, '&prod;'],
+                [/\\odot/g, '&odot;'], [/\\otimes/g, '&otimes;'], [/\\le/g, '&le;'],
+                [/\\ge/g, '&ge;'], [/\\approx/g, '&approx;'], [/\\times/g, '&times;'],
+                [/\\sim/g, '&sim;'], [/\\infty/g, '&infin;'], [/\\partial/g, '&part;'],
+                [/\\in/g, '&isin;'], [/\\to/g, '&rarr;'], [/\\parallel/g, '&#8741;'],
+                [/\\mid/g, '|'], [/\\cdot/g, '&sdot;'], [/\\ll/g, '&Lt;'],
+                [/\\log/g, 'log'], [/\\ln/g, 'ln'], [/\\exp/g, 'exp'],
+                [/\\max/g, 'max'], [/\\min/g, 'min'], [/\\sup/g, 'sup'],
+                [/\\inf/g, 'inf'], [/\\sin/g, 'sin'], [/\\cos/g, 'cos'],
+                [/\\tanh/g, 'tanh'], [/\\quad/g, ' &nbsp; '], [/\\,/g, ' '],
+                [/\\;/g, ' '], [/\\!/g, '']
+            ];
+            for (let i = 0; i < syms.length; i++) {
+                s = s.replace(syms[i][0], syms[i][1]);
+            }
+
+            return '<span class="math-tex">' + s + '</span>';
+        }
+
+        function applyOfflineMath(root) {
+            const elements = root.querySelectorAll('.option-label, .question-stem-text, .exp-text-rule, .exp-methodology-banner, .exp-correct-key, .exp-trigger-banner');
+            elements.forEach(el => {
+                if (el.innerHTML.indexOf('$') !== -1) {
+                    el.innerHTML = el.innerHTML.replace(/\$([^\$]+)\$/g, (match, tex) => {
+                        return offlineFormatTex(tex);
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+</html>
