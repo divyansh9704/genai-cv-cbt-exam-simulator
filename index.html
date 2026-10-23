@@ -1351,7 +1351,146 @@
                 grid-template-columns: 1fr;
             }
         }
-    </style>
+    
+        /* ==========================================================================
+           SECTION SELECTION PANEL & SMART SECTION LOADING
+           ========================================================================== */
+        .section-selection-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-bright);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-bottom: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+        }
+
+        .section-selection-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+        }
+
+        .sec-label-title {
+            font-weight: 700;
+            color: var(--text-sub);
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sec-active-indicator {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            background: rgba(6, 182, 212, 0.15);
+            color: var(--border-focus);
+            border: 1px solid rgba(6, 182, 212, 0.4);
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        .section-tab-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px;
+        }
+
+        .sec-selector-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            border-radius: 8px;
+            background: var(--bg-option);
+            border: 1px solid var(--border-dim);
+            color: var(--text-sub);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sec-selector-btn:hover {
+            background: var(--bg-option-hover);
+            border-color: var(--border-bright);
+            color: var(--text-main);
+            transform: translateY(-1px);
+        }
+
+        .sec-selector-btn.active {
+            background: rgba(6, 182, 212, 0.2);
+            border-color: var(--border-focus);
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(6, 182, 212, 0.35);
+        }
+
+        .sec-selector-btn.accent-assignment.active {
+            background: rgba(59, 130, 246, 0.25);
+            border-color: #3b82f6;
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.35);
+        }
+
+        .sec-selector-btn.accent-msq.active {
+            background: rgba(168, 85, 247, 0.25);
+            border-color: #a855f7;
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(168, 85, 247, 0.35);
+        }
+
+        .sec-selector-btn.accent-slides.active {
+            background: rgba(245, 158, 11, 0.25);
+            border-color: #f59e0b;
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.35);
+        }
+
+        .sec-btn-content {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sec-btn-count {
+            background: rgba(255, 255, 255, 0.09);
+            padding: 2px 7px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .status-ribbon-row {
+            display: flex;
+            gap: 4px;
+            margin-top: 6px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .filter-tab.accent-slides.active {
+            background: #f59e0b;
+            color: #080c14;
+            font-weight: 700;
+            border-color: #f59e0b;
+        }
+
+        .chip-slides {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .matrix-item.is-slides-node {
+            border-color: rgba(245, 158, 11, 0.4);
+        }
+</style>
 </head>
 <body>
 
@@ -1362,7 +1501,7 @@
                 <span class="brand-badge">NPTEL CBT</span>
                 <div class="brand-info">
                     <h1>Generative AI for Computer Vision Exam Simulator</h1>
-                    <p>IIT Guwahati · 120 Assignment Bank + 25 High-Yield MSQ Bank (145 Questions Total)</p>
+                    <p id="headerSubtitle">IIT Guwahati · All 330 Master Questions (120 Assign + 25 MSQ + 185 Slides Prep)</p>
                 </div>
             </div>
 
@@ -1425,6 +1564,33 @@
     <main class="workspace-layout">
         <!-- Primary Left Column: Questions -->
         <section class="primary-column">
+            
+            <!-- Smart Section Selection Panel -->
+            <div class="section-selection-panel">
+                <div class="section-selection-header">
+                    <span class="sec-label-title">📂 SELECT EXAM SECTION TO PRACTICE:</span>
+                    <span id="secCurrentBadge" class="sec-active-indicator">🌐 All 330 Questions Loaded</span>
+                </div>
+                <div class="section-tab-group">
+                    <button id="secBtn_all" class="sec-selector-btn active" onclick="switchSection('all')">
+                        <span class="sec-btn-content">🌐 <span>All 330 Master</span></span>
+                        <span class="sec-btn-count">330</span>
+                    </button>
+                    <button id="secBtn_assign" class="sec-selector-btn accent-assignment" onclick="switchSection('assignment')">
+                        <span class="sec-btn-content">📘 <span>Assignment Bank</span></span>
+                        <span class="sec-btn-count">120</span>
+                    </button>
+                    <button id="secBtn_msq" class="sec-selector-btn accent-msq" onclick="switchSection('msq')">
+                        <span class="sec-btn-content">🧩 <span>MSQ Bank</span></span>
+                        <span class="sec-btn-count">25</span>
+                    </button>
+                    <button id="secBtn_slides" class="sec-selector-btn accent-slides" onclick="switchSection('slides')">
+                        <span class="sec-btn-content">📑 <span>Slides Prep Info</span></span>
+                        <span class="sec-btn-count">185</span>
+                    </button>
+                </div>
+            </div>
+
             <div id="questionsContainer">
                 <!-- Rendered dynamically -->
             </div>
@@ -1460,13 +1626,16 @@
 
                 <!-- Filters -->
                 <div class="filter-ribbon">
-                    <button id="tabFilterAll" class="filter-tab active" onclick="setPaletteFilter('all')">All (330)</button>
-                    <button id="tabFilterAssign" class="filter-tab accent-assignment" onclick="setPaletteFilter('assignment')">📘 Assign (120)</button>
-                    <button id="tabFilterMsq" class="filter-tab accent-msq" onclick="setPaletteFilter('msq')">🧩 MSQ (25)</button>
-                    <button id="tabFilterSlides" class="filter-tab accent-slides" onclick="setPaletteFilter('slides')">📑 Slides Prep Info (185)</button>
-                    <button id="tabFilterUnattempted" class="filter-tab" onclick="setPaletteFilter('unattempted')">Unattempted</button>
-                    <button id="tabFilterMistakes" class="filter-tab" onclick="setPaletteFilter('incorrect')">Mistakes</button>
-                    <button id="tabFilterFlagged" class="filter-tab" onclick="setPaletteFilter('flagged')">⭐ Flagged</button>
+                    <button id="tabFilterAll" class="filter-tab active" onclick="switchSection('all')">All (330)</button>
+                    <button id="tabFilterAssign" class="filter-tab accent-assignment" onclick="switchSection('assignment')">📘 Assign (120)</button>
+                    <button id="tabFilterMsq" class="filter-tab accent-msq" onclick="switchSection('msq')">🧩 MSQ (25)</button>
+                    <button id="tabFilterSlides" class="filter-tab accent-slides" onclick="switchSection('slides')">📑 Slides (185)</button>
+                </div>
+                <div class="status-ribbon-row">
+                    <button id="tabStatusAll" class="filter-tab active" style="flex:1" onclick="setStatusFilter('all')">All Status</button>
+                    <button id="tabFilterUnattempted" class="filter-tab" style="flex:1" onclick="setStatusFilter('unattempted')">Unattempted</button>
+                    <button id="tabFilterMistakes" class="filter-tab" style="flex:1" onclick="setStatusFilter('incorrect')">Mistakes</button>
+                    <button id="tabFilterFlagged" class="filter-tab" style="flex:1" onclick="setStatusFilter('flagged')">⭐ Flagged</button>
                 </div>
 
                 <!-- Week Isolator -->
@@ -1613,32 +1782,48 @@
 
         // Fisher-Yates array shuffling
         function shuffleArray(arr) {
-            const a = JSON.parse(JSON.stringify(arr));
-            for (let i = a.length - 1; i > 0; i--) {
+            const array = JSON.parse(JSON.stringify(arr));
+            for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
-                const temp = a[i];
-                a[i] = a[j];
-                a[j] = temp;
+                [array[i], array[j]] = [array[j], array[i]];
             }
-            return a;
+            return array;
         }
 
-        // State variables
-        let orderMode = 'shuffled'; // Shuffled by default as requested!
-        let questions = shuffleArray(RAW_QUESTIONS);
+        // =========================================================================
+        // CBT SIMULATOR STATE & PERSISTENCE
+        // =========================================================================
+        let currentSection = 'all'; // 'all' | 'assignment' | 'msq' | 'slides'
+        let statusFilter = 'all';   // 'all' | 'unattempted' | 'incorrect' | 'flagged'
+        let selectedWeekFilter = 'all';
+        let orderMode = 'shuffled'; // 'shuffled' | 'sequential'
+        let viewMode = 'focus';     // 'focus' | 'scroll'
         let currentIndex = 0;
-        let viewMode = 'focus'; // 'focus' or 'scroll'
-        let paletteFilter = 'all'; // 'all', 'assignment', 'msq', 'unattempted', 'incorrect', 'flagged'
-        let selectedWeekFilter = 'all'; // 'all' or 1..12
 
-        // User answers state: index -> { selected: Array, isCorrect: bool|null, flagged: bool, submitted: bool }
+        // Master User State dictionary keyed permanently by question orig_id
+        // Ensures responses, marks, and flags are NEVER lost when switching sections!
+        const masterState = {};
+        function getQuestionState(q) {
+            if (!masterState[q.orig_id]) {
+                masterState[q.orig_id] = {
+                    selected: [],
+                    isCorrect: null,
+                    flagged: false,
+                    submitted: false
+                };
+            }
+            return masterState[q.orig_id];
+        }
+
+        // Currently loaded questions pool
+        let questions = shuffleArray(RAW_QUESTIONS);
         let userState = {};
 
         // Timer State: 180 minutes
         const TOTAL_SECONDS = 180 * 60;
         let timeRemaining = TOTAL_SECONDS;
-        let timerInterval = null;
         let isTimerPaused = false;
+        let timerInterval = null;
 
         const WEEK_NAMES = {
             1: "Week 1: Foundations & Probability",
@@ -1655,22 +1840,134 @@
             12: "Week 12: Agentic AI & Autonomous Vision"
         };
 
-        // Initialize Application
+        // Initialize Exam
         window.addEventListener('DOMContentLoaded', () => {
-            buildQuiz();
+            initMasterState();
+            switchSection('all');
             startTimer();
             setupKeyboardShortcuts();
         });
 
+        function initMasterState() {
+            RAW_QUESTIONS.forEach(q => {
+                getQuestionState(q);
+            });
+        }
+
+        // =========================================================================
+        // SECTION SWITCHING & ISOLATED SECTION LOADING
+        // =========================================================================
+        function switchSection(sec) {
+            currentSection = sec;
+            statusFilter = 'all';
+            selectedWeekFilter = 'all';
+
+            // Sync Section Selector Buttons (Main Panel)
+            const secButtons = ['all', 'assign', 'msq', 'slides'];
+            secButtons.forEach(s => {
+                const btn = document.getElementById(`secBtn_${s}`);
+                const activeKey = (s === 'assign') ? 'assignment' : s;
+                if (btn) btn.classList.toggle('active', sec === activeKey);
+            });
+
+            // Sync Sidebar Section Tabs
+            const tabAll = document.getElementById('tabFilterAll');
+            const tabAssign = document.getElementById('tabFilterAssign');
+            const tabMsq = document.getElementById('tabFilterMsq');
+            const tabSlides = document.getElementById('tabFilterSlides');
+
+            if (tabAll) tabAll.classList.toggle('active', sec === 'all');
+            if (tabAssign) tabAssign.classList.toggle('active', sec === 'assignment');
+            if (tabMsq) tabMsq.classList.toggle('active', sec === 'msq');
+            if (tabSlides) tabSlides.classList.toggle('active', sec === 'slides');
+
+            // Reset Status Filter Tabs
+            updateStatusFilterTabs();
+
+            // Reset Week filter select dropdown to 'all'
+            const weekSelect = document.getElementById('weekSelect');
+            if (weekSelect) weekSelect.value = 'all';
+
+            // Filter Question Pool strictly for this section
+            let pool = [];
+            if (sec === 'assignment') {
+                pool = RAW_QUESTIONS.filter(q => q.section === 'Assignment Bank');
+            } else if (sec === 'msq') {
+                pool = RAW_QUESTIONS.filter(q => q.section === 'MSQ Bank');
+            } else if (sec === 'slides') {
+                pool = RAW_QUESTIONS.filter(q => q.section === 'Slides Prep Info');
+            } else {
+                pool = RAW_QUESTIONS;
+            }
+
+            if (orderMode === 'shuffled') {
+                questions = shuffleArray(pool);
+            } else {
+                questions = JSON.parse(JSON.stringify(pool));
+            }
+
+            currentIndex = 0;
+
+            // Update Header Subtitle and Section Active Badge
+            updateSectionHeaderInfo();
+
+            // Build Quiz View for this section only
+            buildQuiz();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Backward compatibility for any call to setPaletteFilter
+        function setPaletteFilter(filter) {
+            if (['all', 'assignment', 'msq', 'slides'].includes(filter)) {
+                switchSection(filter);
+            } else {
+                setStatusFilter(filter);
+            }
+        }
+
+        function updateSectionHeaderInfo() {
+            const subtitle = document.getElementById('headerSubtitle');
+            const badge = document.getElementById('secCurrentBadge');
+
+            if (currentSection === 'assignment') {
+                if (subtitle) subtitle.innerHTML = 'IIT Guwahati · <strong>📘 Assignment Bank (120 Questions)</strong>';
+                if (badge) {
+                    badge.innerHTML = '📘 Assignment Bank (120 Questions Loaded)';
+                    badge.style.borderColor = '#3b82f6';
+                    badge.style.color = '#60a5fa';
+                    badge.style.background = 'rgba(59, 130, 246, 0.15)';
+                }
+            } else if (currentSection === 'msq') {
+                if (subtitle) subtitle.innerHTML = 'IIT Guwahati · <strong>🧩 MSQ Bank (25 Multi-Select Questions)</strong>';
+                if (badge) {
+                    badge.innerHTML = '🧩 MSQ Bank (25 Questions Loaded)';
+                    badge.style.borderColor = '#a855f7';
+                    badge.style.color = '#c084fc';
+                    badge.style.background = 'rgba(168, 85, 247, 0.15)';
+                }
+            } else if (currentSection === 'slides') {
+                if (subtitle) subtitle.innerHTML = 'IIT Guwahati · <strong>📑 Slides Prep Info (185 Lecture Slide Questions)</strong>';
+                if (badge) {
+                    badge.innerHTML = '📑 Slides Prep Info (185 Questions Loaded)';
+                    badge.style.borderColor = '#f59e0b';
+                    badge.style.color = '#fbbf24';
+                    badge.style.background = 'rgba(245, 158, 11, 0.15)';
+                }
+            } else {
+                if (subtitle) subtitle.innerHTML = 'IIT Guwahati · <strong>All 330 Master Questions (120 Assign + 25 MSQ + 185 Slides Prep)</strong>';
+                if (badge) {
+                    badge.innerHTML = '🌐 All 330 Questions Loaded';
+                    badge.style.borderColor = 'rgba(6, 182, 212, 0.4)';
+                    badge.style.color = 'var(--border-focus)';
+                    badge.style.background = 'rgba(6, 182, 212, 0.15)';
+                }
+            }
+        }
+
         function buildQuiz() {
             userState = {};
             for (let i = 0; i < questions.length; i++) {
-                userState[i] = {
-                    selected: [],
-                    isCorrect: null,
-                    flagged: false,
-                    submitted: false
-                };
+                userState[i] = getQuestionState(questions[i]);
             }
             renderCardsOnce();
             renderPalette();
@@ -1678,7 +1975,75 @@
             updateFocusView();
         }
 
-        // Render all question cards into DOM
+        // =========================================================================
+        // STATUS & WEEK FILTERING WITHIN LOADED SECTION
+        // =========================================================================
+        function setStatusFilter(status) {
+            statusFilter = status;
+            updateStatusFilterTabs();
+            renderPalette();
+            updateFocusView();
+
+            const filtered = getFilteredQuestionIndices();
+            if (filtered.length > 0 && !filtered.includes(currentIndex)) {
+                jumpToQuestion(filtered[0]);
+            } else {
+                updateFocusNavButtons();
+            }
+        }
+
+        function updateStatusFilterTabs() {
+            const tabAll = document.getElementById('tabStatusAll');
+            const tabUnatt = document.getElementById('tabFilterUnattempted');
+            const tabMist = document.getElementById('tabFilterMistakes');
+            const tabFlag = document.getElementById('tabFilterFlagged');
+
+            if (tabAll) tabAll.classList.toggle('active', statusFilter === 'all');
+            if (tabUnatt) tabUnatt.classList.toggle('active', statusFilter === 'unattempted');
+            if (tabMist) tabMist.classList.toggle('active', statusFilter === 'incorrect');
+            if (tabFlag) tabFlag.classList.toggle('active', statusFilter === 'flagged');
+        }
+
+        function handleWeekFilterChange(val) {
+            selectedWeekFilter = val;
+            renderPalette();
+            updateFocusView();
+
+            const filtered = getFilteredQuestionIndices();
+            if (filtered.length > 0 && !filtered.includes(currentIndex)) {
+                jumpToQuestion(filtered[0]);
+            } else {
+                updateFocusNavButtons();
+            }
+        }
+
+        function isQuestionMatchingFilter(idx) {
+            if (idx < 0 || idx >= questions.length) return false;
+            const q = questions[idx];
+            const s = userState[idx];
+            const isMsq = !!q.is_msq;
+
+            if (selectedWeekFilter !== 'all' && q.week != selectedWeekFilter) return false;
+            if (statusFilter === 'unattempted' && (!isMsq ? s.selected.length > 0 : s.submitted)) return false;
+            if (statusFilter === 'incorrect' && s.isCorrect !== false) return false;
+            if (statusFilter === 'flagged' && !s.flagged) return false;
+
+            return true;
+        }
+
+        function getFilteredQuestionIndices() {
+            const indices = [];
+            for (let i = 0; i < questions.length; i++) {
+                if (isQuestionMatchingFilter(i)) {
+                    indices.push(i);
+                }
+            }
+            return indices;
+        }
+
+        // =========================================================================
+        // CARDS RENDERING & QUESTION INDEXING
+        // =========================================================================
         function renderCardsOnce() {
             const container = document.getElementById('questionsContainer');
             container.innerHTML = '';
@@ -1750,11 +2115,10 @@
                             <span><strong>Exam Speed Shortcut:</strong> ${escapeHtml(q.shortcut)}</span>
                         </div>
                         ` : ''}
-                        ${q.methodology ? `
-                        <div class="exp-methodology-banner">
-                            <strong>Detailed Step-by-Step Breakdown & Verification:</strong><br>${escapeHtml(q.methodology)}
+                        <div class="exp-body">
+                            <div class="exp-text-rule">${escapeHtml(q.rule)}</div>
+                            ${q.methodology ? `<div class="exp-methodology-banner">${escapeHtml(q.methodology)}</div>` : ''}
                         </div>
-                        ` : ''}
                     </div>
                 `;
 
@@ -1786,27 +2150,54 @@
                 `;
 
                 container.appendChild(card);
+
+                // Restore persistent UI state if user already answered/submitted
+                const s = userState[idx];
+                if (s.submitted || s.selected.length > 0) {
+                    if (isMsq) {
+                        s.selected.forEach(optIdx => {
+                            const optEl = document.getElementById(`q_${idx}_opt_${optIdx}`);
+                            if (optEl) optEl.classList.add('selected');
+                        });
+                        if (s.submitted) {
+                            applyMsqAnswerStyles(idx);
+                            const btn = document.getElementById(`btnSubmitMsq_${idx}`);
+                            if (btn) {
+                                btn.disabled = true;
+                                btn.innerText = '✓ Response Recorded';
+                                btn.style.opacity = '0.6';
+                            }
+                            const exp = document.getElementById(`qExp_${idx}`);
+                            if (exp) exp.classList.add('visible');
+                        }
+                    } else {
+                        const optIdx = s.selected[0];
+                        applyAnswerStyles(idx, optIdx);
+                        const exp = document.getElementById(`qExp_${idx}`);
+                        if (exp) exp.classList.add('visible');
+                    }
+                }
+
+                if (s.flagged) {
+                    const btn = document.getElementById(`flagBtn_${idx}`);
+                    if (btn) btn.classList.add('active');
+                }
             });
 
             triggerMathRendering(container);
         }
 
-        // Render question palette matrix
+        // =========================================================================
+        // PALETTE MATRIX & QUICK NAVIGATION
+        // =========================================================================
         function renderPalette() {
             const grid = document.getElementById('paletteGrid');
             grid.innerHTML = '';
 
             questions.forEach((q, idx) => {
                 const qState = userState[idx];
-                const isMsq = !!q.is_msq;
 
-                if (selectedWeekFilter !== 'all' && q.week != selectedWeekFilter) return;
-                if (paletteFilter === 'assignment' && q.section !== 'Assignment Bank') return;
-                if (paletteFilter === 'msq' && q.section !== 'MSQ Bank') return;
-                if (paletteFilter === 'slides' && q.section !== 'Slides Prep Info') return;
-                if (paletteFilter === 'unattempted' && (!isMsq ? qState.selected.length > 0 : qState.submitted)) return;
-                if (paletteFilter === 'incorrect' && qState.isCorrect !== false) return;
-                if (paletteFilter === 'flagged' && !qState.flagged) return;
+                if (!isQuestionMatchingFilter(idx)) return;
 
                 const node = document.createElement('div');
                 node.id = `paletteNode_${idx}`;
@@ -1820,7 +2211,7 @@
 
                 node.className = nodeClass;
                 node.innerText = idx + 1;
-                node.title = `Q${idx + 1}: [${q.section}] Week ${q.week}: ${q.topic}`;
+                node.title = `Q${idx + 1} (${q.orig_id}): Week ${q.week} - ${q.topic}`;
                 node.onclick = () => jumpToQuestion(idx);
 
                 grid.appendChild(node);
@@ -1833,232 +2224,185 @@
             document.getElementById('attemptedCounter').innerText = `${attemptedCount}/${questions.length} Answered`;
         }
 
-        // Single Choice Selection Handler
+        // =========================================================================
+        // QUESTION ANSWERING LOGIC
+        // =========================================================================
         function handleOptionSelect(qIdx, optIdx) {
             const qState = userState[qIdx];
-            if (qState.submitted || qState.selected.length > 0) return; // Locked once answered
+            if (qState.submitted) return;
 
             const q = questions[qIdx];
             const isCorrect = (optIdx === q.correct_index);
 
             qState.selected = [optIdx];
-            qState.submitted = true;
             qState.isCorrect = isCorrect;
+            qState.submitted = true;
 
-            const card = document.getElementById(`qCard_${qIdx}`);
-            if (card) {
-                q.options.forEach((_, i) => {
-                    const optEl = document.getElementById(`q_${qIdx}_opt_${i}`);
-                    const pillEl = optEl.querySelector('.status-pill');
-                    optEl.classList.add('locked');
+            applyAnswerStyles(qIdx, optIdx);
 
-                    if (i === q.correct_index) {
-                        if (optIdx === i) {
-                            optEl.classList.add('correct-choice');
-                            pillEl.innerText = '✓ Correct!';
-                        } else {
-                            optEl.classList.add('revealed-answer');
-                            pillEl.innerText = '✓ Correct Answer';
-                        }
-                    } else if (i === optIdx) {
-                        optEl.classList.add('wrong-choice');
-                        pillEl.innerText = '✗ Your Choice';
-                    }
-                });
+            const expDrawer = document.getElementById(`qExp_${qIdx}`);
+            if (expDrawer) expDrawer.classList.add('visible');
 
-                const expDrawer = document.getElementById(`qExp_${qIdx}`);
-                if (expDrawer) {
-                    expDrawer.classList.add('open');
-                    triggerMathRendering(expDrawer);
-                }
-            }
-
-            const paletteNode = document.getElementById(`paletteNode_${qIdx}`);
-            if (paletteNode) {
-                paletteNode.classList.remove('answered-correct', 'answered-wrong');
-                paletteNode.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
-            }
-
+            renderPalette();
             updateStats();
         }
 
-        // MSQ Toggle Option Handler
-        function handleMsqOptionToggle(qIdx, optIdx) {
-            const qState = userState[qIdx];
-            if (qState.submitted) return; // Locked after submission
+        function applyAnswerStyles(qIdx, selectedOptIdx) {
+            const q = questions[qIdx];
+            const isCorrect = (selectedOptIdx === q.correct_index);
 
-            const optEl = document.getElementById(`q_${qIdx}_opt_${optIdx}`);
-            const selIdx = qState.selected.indexOf(optIdx);
+            for (let i = 0; i < q.options.length; i++) {
+                const optEl = document.getElementById(`q_${qIdx}_opt_${i}`);
+                if (!optEl) continue;
 
-            if (selIdx > -1) {
-                qState.selected.splice(selIdx, 1);
-                if (optEl) optEl.classList.remove('msq-checked');
-            } else {
-                qState.selected.push(optIdx);
-                if (optEl) optEl.classList.add('msq-checked');
-            }
-
-            const btn = document.getElementById(`btnSubmitMsq_${qIdx}`);
-            if (btn) {
-                btn.innerText = qState.selected.length > 0 
-                    ? `✓ Submit MSQ (${qState.selected.length} selected)` 
-                    : `✓ Submit MSQ Response`;
+                if (i === q.correct_index) {
+                    optEl.classList.add('correct');
+                    const pill = optEl.querySelector('.status-pill');
+                    if (pill) pill.innerText = 'Correct';
+                } else if (i === selectedOptIdx && !isCorrect) {
+                    optEl.classList.add('incorrect');
+                    const pill = optEl.querySelector('.status-pill');
+                    if (pill) pill.innerText = 'Your Answer';
+                }
             }
         }
 
-        // MSQ Submission Handler
+        function handleMsqOptionToggle(qIdx, optIdx) {
+            const qState = userState[qIdx];
+            if (qState.submitted) return;
+
+            const idxPos = qState.selected.indexOf(optIdx);
+            if (idxPos === -1) {
+                qState.selected.push(optIdx);
+            } else {
+                qState.selected.splice(idxPos, 1);
+            }
+
+            const optEl = document.getElementById(`q_${qIdx}_opt_${optIdx}`);
+            if (optEl) {
+                optEl.classList.toggle('selected', idxPos === -1);
+            }
+        }
+
         function submitMsqAnswer(qIdx) {
             const qState = userState[qIdx];
             if (qState.submitted) return;
 
             if (qState.selected.length === 0) {
-                alert("Please select at least one option before submitting this MSQ.");
+                alert("Please select at least one option before submitting this MSQ!");
                 return;
             }
 
             const q = questions[qIdx];
+            const correctSet = new Set(q.correct_indices);
+            const userSet = new Set(qState.selected);
+
+            const isCorrect = (correctSet.size === userSet.size && [...userSet].every(x => correctSet.has(x)));
+            qState.isCorrect = isCorrect;
             qState.submitted = true;
 
-            const userSorted = [...qState.selected].sort((a,b) => a-b);
-            const goldSorted = [...q.correct_indices].sort((a,b) => a-b);
-            const isCorrect = (userSorted.length === goldSorted.length && userSorted.every((v, i) => v === goldSorted[i]));
-            qState.isCorrect = isCorrect;
+            applyMsqAnswerStyles(qIdx);
 
-            const card = document.getElementById(`qCard_${qIdx}`);
-            if (card) {
-                q.options.forEach((_, i) => {
-                    const optEl = document.getElementById(`q_${qIdx}_opt_${i}`);
-                    const pillEl = optEl.querySelector('.status-pill');
-                    optEl.classList.add('locked');
-
-                    const isGold = goldSorted.includes(i);
-                    const isUser = userSorted.includes(i);
-
-                    if (isGold && isUser) {
-                        optEl.classList.add('correct-choice');
-                        pillEl.innerText = '✓ Correct!';
-                    } else if (isGold && !isUser) {
-                        optEl.classList.add('revealed-answer');
-                        pillEl.innerText = '✓ Correct (Missed)';
-                    } else if (!isGold && isUser) {
-                        optEl.classList.add('wrong-choice');
-                        pillEl.innerText = '✗ Incorrect Choice';
-                    }
-                });
-
-                const submitBtn = document.getElementById(`btnSubmitMsq_${qIdx}`);
-                if (submitBtn) {
-                    submitBtn.disabled = true;
-                    submitBtn.innerText = isCorrect ? '✓ MSQ Correctly Solved!' : '✗ Evaluated';
-                }
-
-                const expDrawer = document.getElementById(`qExp_${qIdx}`);
-                if (expDrawer) {
-                    expDrawer.classList.add('open');
-                    triggerMathRendering(expDrawer);
-                }
+            const btn = document.getElementById(`btnSubmitMsq_${qIdx}`);
+            if (btn) {
+                btn.disabled = true;
+                btn.innerText = '✓ Response Recorded';
+                btn.style.opacity = '0.6';
             }
 
-            const paletteNode = document.getElementById(`paletteNode_${qIdx}`);
-            if (paletteNode) {
-                paletteNode.classList.remove('answered-correct', 'answered-wrong');
-                paletteNode.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
-            }
+            const expDrawer = document.getElementById(`qExp_${qIdx}`);
+            if (expDrawer) expDrawer.classList.add('visible');
 
+            renderPalette();
             updateStats();
         }
 
-        // Clear current question answer for retry
+        function applyMsqAnswerStyles(qIdx) {
+            const q = questions[qIdx];
+            const qState = userState[qIdx];
+            const correctSet = new Set(q.correct_indices);
+            const userSet = new Set(qState.selected);
+
+            for (let i = 0; i < q.options.length; i++) {
+                const optEl = document.getElementById(`q_${qIdx}_opt_${i}`);
+                if (!optEl) continue;
+
+                const isTargetCorrect = correctSet.has(i);
+                const isUserSelected = userSet.has(i);
+
+                if (isTargetCorrect) {
+                    optEl.classList.add('correct');
+                    const pill = optEl.querySelector('.status-pill');
+                    if (pill) pill.innerText = isUserSelected ? '✓ Correct Choice' : 'Correct (Missed)';
+                } else if (isUserSelected) {
+                    optEl.classList.add('incorrect');
+                    const pill = optEl.querySelector('.status-pill');
+                    if (pill) pill.innerText = '✗ Incorrect Choice';
+                }
+            }
+        }
+
         function clearCurrentAnswer() {
             const qIdx = currentIndex;
             const qState = userState[qIdx];
             const q = questions[qIdx];
 
             qState.selected = [];
-            qState.submitted = false;
             qState.isCorrect = null;
+            qState.submitted = false;
 
-            const card = document.getElementById(`qCard_${qIdx}`);
-            if (card) {
-                q.options.forEach((_, i) => {
-                    const optEl = document.getElementById(`q_${qIdx}_opt_${i}`);
-                    const pillEl = optEl.querySelector('.status-pill');
+            for (let i = 0; i < q.options.length; i++) {
+                const optEl = document.getElementById(`q_${qIdx}_opt_${i}`);
+                if (optEl) {
                     optEl.className = q.is_msq ? 'option-box msq-option' : 'option-box';
-                    pillEl.innerText = '';
-                });
-
-                if (q.is_msq) {
-                    const submitBtn = document.getElementById(`btnSubmitMsq_${qIdx}`);
-                    if (submitBtn) {
-                        submitBtn.disabled = false;
-                        submitBtn.innerText = '✓ Submit MSQ Response';
-                    }
+                    const pill = optEl.querySelector('.status-pill');
+                    if (pill) pill.innerText = '';
                 }
-
-                const expDrawer = document.getElementById(`qExp_${qIdx}`);
-                if (expDrawer) expDrawer.classList.remove('open');
             }
 
-            const paletteNode = document.getElementById(`paletteNode_${qIdx}`);
-            if (paletteNode) {
-                paletteNode.classList.remove('answered-correct', 'answered-wrong');
+            if (q.is_msq) {
+                const btn = document.getElementById(`btnSubmitMsq_${qIdx}`);
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerText = '✓ Submit MSQ Response';
+                    btn.style.opacity = '1';
+                }
             }
 
+            const expDrawer = document.getElementById(`qExp_${qIdx}`);
+            if (expDrawer) expDrawer.classList.remove('visible');
+
+            renderPalette();
             updateStats();
         }
 
-        // Flag toggle
         function toggleFlag(idx) {
             const qState = userState[idx];
             qState.flagged = !qState.flagged;
 
-            const cardFlagBtn = document.getElementById(`flagBtn_${idx}`);
-            if (cardFlagBtn) {
-                cardFlagBtn.classList.toggle('active', qState.flagged);
-                cardFlagBtn.innerHTML = qState.flagged ? `<span>⭐</span> Flagged` : `<span>⭐</span> Mark for Review`;
-            }
-
-            const paletteNode = document.getElementById(`paletteNode_${idx}`);
-            if (paletteNode) {
-                paletteNode.classList.toggle('is-flagged', qState.flagged);
+            const flagBtn = document.getElementById(`flagBtn_${idx}`);
+            if (flagBtn) {
+                flagBtn.classList.toggle('active', qState.flagged);
             }
 
             if (idx === currentIndex) {
-                updateFocusNavButtons();
+                const btnFlagFocus = document.getElementById('btnFlagFocus');
+                if (btnFlagFocus) {
+                    btnFlagFocus.classList.toggle('active', qState.flagged);
+                    btnFlagFocus.innerHTML = qState.flagged ? `<span>⭐</span> Flagged <span class="key-hint">F</span>` : `<span>⭐</span> Mark for Review <span class="key-hint">F</span>`;
+                }
             }
+
+            renderPalette();
         }
 
         function toggleCurrentFlag() {
             toggleFlag(currentIndex);
         }
 
-        // Navigation
-        function isQuestionMatchingFilter(idx) {
-            if (idx < 0 || idx >= questions.length) return false;
-            const q = questions[idx];
-            const isMsq = !!q.is_msq;
-
-            if (selectedWeekFilter !== 'all' && q.week != selectedWeekFilter) return false;
-            if (paletteFilter === 'assignment' && q.section !== 'Assignment Bank') return false;
-            if (paletteFilter === 'msq' && q.section !== 'MSQ Bank') return false;
-            if (paletteFilter === 'slides' && q.section !== 'Slides Prep Info') return false;
-            if (paletteFilter === 'unattempted' && (!isMsq ? userState[idx].selected.length > 0 : userState[idx].submitted)) return false;
-            if (paletteFilter === 'incorrect' && userState[idx].isCorrect !== false) return false;
-            if (paletteFilter === 'flagged' && !userState[idx].flagged) return false;
-
-            return true;
-        }
-
-        function getFilteredQuestionIndices() {
-            const indices = [];
-            for (let i = 0; i < questions.length; i++) {
-                if (isQuestionMatchingFilter(i)) {
-                    indices.push(i);
-                }
-            }
-            return indices;
-        }
-
+        // =========================================================================
+        // NAVIGATION & DOCK BUTTONS
+        // =========================================================================
         function jumpToQuestion(idx) {
             const prevIndex = currentIndex;
             currentIndex = idx;
@@ -2096,12 +2440,10 @@
                 return;
             }
 
-            // Find next index in current filtered section strictly greater than currentIndex
             const nextIdx = filtered.find(i => i > currentIndex);
             if (nextIdx !== undefined) {
                 jumpToQuestion(nextIdx);
             } else {
-                // Reached the end of the active section / filtered subset
                 showResultsModal();
             }
         }
@@ -2110,7 +2452,6 @@
             const filtered = getFilteredQuestionIndices();
             if (filtered.length === 0) return;
 
-            // Find previous index in current filtered section strictly less than currentIndex
             for (let k = filtered.length - 1; k >= 0; k--) {
                 if (filtered[k] < currentIndex) {
                     jumpToQuestion(filtered[k]);
@@ -2158,7 +2499,7 @@
             if (btnNext) {
                 const isLastInFiltered = (filtered.length === 0 || posInFiltered === filtered.length - 1);
                 if (isLastInFiltered) {
-                    const isAll = (paletteFilter === 'all' && selectedWeekFilter === 'all');
+                    const isAll = (currentSection === 'all' && statusFilter === 'all' && selectedWeekFilter === 'all');
                     btnNext.innerHTML = isAll ? 'Finish Exam 🏁' : 'End of Section 🏁';
                     btnNext.className = 'dock-btn accent';
                 } else {
@@ -2185,91 +2526,42 @@
 
             updateFocusView();
             renderPalette();
+            if (mode === 'focus') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         }
 
-        // Order Switching: Shuffled vs Sequential
+        // Order Mode
         function setOrderMode(mode) {
             if (orderMode === mode) return;
             orderMode = mode;
             document.getElementById('btnOrderShuffled').classList.toggle('active', mode === 'shuffled');
             document.getElementById('btnOrderSequential').classList.toggle('active', mode === 'sequential');
-
-            if (mode === 'shuffled') {
-                questions = shuffleArray(RAW_QUESTIONS);
-            } else {
-                questions = JSON.parse(JSON.stringify(RAW_QUESTIONS)).sort((a, b) => {
-                    if (a.week !== b.week) return a.week - b.week;
-                    if (a.is_msq !== b.is_msq) return a.is_msq ? 1 : -1;
-                    return a.q_num - b.q_num;
-                });
-            }
-            currentIndex = 0;
-            buildQuiz();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            switchSection(currentSection);
         }
 
-        // Palette Filter
-        function setPaletteFilter(filter) {
-            paletteFilter = filter;
-            document.getElementById('tabFilterAll').classList.toggle('active', filter === 'all');
-            document.getElementById('tabFilterAssign').classList.toggle('active', filter === 'assignment');
-            document.getElementById('tabFilterMsq').classList.toggle('active', filter === 'msq');
-            const tabSlides = document.getElementById('tabFilterSlides');
-            if (tabSlides) tabSlides.classList.toggle('active', filter === 'slides');
-            document.getElementById('tabFilterUnattempted').classList.toggle('active', filter === 'unattempted');
-            document.getElementById('tabFilterMistakes').classList.toggle('active', filter === 'incorrect');
-            document.getElementById('tabFilterFlagged').classList.toggle('active', filter === 'flagged');
-
-            renderPalette();
-            updateFocusView();
-
-            // Section boundary snap: automatically jump to the first question in the selected section
-            const filtered = getFilteredQuestionIndices();
-            if (filtered.length > 0 && !filtered.includes(currentIndex)) {
-                jumpToQuestion(filtered[0]);
-            } else {
-                updateFocusNavButtons();
-            }
-        }
-
-        // Week Filter
-        function handleWeekFilterChange(val) {
-            selectedWeekFilter = val;
-            renderPalette();
-            updateFocusView();
-
-            // Week boundary snap: jump to the first question in the selected week
-            const filtered = getFilteredQuestionIndices();
-            if (filtered.length > 0 && !filtered.includes(currentIndex)) {
-                jumpToQuestion(filtered[0]);
-            } else {
-                updateFocusNavButtons();
-            }
-        }
-
-        // Reshuffle Exam Order
         function reshuffleQuiz() {
-            if (confirm("Reshuffle all 330 questions? This will generate a new randomized exam sequence.")) {
+            if (confirm(`Reshuffle questions in current section? This will randomize your question order.`)) {
                 orderMode = 'shuffled';
                 document.getElementById('btnOrderShuffled').classList.add('active');
                 document.getElementById('btnOrderSequential').classList.remove('active');
-                questions = shuffleArray(RAW_QUESTIONS);
-                currentIndex = 0;
-                buildQuiz();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                switchSection(currentSection);
             }
         }
 
-        // Reset All Answers
         function resetAllAnswers() {
             if (confirm("Reset all your responses and clear your score?")) {
-                currentIndex = 0;
+                Object.keys(masterState).forEach(k => {
+                    masterState[k] = { selected: [], isCorrect: null, flagged: false, submitted: false };
+                });
                 buildQuiz();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
 
-        // Update live stats
+        // =========================================================================
+        // STATS, PROGRESS & TIMER
+        // =========================================================================
         function updateStats() {
             let correct = 0;
             let attempted = 0;
@@ -2291,7 +2583,6 @@
             document.getElementById('attemptedCounter').innerText = `${attempted}/${questions.length} Answered`;
         }
 
-        // Timer Functions
         function startTimer() {
             clearInterval(timerInterval);
             timerInterval = setInterval(() => {
@@ -2308,21 +2599,24 @@
         }
 
         function updateTimerDisplay() {
-            const hours = Math.floor(timeRemaining / 3600);
-            const minutes = Math.floor((timeRemaining % 3600) / 60);
-            const seconds = timeRemaining % 60;
-            const str = hours > 0 
-                ? `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
-                : `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-            document.getElementById('timerDisplay').innerText = str;
+            const m = Math.floor(timeRemaining / 60);
+            const s = timeRemaining % 60;
+            document.getElementById('timerDisplay').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
         }
 
-        // Modal Scorecard Dialog
-        function showResultsModal() {
-            let correct = 0;
-            let incorrect = 0;
-            let attempted = 0;
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        }
 
+        // =========================================================================
+        // SCORECARD RESULTS MODAL
+        // =========================================================================
+        function showResultsModal() {
+            let correct = 0, incorrect = 0, attempted = 0;
             let assignTotal = 0, assignCorrect = 0;
             let msqTotal = 0, msqCorrect = 0;
             let slidesTotal = 0, slidesCorrect = 0;
@@ -2356,16 +2650,27 @@
                 }
             });
 
-            const pct = Math.round((correct / questions.length) * 100);
-            document.getElementById('modalScoreNum').innerText = correct;
+            const pct = questions.length > 0 ? Math.round((correct / questions.length) * 100) : 0;
+            const acc = attempted > 0 ? Math.round((correct / attempted) * 100) : 0;
 
+            document.getElementById('modalScoreNum').innerText = `${correct} / ${questions.length}`;
+            document.getElementById('modalAccVal').innerText = `${acc}%`;
+            document.getElementById('modalMistakesVal').innerText = `${incorrect}`;
+            document.getElementById('modalMistakeBtnCount').innerText = `${incorrect}`;
+
+            const elapsedSec = TOTAL_SECONDS - timeRemaining;
+            const elMin = Math.floor(elapsedSec / 60);
+            const elSec = elapsedSec % 60;
+            document.getElementById('modalTimeVal').innerText = `${String(elMin).padStart(2, '0')}:${String(elSec).padStart(2, '0')}`;
+
+            // Tier Evaluation
             const badge = document.getElementById('modalTierBadge');
             const narrative = document.getElementById('modalTierNarrative');
 
             if (pct >= 90) {
                 badge.className = 'tier-tag gold';
                 badge.innerText = '🏆 Elite + Gold Medalist (>=90%)';
-                narrative.innerText = 'Exceptional Mastery! You have fully dominated both the Assignment Bank and the MSQ multi-select challenge.';
+                narrative.innerText = 'Exceptional Mastery! You have fully dominated this exam section.';
             } else if (pct >= 75) {
                 badge.className = 'tier-tag silver';
                 badge.innerText = '🥈 Elite + Silver Medalist (75-89%)';
@@ -2373,7 +2678,7 @@
             } else if (pct >= 60) {
                 badge.className = 'tier-tag bronze';
                 badge.innerText = '🥉 Elite Certified (60-74%)';
-                narrative.innerText = 'Solid Passing Score! Review the weak weeks and missed MSQs below to reach the Gold tier.';
+                narrative.innerText = 'Solid Passing Score! Review the weak weeks and missed questions to reach the Gold tier.';
             } else if (pct >= 40) {
                 badge.className = 'tier-tag pass';
                 badge.innerText = '✅ Qualified / Passed (40-59%)';
@@ -2384,24 +2689,12 @@
                 narrative.innerText = 'Keep practicing! Review the exam shortcuts and re-attempt the simulation.';
             }
 
-            const acc = attempted > 0 ? Math.round((correct / attempted) * 100) : 0;
-            document.getElementById('modalAccVal').innerText = `${acc}%`;
-
-            const elapsedSec = TOTAL_SECONDS - timeRemaining;
-            const elMin = Math.floor(elapsedSec / 60);
-            const elSec = elapsedSec % 60;
-            document.getElementById('modalTimeVal').innerText = `${String(elMin).padStart(2, '0')}:${String(elSec).padStart(2, '0')}`;
-
-            document.getElementById('modalMistakesVal').innerText = incorrect;
-            document.getElementById('modalMistakeBtnCount').innerText = incorrect;
-
-            // Partition Breakdown Stats
+            // Section Splits
             const assignPct = assignTotal > 0 ? Math.round((assignCorrect / assignTotal) * 100) : 0;
-            const msqPct = msqTotal > 0 ? Math.round((msqCorrect / msqTotal) * 100) : 0;
-
             document.getElementById('splitAssignmentStat').innerText = `${assignCorrect}/${assignTotal} (${assignPct}%)`;
             document.getElementById('splitAssignmentBar').style.width = `${assignPct}%`;
 
+            const msqPct = msqTotal > 0 ? Math.round((msqCorrect / msqTotal) * 100) : 0;
             document.getElementById('splitMsqStat').innerText = `${msqCorrect}/${msqTotal} (${msqPct}%)`;
             document.getElementById('splitMsqBar').style.width = `${msqPct}%`;
 
@@ -2411,11 +2704,12 @@
             const elSlidesBar = document.getElementById('splitSlidesBar');
             if (elSlidesBar) elSlidesBar.style.width = `${slidesPct}%`;
 
-            // Render 12-week breakdown
+            // Week Breakdown
             let breakdownHtml = '';
             for (let w = 1; w <= 12; w++) {
                 const st = weekStats[w];
-                const wPct = st.total > 0 ? Math.round((st.correct / st.total) * 100) : 0;
+                if (st.total === 0) continue;
+                const wPct = Math.round((st.correct / st.total) * 100);
                 let barColor = '#ef4444';
                 if (wPct >= 80) barColor = '#10b981';
                 else if (wPct >= 60) barColor = '#06b6d4';
@@ -2444,11 +2738,15 @@
 
         function reviewMistakesOnly() {
             closeResultsModal();
-            setPaletteFilter('incorrect');
+            setStatusFilter('incorrect');
             const firstMistake = questions.findIndex((q, i) => userState[i].isCorrect === false);
             if (firstMistake !== -1) {
                 jumpToQuestion(firstMistake);
             }
+        }
+
+        function reviewMistakes() {
+            reviewMistakesOnly();
         }
 
         function retakeExamFromModal() {
@@ -2456,15 +2754,9 @@
             reshuffleQuiz();
         }
 
-        function toggleFullScreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(() => {});
-            } else {
-                if (document.exitFullscreen) document.exitFullscreen();
-            }
-        }
-
-        // Keyboard Shortcuts
+        // =========================================================================
+        // KEYBOARD SHORTCUTS
+        // =========================================================================
         function setupKeyboardShortcuts() {
             window.addEventListener('keydown', (e) => {
                 if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
