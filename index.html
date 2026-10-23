@@ -1572,6 +1572,242 @@
         .explanation-drawer.visible {
             display: flex !important;
         }
+
+        /* ==========================================================================
+           ELITE HOVER, DOCK INDICATION & NAVIGATION POLISH
+           ========================================================================== */
+        .dock-nav-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-bright);
+            border-radius: 20px;
+            font-size: 12px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            user-select: none;
+        }
+
+        .dock-sec-pill {
+            font-weight: 700;
+            color: var(--border-focus);
+            letter-spacing: 0.3px;
+        }
+
+        .dock-divider {
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 11px;
+        }
+
+        .dock-count-label {
+            color: var(--text-sub);
+            font-weight: 500;
+        }
+
+        .dock-count-label strong {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .dock-btn.finish-dock-btn {
+            background: linear-gradient(135deg, #10b981, #06b6d4) !important;
+            border-color: #10b981 !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 14px rgba(16, 185, 129, 0.4) !important;
+            font-weight: 700 !important;
+        }
+
+        .dock-btn.finish-dock-btn:hover {
+            filter: brightness(1.15) !important;
+            transform: translateY(-1px);
+        }
+
+        /* Option box hover enhancement */
+        .option-box:hover:not(.locked) {
+            background: var(--bg-option-hover) !important;
+            border-color: var(--border-focus) !important;
+            transform: translateX(3px) !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+        }
+
+        .option-box:hover:not(.locked) .option-circle {
+            border-color: var(--border-focus) !important;
+            color: #ffffff !important;
+            background: rgba(6, 182, 212, 0.15) !important;
+        }
+
+        .option-box.locked,
+        .option-box.correct-choice,
+        .option-box.wrong-choice,
+        .option-box.revealed-answer {
+            cursor: default !important;
+            transform: none !important;
+        }
+
+        /* Matrix item hover enhancement */
+        .matrix-item:hover {
+            border-color: var(--border-bright) !important;
+            color: var(--text-main);
+            transform: scale(1.12);
+            z-index: 5;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .matrix-item.answered-correct:hover {
+            background: rgba(16, 185, 129, 0.35) !important;
+            border-color: #34d399 !important;
+            color: #ffffff !important;
+        }
+
+        .matrix-item.answered-wrong:hover {
+            background: rgba(239, 68, 68, 0.35) !important;
+            border-color: #f87171 !important;
+            color: #ffffff !important;
+        }
+
+        .matrix-item.active-item:hover {
+            border-color: #38bdf8 !important;
+            transform: scale(1.12);
+        }
+
+        /* Section button hover enhancements */
+        .sec-selector-btn.accent-assignment:hover {
+            border-color: #3b82f6 !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.3) !important;
+        }
+
+        .sec-selector-btn.accent-msq:hover {
+            border-color: #a855f7 !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.3) !important;
+        }
+
+        .sec-selector-btn.accent-slides:hover {
+            border-color: #f59e0b !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.3) !important;
+        }
+
+        /* ==========================================================================
+           ELITE HOVER, DOCK INDICATION & NAVIGATION POLISH
+           ========================================================================== */
+        .dock-nav-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-bright);
+            border-radius: 20px;
+            font-size: 12px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            user-select: none;
+        }
+
+        .dock-sec-pill {
+            font-weight: 700;
+            color: var(--border-focus);
+            letter-spacing: 0.3px;
+        }
+
+        .dock-divider {
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 11px;
+        }
+
+        .dock-count-label {
+            color: var(--text-sub);
+            font-weight: 500;
+        }
+
+        .dock-count-label strong {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .dock-btn.finish-dock-btn {
+            background: linear-gradient(135deg, #10b981, #06b6d4) !important;
+            border-color: #10b981 !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 14px rgba(16, 185, 129, 0.4) !important;
+            font-weight: 700 !important;
+        }
+
+        .dock-btn.finish-dock-btn:hover {
+            filter: brightness(1.15) !important;
+            transform: translateY(-1px);
+        }
+
+        /* Option box hover enhancement */
+        .option-box:hover:not(.locked) {
+            background: var(--bg-option-hover) !important;
+            border-color: var(--border-focus) !important;
+            transform: translateX(3px) !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+        }
+
+        .option-box:hover:not(.locked) .option-circle {
+            border-color: var(--border-focus) !important;
+            color: #ffffff !important;
+            background: rgba(6, 182, 212, 0.15) !important;
+        }
+
+        .option-box.locked,
+        .option-box.correct-choice,
+        .option-box.wrong-choice,
+        .option-box.revealed-answer {
+            cursor: default !important;
+            transform: none !important;
+        }
+
+        /* Matrix item hover enhancement */
+        .matrix-item:hover {
+            border-color: var(--border-bright) !important;
+            color: var(--text-main);
+            transform: scale(1.12);
+            z-index: 5;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .matrix-item.answered-correct:hover {
+            background: rgba(16, 185, 129, 0.35) !important;
+            border-color: #34d399 !important;
+            color: #ffffff !important;
+        }
+
+        .matrix-item.answered-wrong:hover {
+            background: rgba(239, 68, 68, 0.35) !important;
+            border-color: #f87171 !important;
+            color: #ffffff !important;
+        }
+
+        .matrix-item.active-item:hover {
+            border-color: #38bdf8 !important;
+            transform: scale(1.12);
+        }
+
+        /* Section button hover enhancements */
+        .sec-selector-btn.accent-assignment:hover {
+            border-color: #3b82f6 !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.3) !important;
+        }
+
+        .sec-selector-btn.accent-msq:hover {
+            border-color: #a855f7 !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.3) !important;
+        }
+
+        .sec-selector-btn.accent-slides:hover {
+            border-color: #f59e0b !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.3) !important;
+        }
 </style>
 </head>
 <body>
@@ -1683,10 +1919,15 @@
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
                     Previous <span class="key-hint">P</span>
                 </button>
-                <div style="display: flex; gap: 10px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
                     <button id="btnFlagFocus" class="bookmark-btn" onclick="toggleCurrentFlag()">
                         <span>⭐</span> Mark for Review <span class="key-hint">F</span>
                     </button>
+                    <div class="dock-nav-indicator">
+                        <span id="dockSecPill" class="dock-sec-pill">📘 Assignment</span>
+                        <span class="dock-divider">|</span>
+                        <span class="dock-count-label">Question <strong id="dockQCurrent">1</strong> of <span id="dockQTotal">120</span></span>
+                    </div>
                     <button class="dock-btn" onclick="clearCurrentAnswer()">
                         ↺ Retry Question <span class="key-hint">R</span>
                     </button>
@@ -2526,11 +2767,20 @@
                 if (curCard) {
                     curCard.style.display = 'flex';
                     curCard.classList.add('active-focus');
+
+                    // Smoothly position at question card without jarring viewport reset
+                    if (typeof curCard.getBoundingClientRect === 'function') {
+                        const rect = curCard.getBoundingClientRect();
+                        if (rect && (rect.top < 60 || rect.top > 250)) {
+                            const targetY = (window.pageYOffset || 0) + rect.top - 70;
+                            window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+                        }
+                    }
                 }
+
 
                 updatePaletteActiveHighlight(prevIndex, currentIndex);
                 updateFocusNavButtons();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
                 const targetCard = document.getElementById(`qCard_${idx}`);
                 if (targetCard) {
@@ -2589,7 +2839,13 @@
             if (prevNode) prevNode.classList.remove('active-item');
 
             const newNode = document.getElementById(`paletteNode_${newIdx}`);
-            if (newNode && viewMode === 'focus') newNode.classList.add('active-item');
+            if (newNode && viewMode === 'focus') {
+                newNode.classList.add('active-item');
+                // Automatically keep active node in view inside sidebar palette
+                try {
+                    newNode.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+                } catch(e) {}
+            }
         }
 
         function updateFocusNavButtons() {
@@ -2600,6 +2856,19 @@
             const filtered = getFilteredQuestionIndices();
             const posInFiltered = filtered.indexOf(currentIndex);
 
+            // Update Real-Time Dock Navigation Indicator
+            const elDockCur = document.getElementById('dockQCurrent');
+            const elDockTotal = document.getElementById('dockQTotal');
+            const elDockSec = document.getElementById('dockSecPill');
+            if (elDockCur) elDockCur.innerText = posInFiltered >= 0 ? (posInFiltered + 1) : 1;
+            if (elDockTotal) elDockTotal.innerText = filtered.length;
+            if (elDockSec) {
+                if (currentSection === 'assignment') elDockSec.innerText = '📘 Assignment';
+                else if (currentSection === 'msq') elDockSec.innerText = '🧩 MSQ Bank';
+                else if (currentSection === 'slides') elDockSec.innerText = '📑 Slides Prep';
+                else elDockSec.innerText = '🌐 All 330';
+            }
+
             if (btnPrev) {
                 btnPrev.disabled = (filtered.length === 0 || posInFiltered <= 0);
             }
@@ -2609,10 +2878,10 @@
                 if (isLastInFiltered) {
                     const isAll = (currentSection === 'all' && statusFilter === 'all' && selectedWeekFilter === 'all');
                     btnNext.innerHTML = isAll ? 'Finish Exam 🏁' : 'End of Section 🏁';
-                    btnNext.className = 'dock-btn accent';
+                    btnNext.className = 'dock-btn finish-dock-btn';
                 } else {
                     btnNext.innerHTML = `Next <span class="key-hint">N</span> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>`;
-                    btnNext.className = 'dock-btn';
+                    btnNext.className = 'dock-btn accent';
                 }
             }
 
