@@ -1490,6 +1490,88 @@
         .matrix-item.is-slides-node {
             border-color: rgba(245, 158, 11, 0.4);
         }
+
+        /* ==========================================================================
+           ROBUST OPTION SELECTION FEEDBACK & EXPLANATION DRAWER STYLES
+           ========================================================================== */
+        .option-box.correct-choice,
+        .option-box.correct {
+            background: var(--success-bg) !important;
+            border-color: var(--success-border) !important;
+        }
+
+        .option-box.correct-choice .option-circle,
+        .option-box.correct .option-circle {
+            background: var(--accent-emerald) !important;
+            color: #ffffff !important;
+            border-color: var(--accent-emerald) !important;
+        }
+
+        .option-box.correct-choice .status-pill,
+        .option-box.correct .status-pill {
+            display: inline-block !important;
+            background: rgba(16, 185, 129, 0.2) !important;
+            color: #34d399 !important;
+        }
+
+        .option-box.revealed-answer {
+            border-color: #34d399 !important;
+            background: rgba(16, 185, 129, 0.08) !important;
+        }
+
+        .option-box.revealed-answer .option-circle {
+            background: #047857 !important;
+            color: #ffffff !important;
+            border-color: #34d399 !important;
+        }
+
+        .option-box.revealed-answer .status-pill {
+            display: inline-block !important;
+            background: rgba(16, 185, 129, 0.2) !important;
+            color: #34d399 !important;
+        }
+
+        .option-box.wrong-choice,
+        .option-box.incorrect {
+            background: var(--danger-bg) !important;
+            border-color: var(--danger-border) !important;
+        }
+
+        .option-box.wrong-choice .option-circle,
+        .option-box.incorrect .option-circle {
+            background: #ef4444 !important;
+            color: #ffffff !important;
+            border-color: #ef4444 !important;
+        }
+
+        .option-box.wrong-choice .status-pill,
+        .option-box.incorrect .status-pill {
+            display: inline-block !important;
+            background: rgba(239, 68, 68, 0.2) !important;
+            color: #f87171 !important;
+        }
+
+        .option-box.msq-checked,
+        .option-box.selected {
+            background: rgba(168, 85, 247, 0.15) !important;
+            border-color: #a855f7 !important;
+        }
+
+        .option-box.msq-checked .option-circle,
+        .option-box.selected .option-circle {
+            background: #a855f7 !important;
+            color: #ffffff !important;
+            border-color: #a855f7 !important;
+        }
+
+        .option-box.locked {
+            cursor: default !important;
+        }
+
+        .explanation-drawer.open,
+        .explanation-drawer.visible {
+            display: flex !important;
+        }
 </style>
 </head>
 <body>
@@ -2157,24 +2239,30 @@
                     if (isMsq) {
                         s.selected.forEach(optIdx => {
                             const optEl = document.getElementById(`q_${idx}_opt_${optIdx}`);
-                            if (optEl) optEl.classList.add('selected');
+                            if (optEl) optEl.classList.add('msq-checked', 'selected');
                         });
                         if (s.submitted) {
                             applyMsqAnswerStyles(idx);
                             const btn = document.getElementById(`btnSubmitMsq_${idx}`);
                             if (btn) {
                                 btn.disabled = true;
-                                btn.innerText = '✓ Response Recorded';
-                                btn.style.opacity = '0.6';
+                                btn.innerText = s.isCorrect ? '✓ MSQ Correctly Solved!' : '✓ Evaluated';
+                                btn.style.opacity = '0.7';
                             }
                             const exp = document.getElementById(`qExp_${idx}`);
-                            if (exp) exp.classList.add('visible');
+                            if (exp) {
+                                exp.classList.add('open', 'visible');
+                                triggerMathRendering(exp);
+                            }
                         }
                     } else {
                         const optIdx = s.selected[0];
                         applyAnswerStyles(idx, optIdx);
                         const exp = document.getElementById(`qExp_${idx}`);
-                        if (exp) exp.classList.add('visible');
+                        if (exp) {
+                            exp.classList.add('open', 'visible');
+                            triggerMathRendering(exp);
+                        }
                     }
                 }
 
@@ -2225,11 +2313,11 @@
         }
 
         // =========================================================================
-        // QUESTION ANSWERING LOGIC
+        // QUESTION ANSWERING LOGIC & STYLING FEEDBACK
         // =========================================================================
         function handleOptionSelect(qIdx, optIdx) {
             const qState = userState[qIdx];
-            if (qState.submitted) return;
+            if (qState.submitted || qState.selected.length > 0) return; // Locked once answered
 
             const q = questions[qIdx];
             const isCorrect = (optIdx === q.correct_index);
@@ -2241,46 +2329,58 @@
             applyAnswerStyles(qIdx, optIdx);
 
             const expDrawer = document.getElementById(`qExp_${qIdx}`);
-            if (expDrawer) expDrawer.classList.add('visible');
+            if (expDrawer) {
+                expDrawer.classList.add('open', 'visible');
+                triggerMathRendering(expDrawer);
+            }
 
             renderPalette();
             updateStats();
         }
 
-        function applyAnswerStyles(qIdx, selectedOptIdx) {
+        function applyAnswerStyles(qIdx, optIdx) {
             const q = questions[qIdx];
-            const isCorrect = (selectedOptIdx === q.correct_index);
-
-            for (let i = 0; i < q.options.length; i++) {
+            q.options.forEach((_, i) => {
                 const optEl = document.getElementById(`q_${qIdx}_opt_${i}`);
-                if (!optEl) continue;
+                if (!optEl) return;
+                const pillEl = optEl.querySelector('.status-pill');
+                optEl.classList.add('locked');
 
                 if (i === q.correct_index) {
-                    optEl.classList.add('correct');
-                    const pill = optEl.querySelector('.status-pill');
-                    if (pill) pill.innerText = 'Correct';
-                } else if (i === selectedOptIdx && !isCorrect) {
-                    optEl.classList.add('incorrect');
-                    const pill = optEl.querySelector('.status-pill');
-                    if (pill) pill.innerText = 'Your Answer';
+                    if (optIdx === i) {
+                        optEl.classList.add('correct-choice', 'correct');
+                        if (pillEl) pillEl.innerText = '✓ Correct!';
+                    } else {
+                        optEl.classList.add('revealed-answer');
+                        if (pillEl) pillEl.innerText = '✓ Correct Answer';
+                    }
+                } else if (i === optIdx) {
+                    optEl.classList.add('wrong-choice', 'incorrect');
+                    if (pillEl) pillEl.innerText = '✗ Your Choice';
                 }
-            }
+            });
         }
 
         function handleMsqOptionToggle(qIdx, optIdx) {
             const qState = userState[qIdx];
             if (qState.submitted) return;
 
+            const optEl = document.getElementById(`q_${qIdx}_opt_${optIdx}`);
             const idxPos = qState.selected.indexOf(optIdx);
-            if (idxPos === -1) {
-                qState.selected.push(optIdx);
-            } else {
+
+            if (idxPos > -1) {
                 qState.selected.splice(idxPos, 1);
+                if (optEl) optEl.classList.remove('msq-checked', 'selected');
+            } else {
+                qState.selected.push(optIdx);
+                if (optEl) optEl.classList.add('msq-checked', 'selected');
             }
 
-            const optEl = document.getElementById(`q_${qIdx}_opt_${optIdx}`);
-            if (optEl) {
-                optEl.classList.toggle('selected', idxPos === -1);
+            const btn = document.getElementById(`btnSubmitMsq_${qIdx}`);
+            if (btn) {
+                btn.innerText = qState.selected.length > 0 
+                    ? `✓ Submit MSQ (${qState.selected.length} selected)` 
+                    : `✓ Submit MSQ Response`;
             }
         }
 
@@ -2294,24 +2394,27 @@
             }
 
             const q = questions[qIdx];
-            const correctSet = new Set(q.correct_indices);
-            const userSet = new Set(qState.selected);
-
-            const isCorrect = (correctSet.size === userSet.size && [...userSet].every(x => correctSet.has(x)));
-            qState.isCorrect = isCorrect;
             qState.submitted = true;
+
+            const userSorted = [...qState.selected].sort((a,b) => a-b);
+            const goldSorted = [...q.correct_indices].sort((a,b) => a-b);
+            const isCorrect = (userSorted.length === goldSorted.length && userSorted.every((v, i) => v === goldSorted[i]));
+            qState.isCorrect = isCorrect;
 
             applyMsqAnswerStyles(qIdx);
 
-            const btn = document.getElementById(`btnSubmitMsq_${qIdx}`);
-            if (btn) {
-                btn.disabled = true;
-                btn.innerText = '✓ Response Recorded';
-                btn.style.opacity = '0.6';
+            const submitBtn = document.getElementById(`btnSubmitMsq_${qIdx}`);
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerText = isCorrect ? '✓ MSQ Correctly Solved!' : '✓ Evaluated';
+                submitBtn.style.opacity = '0.7';
             }
 
             const expDrawer = document.getElementById(`qExp_${qIdx}`);
-            if (expDrawer) expDrawer.classList.add('visible');
+            if (expDrawer) {
+                expDrawer.classList.add('open', 'visible');
+                triggerMathRendering(expDrawer);
+            }
 
             renderPalette();
             updateStats();
@@ -2320,26 +2423,29 @@
         function applyMsqAnswerStyles(qIdx) {
             const q = questions[qIdx];
             const qState = userState[qIdx];
-            const correctSet = new Set(q.correct_indices);
-            const userSet = new Set(qState.selected);
+            const userSorted = [...qState.selected];
+            const goldSorted = [...q.correct_indices];
 
-            for (let i = 0; i < q.options.length; i++) {
+            q.options.forEach((_, i) => {
                 const optEl = document.getElementById(`q_${qIdx}_opt_${i}`);
-                if (!optEl) continue;
+                if (!optEl) return;
+                const pillEl = optEl.querySelector('.status-pill');
+                optEl.classList.add('locked');
 
-                const isTargetCorrect = correctSet.has(i);
-                const isUserSelected = userSet.has(i);
+                const isGold = goldSorted.includes(i);
+                const isUser = userSorted.includes(i);
 
-                if (isTargetCorrect) {
-                    optEl.classList.add('correct');
-                    const pill = optEl.querySelector('.status-pill');
-                    if (pill) pill.innerText = isUserSelected ? '✓ Correct Choice' : 'Correct (Missed)';
-                } else if (isUserSelected) {
-                    optEl.classList.add('incorrect');
-                    const pill = optEl.querySelector('.status-pill');
-                    if (pill) pill.innerText = '✗ Incorrect Choice';
+                if (isGold && isUser) {
+                    optEl.classList.add('correct-choice', 'correct');
+                    if (pillEl) pillEl.innerText = '✓ Correct!';
+                } else if (isGold && !isUser) {
+                    optEl.classList.add('revealed-answer');
+                    if (pillEl) pillEl.innerText = '✓ Correct (Missed)';
+                } else if (!isGold && isUser) {
+                    optEl.classList.add('wrong-choice', 'incorrect');
+                    if (pillEl) pillEl.innerText = '✗ Incorrect Choice';
                 }
-            }
+            });
         }
 
         function clearCurrentAnswer() {
@@ -2370,7 +2476,9 @@
             }
 
             const expDrawer = document.getElementById(`qExp_${qIdx}`);
-            if (expDrawer) expDrawer.classList.remove('visible');
+            if (expDrawer) {
+                expDrawer.classList.remove('open', 'visible');
+            }
 
             renderPalette();
             updateStats();
