@@ -1,4 +1,4 @@
-# Generative AI for Computer Vision | 120-Question Master CBT Exam Simulator
+# Generative AI for Computer Vision | 145-Question Master CBT Exam Simulator
 
 Interactive Computer-Based Test (CBT) Exam Simulator for the NPTEL / SWAYAM course **"Generative AI for Computer Vision"** (IIT Guwahati).
 
@@ -6,12 +6,19 @@ Interactive Computer-Based Test (CBT) Exam Simulator for the NPTEL / SWAYAM cour
 
 ---
 
-### Features
-- **100% Complete Assignment Coverage:** All 120 questions across all 12 weeks.
+### Features & Question Architecture
+- **Total Questions:** **145 Questions**
+  - **Section 1: 📘 120 Assignment Bank Questions** (Weeks 1 to 12 — 10 questions/week).
+  - **Section 2: 🧩 25 Multi-Select Questions (MSQ Bank)** ("Check ALL that apply", high-yield multi-statement questions across all 12 weeks).
+- **Dual Partition Filtering:** Filter between *All (145)*, *📘 Assignment Bank (120)*, and *🧩 MSQ Bank (25)* with dedicated palette tabs.
+- **Dedicated MSQ Handling:** Square checkboxes, multi-option selection, and an explicit **Submit MSQ Response** button with partial/full correctness diagnostics.
 - **Shuffled & Randomized by Default:** Fisher-Yates array shuffling on every new session.
-- **Dual Navigation Modes:** Focus CBT Mode (single-question proctored TCS iON style) & All 120 Paper Mode.
-- **Interactive Question Palette:** 120-node status matrix (color-coded for unattempted, correct, mistakes, and flagged items).
+- **Dual Navigation Modes:** Focus CBT Mode (single-question proctored TCS iON style) & All 145 Paper Mode.
+- **Interactive Question Palette:** 145-node status matrix (color-coded for unattempted, correct, mistakes, and flagged items, with distinct 'M' badges for MSQ nodes).
 - **180-Minute Countdown Timer:** Live timer with Pause / Resume.
-- **5-Second Exam Shortcuts & Detailed Solutions:** Instant trigger keyword recognition rules and step-by-step methodologies.
-- **Diagnostic Scorecard Modal:** Medal tiers (Gold/Silver/Bronze), accuracy rate, time elapsed, and 12-week domain mastery breakdown.
+- **Speed Shortcuts & Detailed Methodologies:** Instant trigger keyword recognition rules and step-by-step statement-by-statement proofs.
+- **Section-Split Scorecard Modal:**
+  - Total Score (`/ 145`) and Accuracy %.
+  - **Split Progress Bars:** Assignment Bank (`/ 120`) and MSQ Bank (`/ 25`).
+  - 12-week domain mastery breakdown across all 145 questions.
 - **Offline & Responsive:** Embedded styling, offline KaTeX math formatting, and zero external dependencies.
