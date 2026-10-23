@@ -2033,6 +2033,32 @@
         }
 
         // Navigation
+        function isQuestionMatchingFilter(idx) {
+            if (idx < 0 || idx >= questions.length) return false;
+            const q = questions[idx];
+            const isMsq = !!q.is_msq;
+
+            if (selectedWeekFilter !== 'all' && q.week != selectedWeekFilter) return false;
+            if (paletteFilter === 'assignment' && q.section !== 'Assignment Bank') return false;
+            if (paletteFilter === 'msq' && q.section !== 'MSQ Bank') return false;
+            if (paletteFilter === 'slides' && q.section !== 'Slides Prep Info') return false;
+            if (paletteFilter === 'unattempted' && (!isMsq ? userState[idx].selected.length > 0 : userState[idx].submitted)) return false;
+            if (paletteFilter === 'incorrect' && userState[idx].isCorrect !== false) return false;
+            if (paletteFilter === 'flagged' && !userState[idx].flagged) return false;
+
+            return true;
+        }
+
+        function getFilteredQuestionIndices() {
+            const indices = [];
+            for (let i = 0; i < questions.length; i++) {
+                if (isQuestionMatchingFilter(i)) {
+                    indices.push(i);
+                }
+            }
+            return indices;
+        }
+
         function jumpToQuestion(idx) {
             const prevIndex = currentIndex;
             currentIndex = idx;
@@ -2059,20 +2085,37 @@
                     targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
                 updatePaletteActiveHighlight(prevIndex, currentIndex);
+                updateFocusNavButtons();
             }
         }
 
         function nextQuestion() {
-            if (currentIndex < questions.length - 1) {
-                jumpToQuestion(currentIndex + 1);
+            const filtered = getFilteredQuestionIndices();
+            if (filtered.length === 0) {
+                showResultsModal();
+                return;
+            }
+
+            // Find next index in current filtered section strictly greater than currentIndex
+            const nextIdx = filtered.find(i => i > currentIndex);
+            if (nextIdx !== undefined) {
+                jumpToQuestion(nextIdx);
             } else {
+                // Reached the end of the active section / filtered subset
                 showResultsModal();
             }
         }
 
         function prevQuestion() {
-            if (currentIndex > 0) {
-                jumpToQuestion(currentIndex - 1);
+            const filtered = getFilteredQuestionIndices();
+            if (filtered.length === 0) return;
+
+            // Find previous index in current filtered section strictly less than currentIndex
+            for (let k = filtered.length - 1; k >= 0; k--) {
+                if (filtered[k] < currentIndex) {
+                    jumpToQuestion(filtered[k]);
+                    return;
+                }
             }
         }
 
@@ -2080,20 +2123,12 @@
             questions.forEach((q, idx) => {
                 const card = document.getElementById(`qCard_${idx}`);
                 if (!card) return;
-                const isMsq = !!q.is_msq;
 
                 if (viewMode === 'focus') {
                     card.style.display = (idx === currentIndex) ? 'flex' : 'none';
                     card.classList.toggle('active-focus', idx === currentIndex);
                 } else {
-                    let visible = true;
-                    if (selectedWeekFilter !== 'all' && q.week != selectedWeekFilter) visible = false;
-                    if (paletteFilter === 'assignment' && q.section !== 'Assignment Bank') visible = false;
-                    if (paletteFilter === 'msq' && q.section !== 'MSQ Bank') visible = false;
-                    if (paletteFilter === 'slides' && q.section !== 'Slides Prep Info') visible = false;
-                    if (paletteFilter === 'unattempted' && (!isMsq ? userState[idx].selected.length > 0 : userState[idx].submitted)) visible = false;
-                    if (paletteFilter === 'incorrect' && userState[idx].isCorrect !== false) visible = false;
-                    if (paletteFilter === 'flagged' && !userState[idx].flagged) visible = false;
+                    const visible = isQuestionMatchingFilter(idx);
                     card.style.display = visible ? 'flex' : 'none';
                 }
             });
@@ -2113,13 +2148,22 @@
             const btnNext = document.getElementById('btnNext');
             const btnFlagFocus = document.getElementById('btnFlagFocus');
 
-            if (btnPrev) btnPrev.disabled = (currentIndex === 0);
+            const filtered = getFilteredQuestionIndices();
+            const posInFiltered = filtered.indexOf(currentIndex);
+
+            if (btnPrev) {
+                btnPrev.disabled = (filtered.length === 0 || posInFiltered <= 0);
+            }
+
             if (btnNext) {
-                if (currentIndex === questions.length - 1) {
-                    btnNext.innerHTML = 'Finish Exam 🏁';
+                const isLastInFiltered = (filtered.length === 0 || posInFiltered === filtered.length - 1);
+                if (isLastInFiltered) {
+                    const isAll = (paletteFilter === 'all' && selectedWeekFilter === 'all');
+                    btnNext.innerHTML = isAll ? 'Finish Exam 🏁' : 'End of Section 🏁';
                     btnNext.className = 'dock-btn accent';
                 } else {
                     btnNext.innerHTML = `Next <span class="key-hint">N</span> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>`;
+                    btnNext.className = 'dock-btn';
                 }
             }
 
@@ -2177,14 +2221,30 @@
             document.getElementById('tabFilterFlagged').classList.toggle('active', filter === 'flagged');
 
             renderPalette();
-            if (viewMode === 'scroll') updateFocusView();
+            updateFocusView();
+
+            // Section boundary snap: automatically jump to the first question in the selected section
+            const filtered = getFilteredQuestionIndices();
+            if (filtered.length > 0 && !filtered.includes(currentIndex)) {
+                jumpToQuestion(filtered[0]);
+            } else {
+                updateFocusNavButtons();
+            }
         }
 
         // Week Filter
         function handleWeekFilterChange(val) {
             selectedWeekFilter = val;
             renderPalette();
-            if (viewMode === 'scroll') updateFocusView();
+            updateFocusView();
+
+            // Week boundary snap: jump to the first question in the selected week
+            const filtered = getFilteredQuestionIndices();
+            if (filtered.length > 0 && !filtered.includes(currentIndex)) {
+                jumpToQuestion(filtered[0]);
+            } else {
+                updateFocusNavButtons();
+            }
         }
 
         // Reshuffle Exam Order
